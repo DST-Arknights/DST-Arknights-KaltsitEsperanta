@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Atlas>
+	<Texture filename="life_repairing_units.tex" />
+	<Elements>
+		<Element name="life_repairing_units.tex" u1="0.001" u2="0.952125" v2="0.999" v1="0.03225" variant="" />
+	</Elements>
+</Atlas>
