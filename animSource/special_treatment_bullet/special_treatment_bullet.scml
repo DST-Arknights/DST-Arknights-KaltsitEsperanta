@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spriter_data scml_version="1.0" generator="BrashMonkey Spriter" generator_version="b5">
+    <folder id="0" name="trait">
+        <file id="0" name="trait/trait-0.png" width="80" height="182" pivot_x="0.5" pivot_y="0"/>
+    </folder>
+    <folder id="1" name="regen">
+        <file id="0" name="regen/regen-0.png" width="80" height="182" pivot_x="0.5" pivot_y="0"/>
+    </folder>
+    <folder id="2" name="proj_trait">
+        <file id="0" name="proj_trait/proj_trait-0.png" width="212" height="65" pivot_x="0.971963" pivot_y="0.492537"/>
+    </folder>
+    <folder id="3" name="proj_regen">
+        <file id="0" name="proj_regen/proj_regen-0.png" width="212" height="65" pivot_x="0.971963" pivot_y="0.492537"/>
+    </folder>
+    <folder id="4" name="proj_potent">
+        <file id="0" name="proj_potent/proj_potent.png" width="212" height="65" pivot_x="0.981308" pivot_y="0.507463"/>
+    </folder>
+    <folder id="5" name="proj_norm">
+        <file id="0" name="proj_norm/proj_norm-0.png" width="212" height="65" pivot_x="0.985981" pivot_y="0.507463"/>
+    </folder>
+    <folder id="6" name="potent">
+        <file id="0" name="potent/potent-0.png" width="80" height="182" pivot_x="0.597561" pivot_y="0.0217391"/>
+    </folder>
+    <folder id="7" name="norm">
+        <file id="0" name="norm/norm-0.png" width="80" height="182" pivot_x="0.536585" pivot_y="0.038043"/>
+    </folder>
+    <entity id="0" name="special_treatment_bullet">
+        <animation id="0" name="trait_idle" length="1000">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" name="trait-0" folder="0" file="0" abs_x="0" abs_y="0" abs_pivot_x="0.5" abs_pivot_y="0" abs_angle="360" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="0" key="0" z_index="0"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="trait-0">
+                <key id="0" spin="0">
+                    <object folder="0" file="0"/>
+                </key>
+            </timeline>
+        </animation>
+        <animation id="1" name="norm_idle" length="1000">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" name="trait-0" folder="7" file="0" abs_x="0" abs_y="0" abs_pivot_x="0.536585" abs_pivot_y="0.038043" abs_angle="360" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="0" key="0" z_index="0"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="trait-0">
+                <key id="0" spin="0">
+                    <object folder="7" file="0"/>
+                </key>
+            </timeline>
+        </animation>
+        <animation id="2" name="regen_idle" length="1000">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" name="trait-0" folder="1" file="0" abs_x="0" abs_y="0" abs_pivot_x="0.5" abs_pivot_y="0" abs_angle="360" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="0" key="0" z_index="0"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="trait-0">
+                <key id="0" spin="0">
+                    <object folder="1" file="0"/>
+                </key>
+            </timeline>
+        </animation>
+        <animation id="3" name="potent_idle" length="1000">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" name="trait-0" folder="6" file="0" abs_x="0" abs_y="0" abs_pivot_x="0.597561" abs_pivot_y="0.021739" abs_angle="360" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="0" key="0" z_index="0"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="trait-0">
+                <key id="0" spin="0">
+                    <object folder="6" file="0"/>
+                </key>
+            </timeline>
+        </animation>
+        <animation id="4" name="trait_fly_loop" length="1000">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" name="proj_norm-0" folder="2" file="0" abs_x="0" abs_y="0" abs_pivot_x="0.971963" abs_pivot_y="0.492537" abs_angle="360" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="0" key="0" z_index="0"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="proj_norm-0">
+                <key id="0" spin="0">
+                    <object folder="2" file="0"/>
+                </key>
+            </timeline>
+        </animation>
+        <animation id="5" name="norm_fly_loop" length="1000">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" name="proj_norm-0" folder="5" file="0" abs_x="0" abs_y="0" abs_pivot_x="0.985981" abs_pivot_y="0.507463" abs_angle="360" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="0" key="0" z_index="0"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="proj_norm-0">
+                <key id="0" spin="0">
+                    <object folder="5" file="0"/>
+                </key>
+            </timeline>
+        </animation>
+        <animation id="6" name="potent_fly_loop" length="1000">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" name="proj_norm-0" folder="4" file="0" abs_x="0" abs_y="0" abs_pivot_x="0.981308" abs_pivot_y="0.507463" abs_angle="360" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="0" key="0" z_index="0"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="proj_norm-0">
+                <key id="0" spin="0">
+                    <object folder="4" file="0"/>
+                </key>
+            </timeline>
+        </animation>
+        <animation id="7" name="regen_fly_loop" length="1000">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" name="proj_norm-0" folder="3" file="0" abs_x="0" abs_y="0" abs_pivot_x="0.971963" abs_pivot_y="0.492537" abs_angle="360" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="0" key="0" z_index="0"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="proj_norm-0">
+                <key id="0" spin="0">
+                    <object folder="3" file="0"/>
+                </key>
+            </timeline>
+        </animation>
+    </entity>
+</spriter_data>
