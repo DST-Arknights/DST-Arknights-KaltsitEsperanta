@@ -1,12 +1,17 @@
 GLOBAL.setmetatable(env, { __index = function(t, k) return GLOBAL.rawget(GLOBAL, k) end })
-PrefabFiles = { "kaltsit_esperanta", "kaltsit_esperanta_none", "life_repairing_units", "special_treatment_gun", "special_treatment_bullet" }
+PrefabFiles = { "kaltsit_esperanta", "kaltsit_esperanta_none", "life_repairing_units", "special_treatment_gun",
+"special_treatment_bullet" }
 Assets = {}
 
+
+-- 加载中文语言包
+MergePOFile('languages/kaltsit_esperanta_chinese_s.po', LOC.GetLocaleCode(LANGUAGE.CHINESE_S), true)
 
 local kaltsit_esperanta_starting_items = {
   "special_treatment_gun",
   "norm_heal_bullet",
 }
+
 TUNING.GAMEMODE_STARTING_ITEMS.DEFAULT.KALTSIT_ESPERANTA = kaltsit_esperanta_starting_items
 TUNING.GAMEMODE_STARTING_ITEMS.LAVAARENA.KALTSIT_ESPERANTA = kaltsit_esperanta_starting_items
 TUNING.GAMEMODE_STARTING_ITEMS.QUAGMIRE.KALTSIT_ESPERANTA = kaltsit_esperanta_starting_items
