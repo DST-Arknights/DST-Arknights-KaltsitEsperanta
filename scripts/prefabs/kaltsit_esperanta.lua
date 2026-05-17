@@ -1,3 +1,4 @@
+local easing = require("easing")
 local MakePlayerCharacter = require "prefabs/player_common"
 local assets =
 {
@@ -13,9 +14,26 @@ local assets =
   Asset("ATLAS", "images/names_gold_kaltsit_esperanta.xml"),
 }
 
-local start_inv = {}
+local start_inv = {
+  "special_treatment_gun",
+  "norm_heal_bullet",
+  "norm_heal_bullet",
+  "norm_heal_bullet",
+  "norm_heal_bullet",
+  "norm_heal_bullet",
+  "norm_heal_bullet",
+  "norm_heal_bullet",
+  "norm_heal_bullet",
+  "norm_heal_bullet",
+  "norm_heal_bullet", }
 local prefabs = FlattenTree(start_inv, true)
 
+local function CustomFoodStatsMod(inst, health_delta, hunger_delta, sanity_delta, food, feeder)
+  if food.prefab == "seafoodgumbo" then
+    sanity_delta = sanity_delta + 15
+  end
+  return health_delta, hunger_delta, sanity_delta
+end
 
 -- When the character is revived from human
 local function onbecamehuman(inst)
@@ -25,6 +43,7 @@ end
 local function onbecameghost(inst)
   -- Remove speed modifier when becoming a ghost
 end
+
 
 -- When loading or spawning the character
 local function Onload(inst)
@@ -43,6 +62,7 @@ local CommonPostInit = function(inst)
   -- Minimap icon
   inst.MiniMapEntity:SetIcon("kaltsit_esperanta.tex")
   inst:AddTag("ark_character")
+  inst:AddTag("kaltsit_esperanta")
 end
 
 -- This initializes for the server only. Components are added here.
@@ -58,6 +78,21 @@ local masterPostInit = function(inst)
   inst.components.hunger:SetMax(TUNING.KALTSIT_ESPERANTA_HUNGER)
   inst.components.sanity:SetMax(TUNING.KALTSIT_ESPERANTA_SANITY)
 
+  -- 海鲜牛排+15 sanitydelta
+  inst.components.eater.custom_stats_mod_fn = CustomFoodStatsMod
+
+  -- 潮湿双倍温度负面效果
+  inst.components.temperature.maxmoisturepenalty = inst.components.temperature.maxmoisturepenalty * 2
+  -- 潮湿双倍精神负面效果
+  inst.components.sanity.custom_rate_fn = function(inst2, dt)
+    -- 再加一倍的 moisture_delta（等于总效果×2）
+    return easing.inSine(
+      inst2.components.moisture:GetMoisture(),
+      0,
+      TUNING.MOISTURE_SANITY_PENALTY_MAX,
+      inst2.components.moisture:GetMaxMoisture()
+    )
+  end
   -- Skills
   inst:AddComponent("ark_skill")
   inst:AddComponent("ark_currency")
