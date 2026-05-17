@@ -3,29 +3,35 @@ local builder_tag = "kaltsit_esperanta"
 -- 一次制作10个。	①	15蜘蛛腺体＋1金子
 -- ②	5蝴蝶翅膀＋1金子
 -- ③	10鸟蛋＋1金子
-AddCharacterRecipe("norm_heal_bullet", {
+AddCharacterRecipe("norm_heal_bullet1", {
   Ingredient("spider_gland", 15),
+  Ingredient("goldnugget", 1)
+}, TECH.NONE, {
+  builder_tag = builder_tag,
+  numtogive = 10,
+  product = "norm_heal_bullet",
+  nameoverride = "norm_heal_bullet",
+})
+
+AddCharacterRecipe("norm_heal_bullet2", {
   Ingredient("butterfly_wing", 5),
   Ingredient("goldnugget", 1)
 }, TECH.NONE, {
   builder_tag = builder_tag,
   numtogive = 10,
+  product = "norm_heal_bullet",
+  nameoverride = "norm_heal_bullet",
+
 })
 
-AddCharacterRecipe("norm_heal_bullet", {
-  Ingredient("butterfly_wing", 5),
-  Ingredient("goldnugget", 1)
-}, TECH.NONE, {
-  builder_tag = builder_tag,
-  numtogive = 10,
-})
-
-AddCharacterRecipe("norm_heal_bullet", {
+AddCharacterRecipe("norm_heal_bullet3", {
   Ingredient("bird_egg", 10),
   Ingredient("goldnugget", 1)
 }, TECH.NONE, {
   builder_tag = builder_tag,
   numtogive = 10,
+  product = "norm_heal_bullet",
+  nameoverride = "norm_heal_bullet",
 })
 
 -- 特制治疗弹 	可以恢复20血

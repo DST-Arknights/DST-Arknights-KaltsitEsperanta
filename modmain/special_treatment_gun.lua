@@ -30,3 +30,38 @@ containers.params.special_treatment_gun =
 AddCharacterRecipe("special_treatment_gun", { Ingredient("gears", 1), Ingredient("greengem", 1), Ingredient("goldnugget", 10) }, TECH.NONE, {
     builder_tag = "kaltsit_esperanta",
 })
+
+AddAction('SPECIAL_TREAT_HEAL', STRINGS.ACTIONS.HEAL.GENERIC, function(act)
+    local doer   = act.doer
+    local target = act.target
+    if not doer or not target then return false end
+
+    local gun = doer.components.inventory
+        and doer.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS)
+    if not gun or gun.prefab ~= "special_treatment_gun" or not gun:HasTag("ammoloaded") then
+        return false
+    end
+    ArkLogger:Debug("SPECIAL_TREAT_HEAL action triggered by %s on %s with %s", doer, target, gun)
+    return true
+end)
+
+-- 注册组件动作：右键点击玩家或玩家的宠物时显示"治疗"选项
+AddComponentAction("EQUIPPED", "weapon", function(inst, doer, target, actions, right)
+    if right or target == nil then
+        return
+    end
+    if inst.prefab ~= "special_treatment_gun" then
+        return
+    end
+    if target:HasTag("player") then
+        table.insert(actions, ACTIONS.SPECIAL_TREAT_HEAL)
+    return end
+    local leader = target.replica.follower and target.replica.follower:GetLeader()
+    if leader and leader:HasTag("player") then
+        table.insert(actions, ACTIONS.SPECIAL_TREAT_HEAL)
+    return end
+end)
+
+-- 状态图动作处理器（适用于 wilson 系角色）
+AddStategraphActionHandler("wilson", ActionHandler(ACTIONS.SPECIAL_TREAT_HEAL, "dolongaction"))
+AddStategraphActionHandler("wilson_client", ActionHandler(ACTIONS.SPECIAL_TREAT_HEAL, "dolongaction"))
