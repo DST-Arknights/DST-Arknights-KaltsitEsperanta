@@ -20,6 +20,7 @@ TUNING.KALTSIT_ESPERANTA_HEALTH = 100
 TUNING.KALTSIT_ESPERANTA_HUNGER = 100
 TUNING.KALTSIT_ESPERANTA_SANITY = 800
 
+modimport "modmain/kaltsit_esperanta_tech.lua"
 modimport "modmain/special_treatment_gun.lua"
 modimport "modmain/special_treatment_bullet.lua"
 
