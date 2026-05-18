@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <spriter_data scml_version="1.0" generator="BrashMonkey Spriter" generator_version="r11">
 	<folder id="0" name="icon">
-		<file id="0" name="icon/icon-0.png" width="60" height="60" pivot_x="0.5" pivot_y="0.5" />
+		<file id="0" name="icon/icon-0.png" width="64" height="64" pivot_x="0.5" pivot_y="0.5" />
+		<file id="1" name="icon/icon-1.png" width="64" height="64" pivot_x="0.5" pivot_y="0.5" />
+		<file id="2" name="icon/icon-2.png" width="64" height="64" pivot_x="0.5" pivot_y="0.5" />
+		<file id="3" name="icon/icon-3.png" width="64" height="64" pivot_x="0.5" pivot_y="0.5" />
 	</folder>
 	<entity id="0" name="bank0">
 		<animation id="0" name="animation0" length="33" interval="33">
