@@ -1,6 +1,6 @@
 GLOBAL.setmetatable(env, { __index = function(t, k) return GLOBAL.rawget(GLOBAL, k) end })
 PrefabFiles = { "kaltsit_esperanta", "kaltsit_esperanta_none", "life_repairing_units", "special_treatment_gun",
-"special_treatment_bullet" }
+  "special_treatment_bullet" }
 Assets = {}
 
 
@@ -20,9 +20,12 @@ TUNING.KALTSIT_ESPERANTA_HEALTH = 100
 TUNING.KALTSIT_ESPERANTA_HUNGER = 100
 TUNING.KALTSIT_ESPERANTA_SANITY = 800
 
+AddReplicableComponent("kaltsit_intellect")
+
 modimport "modmain/kaltsit_esperanta_tech.lua"
 modimport "modmain/special_treatment_gun.lua"
 modimport "modmain/special_treatment_bullet.lua"
+modimport "modmain/kaltsit_intellect.lua"
 
 AddModCharacter("kaltsit_esperanta", "FEMALE", {
   {
@@ -32,4 +35,10 @@ AddModCharacter("kaltsit_esperanta", "FEMALE", {
     scale = 0.75,
     offset = { 0, -25 }
   },
+})
+
+
+DefineNetState("kaltsit_intellect", {
+  current = "float:classified",
+  max = "float:classified",
 })

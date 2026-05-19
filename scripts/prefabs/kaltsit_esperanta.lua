@@ -35,6 +35,17 @@ local function CustomFoodStatsMod(inst, health_delta, hunger_delta, sanity_delta
   return health_delta, hunger_delta, sanity_delta
 end
 
+local function OnApplyElite(inst, elite_level)
+  -- 科技站
+  if elite_level == 1 then
+    inst.components.prototyper.trees = TUNING.PROTOTYPER_TREES.KALTSIT_INTELLECT_0
+  elseif elite_level == 2 then
+    inst.components.prototyper.trees = TUNING.PROTOTYPER_TREES.KALTSIT_INTELLECT_1
+  else -- elite_level == 3
+    inst.components.prototyper.trees = TUNING.PROTOTYPER_TREES.KALTSIT_INTELLECT_2
+  end
+end
+
 -- When the character is revived from human
 local function onbecamehuman(inst)
   -- Set speed when not a ghost (optional)
@@ -63,10 +74,24 @@ local CommonPostInit = function(inst)
   inst.MiniMapEntity:SetIcon("kaltsit_esperanta.tex")
   inst:AddTag("ark_character")
   inst:AddTag("kaltsit_esperanta")
+  inst:AddTag("kaltsit_aura_prototyper")
+  inst:AddTag("bookbuilder")
+  inst:AddTag("reader")
+  inst:AddTag("handyperson")
+  inst:AddTag("kelshi_spotlight_builder")
+  inst:AddTag("kelshi_spotlight_heated")
+  inst:AddTag("kelshi_spotlight_ranged")
 end
 
 -- This initializes for the server only. Components are added here.
 local masterPostInit = function(inst)
+  inst:AddTag("prototyper")
+  inst:AddTag("ancient_station")
+  inst:AddTag("celestial_station")
+  inst:AddTag("lunar_forge")
+  inst:AddTag("shadow_forge")
+  inst:AddTag("carpentry_station")
+  inst:AddTag("hermitcrab")
   -- choose which sounds this character will play
   inst.talksoundoverride = "kaltsit_esperanta/jp/talk_LP"
 
@@ -93,10 +118,34 @@ local masterPostInit = function(inst)
       inst2.components.moisture:GetMaxMoisture()
     )
   end
+
+  -- 去掉移速减益
+  ArkHookFunction(inst.components.locomotor, "SetExternalSpeedMultiplier", function(next, self, source, key, m)
+    if m ~= nil and m < 1 then
+      m = 1
+    end
+    return next(self, source, key, m)
+  end)
+  -- 不会滑倒
+  inst.components.locomotor.threshold = math.huge
+
+  -- 理智影响减半
+  inst.components.sanity.rate_modifier = 0.5
   -- Skills
   inst:AddComponent("ark_skill")
   inst:AddComponent("ark_currency")
   inst:AddComponent("i18n_talker")
+  -- prototyper
+  inst:AddComponent("prototyper")
+  inst.components.prototyper.trees = TUNING.PROTOTYPER_TREES.KALTSIT_INTELLECT_0
+
+  -- 智识
+  inst:AddComponent("kaltsit_intellect")
+  inst.components.kaltsit_intellect:SetOnApplyElite(OnApplyElite)
+
+  -- 读书
+  inst:AddComponent("reader")
+
   inst.OnLoad = Onload
 end
 
