@@ -6,6 +6,10 @@ local function onmaxdirty(self, value)
   self.inst.replica.kaltsit_intellect.state.max = value
 end
 
+local function ondiscountdirty(self, value)
+  self.inst.replica.kaltsit_intellect.state.next_build_discounted = value
+end
+
 -- ============================================================
 -- 模块级事件回调（无闭包）
 -- ============================================================
@@ -37,11 +41,15 @@ local function on_cycles(inst, cycles)
     inst.components.kaltsit_intellect:Delta(1)
 end
 
+local function on_consumeingredients(inst, data)
+    inst.components.kaltsit_intellect:OnConsumeIngredients(data)
+end
+
 local KaltsitIntellect = Class(function(self, inst)
     self.inst = inst
     self.current = 1
     self.max = 1
-    self.next_build_free = false
+    self.next_build_discounted = false
 
     -- 已解锁图鉴: { [prefab_name] = true }
     self.unlocked_prefabs = {}
@@ -58,6 +66,7 @@ local KaltsitIntellect = Class(function(self, inst)
 end, nil, {
     current = oncurrentdirty,
     max = onmaxdirty,
+    next_build_discounted = ondiscountdirty,
 })
 
 -- ============================================================
@@ -83,6 +92,7 @@ function KaltsitIntellect:OnRemoveFromEntity()
     inst:StopWatchingWorldState("cycles", on_cycles)
     inst:RemoveEventCallback("char_cooked_item", on_builditem)
     inst:RemoveEventCallback("char_stew_done", on_stewdone)
+    inst:RemoveEventCallback("consumeingredients", on_consumeingredients)
 end
 
 -- ============================================================
@@ -144,11 +154,36 @@ function KaltsitIntellect:DeltaMax(delta)
     self:TryApplyElite(max, self.max)        -- 尝试晋升
 end
 
+-- 激活折扣状态（内部复用）
+function KaltsitIntellect:_ActivateDiscount()
+    self.next_build_discounted = true
+    if self.inst.components.builder then
+        self.inst.components.builder.ingredientmodminmodifiers:SetModifier(self.inst, TUNING.GREENAMULET_INGREDIENTMOD, self.inst)
+        self.inst:ListenForEvent("consumeingredients", on_consumeingredients)
+    end
+end
+
 -- 扣除10点并使下次制作消耗物品减半
-function KaltsitIntellect:UseNextBuildFree()
+function KaltsitIntellect:UseNextBuildDiscount()
     if self.current >= 10 then
         self:Delta(-10)
-        self.next_build_free = true
+        self:_ActivateDiscount()
+    end
+end
+
+-- 消耗材料事件回调: 完成一次折扣使用后移除修改器
+function KaltsitIntellect:OnConsumeIngredients(data)
+    if self.next_build_discounted then
+        if not (data ~= nil and data.discounted == false) then
+            if self.inst.components.builder then
+                self.inst.components.builder.ingredientmodminmodifiers:RemoveModifier(self.inst)
+                self.inst:RemoveEventCallback("consumeingredients", on_consumeingredients)
+            end
+            if data ~= nil then
+                data.kaltsit_intellect_discount_used = true -- 标记已使用折扣（供其他系统检查）
+            end
+            self.next_build_discounted = false
+        end
     end
 end
 
@@ -161,6 +196,7 @@ function KaltsitIntellect:OnSave()
         current = self.current,
         max = self.max,
         unlocked_prefabs = self.unlocked_prefabs,
+        next_build_discounted = self.next_build_discounted or nil,
     }
 end
 
@@ -174,6 +210,9 @@ function KaltsitIntellect:OnLoad(data)
     end
     if data.unlocked_prefabs ~= nil then
         self.unlocked_prefabs = data.unlocked_prefabs
+    end
+    if data.next_build_discounted then
+        self:_ActivateDiscount()
     end
     self:TryApplyElite(0, self.max) -- 加载时根据 max 尝试应用精英效果
 end
