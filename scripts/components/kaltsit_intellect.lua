@@ -165,6 +165,9 @@ end
 
 -- 扣除10点并使下次制作消耗物品减半
 function KaltsitIntellect:UseNextBuildDiscount()
+    if self.next_build_discounted then
+        return -- 已经在折扣状态中，无需重复激活
+    end
     if self.current >= 10 then
         self:Delta(-10)
         self:_ActivateDiscount()

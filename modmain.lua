@@ -41,4 +41,5 @@ AddModCharacter("kaltsit_esperanta", "FEMALE", {
 DefineNetState("kaltsit_intellect", {
   current = "float:classified",
   max = "float:classified",
+  next_build_discounted = "bool:classified",
 })

@@ -1,4 +1,5 @@
 local Badge = require("widgets/badge")
+local ImageButton = require "widgets/imagebutton"
 
 table.insert(Assets, Asset("ANIM", "anim/kaltsit_intellect_badge.zip"))
 
@@ -15,11 +16,58 @@ AddCharacterIngredient("kaltsit_intellect", {
   end,
 })
 
+AddModRPCHandler("kaltsit_esperanta", "use_next_build_discount", function(player, data)
+  if player and player:IsValid() and player.components.kaltsit_intellect then
+    player.components.kaltsit_intellect:UseNextBuildDiscount()
+  end
+end)
+
 RegisterArkBadge("kaltsit_intellect_badge", function(manager, owner)
   if not owner:HasTag("kaltsit_esperanta") then
     return nil
   end
-  local badge = Badge(nil, owner, nil, "kaltsit_intellect_badge")
+  local badge = Badge(nil, owner, nil, "kaltsit_intellect_badge")  badge._activated = false
+  function badge:SetActivate(active)
+    active = active == true
+
+    if self._activated == active then
+      return
+    end
+
+    self._activated = active
+
+    if active then
+      self:PulseGreen()
+      self:StartWarning(0.45, 0.85, 1.0, 1.0)
+    else
+      self:StopWarning()
+    end
+  end
+
+
+  badge.click_hitbox = badge:AddChild(ImageButton(
+    "images/ui.xml",
+    "blank.tex",
+    "blank.tex",
+    "blank.tex",
+    nil,
+    nil,
+    { 1, 1 },
+    { 0, 0 }
+  ))
+  badge.click_hitbox:SetPosition(0, 0)
+  badge.click_hitbox:ForceImageSize(80, 80)
+  badge.click_hitbox:SetImageNormalColour(1, 1, 1, 0)
+  badge.click_hitbox:SetImageFocusColour(1, 1, 1, 0)
+  badge.click_hitbox:SetImageSelectedColour(1, 1, 1, 0)
+  badge.click_hitbox:SetOnClick(function()
+    local intellect = owner.replica.kaltsit_intellect or nil
+    if intellect ~= nil then
+      intellect:UseNextBuildDiscount()
+    end
+  end)
+
+  badge:SetActivate(false)
   return badge
 end)
 
