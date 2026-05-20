@@ -1,5 +1,5 @@
 GLOBAL.setmetatable(env, { __index = function(t, k) return GLOBAL.rawget(GLOBAL, k) end })
-PrefabFiles = { "kaltsit_esperanta", "kaltsit_esperanta_none", "life_repairing_units", "special_treatment_gun",
+PrefabFiles = { "kaltsit_esperanta", "kaltsit_esperanta_none", "kaltsit_esperanta_prototyper", "life_repairing_units", "special_treatment_gun",
   "special_treatment_bullet" }
 Assets = {}
 

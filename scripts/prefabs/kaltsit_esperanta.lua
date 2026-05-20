@@ -35,15 +35,16 @@ local function CustomFoodStatsMod(inst, health_delta, hunger_delta, sanity_delta
   return health_delta, hunger_delta, sanity_delta
 end
 
+local function SetPrototyperLevel(inst, level)
+  if not inst.prototyper_ent then
+    return
+  end
+  inst.prototyper_ent:SetLevel(level)
+end
+
 local function OnApplyElite(inst, elite_level)
   -- 科技站
-  if elite_level == 1 then
-    inst.components.prototyper.trees = TUNING.PROTOTYPER_TREES.KALTSIT_INTELLECT_0
-  elseif elite_level == 2 then
-    inst.components.prototyper.trees = TUNING.PROTOTYPER_TREES.KALTSIT_INTELLECT_1
-  else -- elite_level == 3
-    inst.components.prototyper.trees = TUNING.PROTOTYPER_TREES.KALTSIT_INTELLECT_2
-  end
+  SetPrototyperLevel(inst, elite_level)
 end
 
 -- When the character is revived from human
@@ -74,7 +75,7 @@ local CommonPostInit = function(inst)
   inst.MiniMapEntity:SetIcon("kaltsit_esperanta.tex")
   inst:AddTag("ark_character")
   inst:AddTag("kaltsit_esperanta")
-  inst:AddTag("kaltsit_aura_prototyper")
+  inst:AddTag("kaltsit_prototyper_no_priority")
   inst:AddTag("bookbuilder")
   inst:AddTag("reader")
   inst:AddTag("handyperson")
@@ -85,13 +86,6 @@ end
 
 -- This initializes for the server only. Components are added here.
 local masterPostInit = function(inst)
-  inst:AddTag("prototyper")
-  inst:AddTag("ancient_station")
-  inst:AddTag("celestial_station")
-  inst:AddTag("lunar_forge")
-  inst:AddTag("shadow_forge")
-  inst:AddTag("carpentry_station")
-  inst:AddTag("hermitcrab")
   -- choose which sounds this character will play
   inst.talksoundoverride = "kaltsit_esperanta/jp/talk_LP"
 
@@ -136,9 +130,13 @@ local masterPostInit = function(inst)
   inst:AddComponent("ark_currency")
   inst:AddComponent("i18n_talker")
   -- prototyper
-  inst:AddComponent("prototyper")
-  inst.components.prototyper.trees = TUNING.PROTOTYPER_TREES.KALTSIT_INTELLECT_0
+  -- inst:AddComponent("prototyper")
+  -- inst.components.prototyper.trees = TUNING.PROTOTYPER_TREES.KALTSIT_INTELLECT_0
+  local ent = SpawnPrefab("kaltsit_esperanta_prototyper")
+  ent.entity:SetParent(inst.entity)
+  ent.Transform:SetPosition(0, 0, 0)
 
+  inst.prototyper_ent = ent
   -- 智识
   inst:AddComponent("kaltsit_intellect")
   inst.components.kaltsit_intellect:SetOnApplyElite(OnApplyElite)

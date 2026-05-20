@@ -27,7 +27,7 @@ TECH.KALTSIT_INTELLECT_ONE = TechTree.Create({
 })
 
 TUNING.PROTOTYPER_TREES.KALTSIT_INTELLECT_0 = TechTree.Create({
-    SCIENCE = 2,
+    SCIENCE = 3,
     CARTOGRAPHY = 2,
     SEAFARING = 2,
     BOOKCRAFT = 1,
@@ -36,18 +36,18 @@ TUNING.PROTOTYPER_TREES.KALTSIT_INTELLECT_0 = TechTree.Create({
 })
 
 TUNING.PROTOTYPER_TREES.KALTSIT_INTELLECT_1 = TechTree.Create({
-    SCIENCE = 2,
+    SCIENCE = 3,
     MAGIC = 3,
     CARTOGRAPHY = 2,
     SEAFARING = 2,
     BOOKCRAFT = 1,
     MADSCIENCE = 1,
-    CARPENTRY = 2,
+    CARPENTRY = 3,
     KALTSIT_INTELLECT = 1,
 })
 
 TUNING.PROTOTYPER_TREES.KALTSIT_INTELLECT_2 = TechTree.Create({
-    SCIENCE = 2,
+    SCIENCE = 3,
     MAGIC = 3,
     ANCIENT = 4,
     CELESTIAL = 3,
@@ -55,12 +55,12 @@ TUNING.PROTOTYPER_TREES.KALTSIT_INTELLECT_2 = TechTree.Create({
     SEAFARING = 2,
     BOOKCRAFT = 1,
     MADSCIENCE = 1,
-    CARPENTRY = 2,
+    CARPENTRY = 3,
     KALTSIT_INTELLECT = 1,
 })
 
 
-AddPrototyperDef("kaltsit_esperanta", {
+AddPrototyperDef("kaltsit_esperanta_prototyper", {
     icon_atlas = "images/kaltsit_crafting.xml",
     icon_image = "station_intellect.tex",
     is_crafting_station = true,
@@ -68,19 +68,9 @@ AddPrototyperDef("kaltsit_esperanta", {
     skip_default_station_focus = true,
 })
 
-local KALTSIT_AURA_TAG = "kaltsit_aura_prototyper"
-
-local function IsKaltsitAura(inst)
-    return inst ~= nil and inst:HasTag(KALTSIT_AURA_TAG)
-end
-
 local function CanBeOverrideTarget(builder, inst)
-    return inst ~= nil
-        and inst:IsValid()
-        and inst.components ~= nil
-        and inst.components.prototyper ~= nil
-        and not IsKaltsitAura(inst)
-        and not inst:HasOneOfTags(builder.exclude_tags)
+    return inst.components.prototyper ~= nil
+        and not inst:HasTag("kaltsit_esperanta_prototyper")
         and (inst.components.prototyper.restrictedtag == nil or builder.inst:HasTag(inst.components.prototyper.restrictedtag))
 end
 
@@ -114,7 +104,7 @@ AddClassPostConstruct("components/builder_replica", function(self)
 end)
 
 AddComponentPostInit("builder", function(self)
-    if not self.inst:HasTag("kaltsit_aura_prototyper") then
+    if not self.inst:HasTag("kaltsit_prototyper_no_priority") then
         return
     end
     ArkHookFunction(self, "EvaluateTechTrees", function(next, self)
