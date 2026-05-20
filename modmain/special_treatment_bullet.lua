@@ -4,23 +4,21 @@ local builder_tag = "kaltsit_esperanta"
 -- ②	5蝴蝶翅膀＋1金子
 -- ③	10鸟蛋＋1金子
 AddCharacterRecipe("norm_heal_bullet1", {
-  Ingredient("spider_gland", 15),
+  Ingredient("spidergland", 15),
   Ingredient("goldnugget", 1)
 }, TECH.NONE, {
   builder_tag = builder_tag,
   numtogive = 10,
   product = "norm_heal_bullet",
-  nameoverride = "norm_heal_bullet",
 })
 
 AddCharacterRecipe("norm_heal_bullet2", {
-  Ingredient("butterfly_wing", 5),
+  Ingredient("butterflywings", 5),
   Ingredient("goldnugget", 1)
 }, TECH.NONE, {
   builder_tag = builder_tag,
   numtogive = 10,
   product = "norm_heal_bullet",
-  nameoverride = "norm_heal_bullet",
 
 })
 
@@ -31,26 +29,27 @@ AddCharacterRecipe("norm_heal_bullet3", {
   builder_tag = builder_tag,
   numtogive = 10,
   product = "norm_heal_bullet",
-  nameoverride = "norm_heal_bullet",
 })
 
 -- 特制治疗弹 	可以恢复20血
 -- 且使目标温度重置至20度。
 -- 一次制作10个	①	10番茄＋1金子
 -- ②	10石榴＋1金子
-AddCharacterRecipe("trait_heal_bullet", {
+AddCharacterRecipe("trait_heal_bullet1", {
   Ingredient("tomato", 10),
   Ingredient("goldnugget", 1)
 }, TECH.NONE, {
   builder_tag = builder_tag,
+  product = "trait_heal_bullet",
   numtogive = 10,
 })
 
-AddCharacterRecipe("trait_heal_bullet", {
+AddCharacterRecipe("trait_heal_bullet2", {
   Ingredient("pomegranate", 10),
   Ingredient("goldnugget", 1)
 }, TECH.NONE, {
   builder_tag = builder_tag,
+  product = "trait_heal_bullet",
   numtogive = 10,
 })
 
@@ -59,27 +58,30 @@ AddCharacterRecipe("trait_heal_bullet", {
 -- 一次制作5个	①	10红蘑菇＋1金子
 -- ②	10蜂蜜＋1金子，
 -- ③	10蚊子血囊＋1金子
-AddCharacterRecipe("potent_heal_bullet", {
-  Ingredient("red_mushroom", 10),
+AddCharacterRecipe("potent_heal_bullet1", {
+  Ingredient("red_cap", 10),
   Ingredient("goldnugget", 1)
 }, TECH.NONE, {
   builder_tag = builder_tag,
+  product = "potent_heal_bullet",
   numtogive = 5,
 })
 
-AddCharacterRecipe("potent_heal_bullet", {
+AddCharacterRecipe("potent_heal_bullet2", {
   Ingredient("honey", 10),
   Ingredient("goldnugget", 1)
 }, TECH.NONE, {
   builder_tag = builder_tag,
+  product = "potent_heal_bullet",
   numtogive = 5,
 })
 
-AddCharacterRecipe("potent_heal_bullet", {
-  Ingredient("mosquito_blood_sac", 10),
+AddCharacterRecipe("potent_heal_bullet3", {
+  Ingredient("mosquitosack", 10),
   Ingredient("goldnugget", 1)
 }, TECH.NONE, {
   builder_tag = builder_tag,
+  product = "potent_heal_bullet",
   numtogive = 5,
 })
 
@@ -90,26 +92,29 @@ AddCharacterRecipe("potent_heal_bullet", {
 -- 一次制作5个	①	1蜂王浆＋1金子
 -- ②	5高鸟蛋＋1金子
 -- ③	10月娥翅膀＋1金子
-AddCharacterRecipe("regen_heal_bullet", {
+AddCharacterRecipe("regen_heal_bullet1", {
   Ingredient("royal_jelly", 1),
   Ingredient("goldnugget", 1)
 }, TECH.NONE, {
   builder_tag = builder_tag,
+  product = "regen_heal_bullet",
   numtogive = 5,
 })
 
-AddCharacterRecipe("regen_heal_bullet", {
-  Ingredient("high_bird_egg", 5),
+AddCharacterRecipe("regen_heal_bullet2", {
+  Ingredient("tallbirdegg", 5),
   Ingredient("goldnugget", 1)
 }, TECH.NONE, {
   builder_tag = builder_tag,
+  product = "regen_heal_bullet",
   numtogive = 5,
 })
 
-AddCharacterRecipe("regen_heal_bullet", {
-  Ingredient("moonmoth_wing", 10),
+AddCharacterRecipe("regen_heal_bullet3", {
+  Ingredient("moonbutterflywings", 10),
   Ingredient("goldnugget", 1)
 }, TECH.NONE, {
   builder_tag = builder_tag,
+  product = "regen_heal_bullet",
   numtogive = 5,
 })

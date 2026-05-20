@@ -26,7 +26,11 @@ RegisterArkBadge("kaltsit_intellect_badge", function(manager, owner)
   if not owner:HasTag("kaltsit_esperanta") then
     return nil
   end
-  local badge = Badge(nil, owner, nil, "kaltsit_intellect_badge")  badge._activated = false
+
+  local badge = Badge(nil, owner, nil, "kaltsit_intellect_badge")
+  badge._activated = false
+  badge.down = false
+
   function badge:SetActivate(active)
     active = active == true
 
@@ -43,29 +47,44 @@ RegisterArkBadge("kaltsit_intellect_badge", function(manager, owner)
       self:StopWarning()
     end
   end
+  if manager:WithCombinedStatus() then
+    badge:SetOnGainFocus(function() badge:SetScale(1, 1, 1) end)
+    badge:SetOnLoseFocus(function() badge:SetScale(0.9, 0.9, 0.9) end)
+  else
+    badge:SetOnGainFocus(function() badge:SetScale(1.1, 1.1, 1.1) end)
+    badge:SetOnLoseFocus(function() badge:SetScale(1, 1, 1) end)
+  end
 
-
-  badge.click_hitbox = badge:AddChild(ImageButton(
-    "images/ui.xml",
-    "blank.tex",
-    "blank.tex",
-    "blank.tex",
-    nil,
-    nil,
-    { 1, 1 },
-    { 0, 0 }
-  ))
-  badge.click_hitbox:SetPosition(0, 0)
-  badge.click_hitbox:ForceImageSize(80, 80)
-  badge.click_hitbox:SetImageNormalColour(1, 1, 1, 0)
-  badge.click_hitbox:SetImageFocusColour(1, 1, 1, 0)
-  badge.click_hitbox:SetImageSelectedColour(1, 1, 1, 0)
-  badge.click_hitbox:SetOnClick(function()
-    local intellect = owner.replica.kaltsit_intellect or nil
-    if intellect ~= nil then
-      intellect:UseNextBuildDiscount()
+  function badge:OnControl(control, down)
+    if Badge._base.OnControl(self, control, down) then
+      return true
     end
-  end)
+
+    if not self:IsEnabled() or not self.focus then
+      return false
+    end
+
+    if control == CONTROL_ACCEPT then
+      if down then
+        if not self.down then
+          self.down = true
+        end
+      else
+        if self.down then
+          self.down = false
+
+          local intellect = owner.replica.kaltsit_intellect
+          if intellect ~= nil then
+            intellect:UseNextBuildDiscount()
+          end
+        end
+      end
+
+      return true
+    end
+
+    return false
+  end
 
   badge:SetActivate(false)
   return badge
