@@ -1,64 +1,35 @@
 table.insert(Assets, Asset("ATLAS", "images/kaltsit_crafting.xml"))
-local TechTree = require('techtree')
 
-local function AddCustomTechBranch(name, allow_bonus)
-    name = string.upper(name)
-    local lower = string.lower(name)
-
-    if not table.contains(TechTree.AVAILABLE_TECH, name) then
-        table.insert(TechTree.AVAILABLE_TECH, name)
-    end
-
-    TechTree.AVAILABLE_TECH_BONUS[name] = lower .. "_bonus"
-    TechTree.AVAILABLE_TECH_TEMPBONUS[name] = lower .. "_tempbonus"
-    TechTree.AVAILABLE_TECH_BONUS_CLASSIFIED[name] = lower .. "bonus"
-    TechTree.AVAILABLE_TECH_TEMPBONUS_CLASSIFIED[name] = lower .. "tempbonus"
-    TechTree.AVAILABLE_TECH_LEVEL_CLASSIFIED[name] = lower .. "level"
-
-    if allow_bonus and not table.contains(TechTree.BONUS_TECH, name) then
-        table.insert(TechTree.BONUS_TECH, name)
-    end
-end
-
-AddCustomTechBranch("KALTSIT_INTELLECT", false)
-
-TECH.KALTSIT_INTELLECT_ONE = TechTree.Create({
-    KALTSIT_INTELLECT = 1,
-})
-
-TUNING.PROTOTYPER_TREES.KALTSIT_INTELLECT_0 = TechTree.Create({
+AddTechBranch("KALTSIT_INTELLECT")
+AddTechLevel("KALTSIT_INTELLECT_ONE", "KALTSIT_INTELLECT", 1)
+AddPrototyperTree('KALTSIT_INTELLECT_0', {
     SCIENCE = 3,
+    MAGIC = 2,
     CARTOGRAPHY = 2,
     SEAFARING = 2,
     BOOKCRAFT = 1,
-    MADSCIENCE = 1,
     KALTSIT_INTELLECT = 1,
 })
-
-TUNING.PROTOTYPER_TREES.KALTSIT_INTELLECT_1 = TechTree.Create({
+AddPrototyperTree('KALTSIT_INTELLECT_1', {
     SCIENCE = 3,
     MAGIC = 3,
     CARTOGRAPHY = 2,
     SEAFARING = 2,
     BOOKCRAFT = 1,
-    MADSCIENCE = 1,
     CARPENTRY = 3,
     KALTSIT_INTELLECT = 1,
 })
-
-TUNING.PROTOTYPER_TREES.KALTSIT_INTELLECT_2 = TechTree.Create({
+AddPrototyperTree('KALTSIT_INTELLECT_2', {
     SCIENCE = 3,
     MAGIC = 3,
+    CARTOGRAPHY = 2,
+    SEAFARING = 2,
+    BOOKCRAFT = 1,
+    CARPENTRY = 3,
     ANCIENT = 4,
     CELESTIAL = 3,
-    CARTOGRAPHY = 2,
-    SEAFARING = 2,
-    BOOKCRAFT = 1,
-    MADSCIENCE = 1,
-    CARPENTRY = 3,
     KALTSIT_INTELLECT = 1,
 })
-
 
 AddPrototyperDef("kaltsit_esperanta_prototyper", {
     icon_atlas = "images/kaltsit_crafting.xml",
