@@ -101,39 +101,18 @@ AddComponentPostInit("cooker", function(self)
   end)
 end)
 
-local dostew_patched = false
--- 路径二：烹饪锅/便携锅，玩家取出时（stewer 组件）
-AddComponentPostInit("stewer", function(self)
-  if dostew_patched then
-    return
-  end
-  local ok, _dostew = ArkGetUpvalue(self.StartCooking, "dostew", {
-    file = "components/stewer.lua",
-  })
-  if not ok then
-    ArkLogger:Error("Failed to get upvalue 'dostew' from stewer StartCooking")
-    return
-  end
-  ArkLogger:Debug("Hooking stewer dostew", _dostew)
-  if _dostew ~= nil then
-    local ok = ArkSetUpvalue(self.StartCooking, "dostew", function(inst, self)
-      local player = UserToPlayer(self.chef_id)
-      if player and player:IsValid() then
-        player:PushEvent("char_stew_done", { product = self.product, cooker = inst })
-      end
-      _dostew(inst, self)
-      -- 给制作者发事件
-    end, {
-      file = "components/stewer.lua",
-    })
-    if ok then
-      ArkLogger:Debug("Successfully hooked stewer dostew")
-      dostew_patched = true
-    else
-      ArkLogger:Error("Failed to hook stewer dostew")
+local stewer_comp = require("components/stewer")
+ArkReplaceUpvalue(stewer_comp.StartCooking, "dostew", function(previous)
+  return function (inst, self)
+    local player = UserToPlayer(self.chef_id)
+    if player and player:IsValid() then
+      player:PushEvent("char_stew_done", { product = self.product, cooker = inst })
     end
+    previous(inst, self)
   end
-end)
+end, {
+  file = "components/stewer.lua",
+})
 
 -- 处理绿宝石, 优先使用凯尔希智识的折扣
 AddPrefabPostInit("greenamulet", function(inst)

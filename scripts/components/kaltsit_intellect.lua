@@ -20,16 +20,14 @@ local function on_killed(inst, data)
 end
 
 local function on_builditem(inst, data)
-    ArkLogger:Debug("Received builditem/buildstructure/char_cooked_item event", data)
     if data and data.item then
         inst.components.kaltsit_intellect:AddKnowledge(data.item.prefab)
     end
 end
 
 local function on_stewdone(inst, data)
-    ArkLogger:Debug("Received char_stew_done event", data)
     if data and data.product then
-        inst.components.kaltsit_intellect:AddKnowledge(data.product.prefab)
+        inst.components.kaltsit_intellect:AddKnowledge(data.product)
     end
 end
 
@@ -105,8 +103,8 @@ end
 function KaltsitIntellect:AddKnowledge(prefab)
     if prefab and not self.unlocked_prefabs[prefab] then
         self.unlocked_prefabs[prefab] = true
-        self:Delta(1)
         self:DeltaMax(1)
+        self:Delta(1)
         return true
     end
     return false
