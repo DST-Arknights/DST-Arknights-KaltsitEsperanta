@@ -36,7 +36,7 @@ AddCharacterRecipe("norm_heal_bullet3", {
 -- 一次制作10个	①	10番茄＋1金子
 -- ②	10石榴＋1金子
 AddCharacterRecipe("trait_heal_bullet1", {
-  Ingredient("tomato", 10),
+  Ingredient("tomato", 10, nil, nil, "quagmire_tomato.tex"),
   Ingredient("goldnugget", 1)
 }, TECH.NONE, {
   builder_tag = builder_tag,
