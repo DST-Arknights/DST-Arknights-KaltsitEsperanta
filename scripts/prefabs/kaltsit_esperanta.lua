@@ -145,7 +145,10 @@ local masterPostInit = function(inst)
   inst:AddComponent("reader")
 
   -- 亲和
-  inst:RemoveTag("scarytoprey")
+  inst:DoPeriodicTask(3, function()
+    inst:RemoveTag("scarytoprey")
+    inst:AddTag("mermdisguise")
+  end)
 
   inst.OnLoad = Onload
 end
