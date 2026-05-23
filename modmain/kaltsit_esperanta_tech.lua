@@ -1,7 +1,7 @@
 table.insert(Assets, Asset("ATLAS", "images/kaltsit_crafting.xml"))
 
 AddTechBranch("KALTSIT_INTELLECT")
-AddTechLevel("KALTSIT_INTELLECT_ONE", "KALTSIT_INTELLECT", 1)
+AddTechRequirement("KALTSIT_INTELLECT_ONE", "KALTSIT_INTELLECT", 1)
 AddPrototyperTree('KALTSIT_INTELLECT_0', {
     SCIENCE = 3,
     MAGIC = 2,
