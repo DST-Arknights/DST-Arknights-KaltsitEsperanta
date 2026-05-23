@@ -26,6 +26,7 @@ modimport "modmain/kaltsit_esperanta_tech.lua"
 modimport "modmain/special_treatment_gun.lua"
 modimport "modmain/special_treatment_bullet.lua"
 modimport "modmain/kaltsit_intellect.lua"
+modimport "modmain/kaltsit_affinity_brain.lua"
 
 AddModCharacter("kaltsit_esperanta", "FEMALE", {
   {

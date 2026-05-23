@@ -144,6 +144,9 @@ local masterPostInit = function(inst)
   -- 读书
   inst:AddComponent("reader")
 
+  -- 亲和
+  inst:RemoveTag("scarytoprey")
+
   inst.OnLoad = Onload
 end
 
