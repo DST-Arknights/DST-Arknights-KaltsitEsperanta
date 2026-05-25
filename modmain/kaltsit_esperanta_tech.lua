@@ -117,20 +117,7 @@ end
 -- 注册配方
 AddKaltsitIntellectRecipe("greengem", {
     Ingredient("kaltsit_intellect", 10),
-    Ingredient("asparagus_seeds", 40),
-    Ingredient("carrot_seeds", 40),
-    Ingredient("corn_seeds", 40),
-    Ingredient("dragonfruit_seeds", 40),
-    Ingredient("durian_seeds", 40),
-    Ingredient("eggplant_seeds", 40),
-    Ingredient("garlic_seeds", 40),
-    Ingredient("onion_seeds", 40),
-    Ingredient("pepper_seeds", 40),
-    Ingredient("pomegranate_seeds", 40),
-    Ingredient("potato_seeds", 40),
-    Ingredient("pumpkin_seeds", 40),
-    Ingredient("tomato_seeds", 40),
-    Ingredient("watermelon_seeds", 40),
+    Ingredient("spoiled_food", 400),
 })
 AddKaltsitIntellectRecipe("opalpreciousgem", {
     Ingredient("kaltsit_intellect", 10),
