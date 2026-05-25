@@ -110,7 +110,7 @@ local function AddKaltsitIntellectRecipe(product, ingredients)
         ingredients,
         TECH.KALTSIT_INTELLECT_ONE,
         { product = product, builder_tag = "kaltsit_esperanta", nounlock = true, numtogive = 1 },
-        { "MODS", "STRUCTURES" }
+        { "MODS", "CRAFTING_STATION" }
     )
 end
 
