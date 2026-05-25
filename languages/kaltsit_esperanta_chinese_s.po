@@ -35,6 +35,11 @@ msgctxt "STRINGS.NAMES.KALTSIT_ESPERANTA"
 msgid "Kaltsit Esperanta"
 msgstr "凯尔希·思衡托"
 
+#. STRINGS.NAMES.KALTSIT_INTELLECT
+msgctxt "STRINGS.NAMES.KALTSIT_INTELLECT"
+msgid "Kaltsit Intellect"
+msgstr "凯尔希智识"
+
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.1
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.1"
 msgid "Stratagem: Hyperpressurized Link"

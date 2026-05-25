@@ -101,3 +101,79 @@ AddComponentPostInit("builder", function(self)
         end
     end)
 end)
+
+
+local function AddKaltsitIntellectRecipe(product, ingredients)
+    local name = product .. "_k"
+    AddRecipe2(
+        name,
+        ingredients,
+        TECH.KALTSIT_INTELLECT_ONE,
+        { product = product, builder_tag = "kaltsit_esperanta", nounlock = true, numtogive = 1 },
+        { "MODS", "STRUCTURES" }
+    )
+end
+
+-- 注册配方
+AddKaltsitIntellectRecipe("greengem", {
+    Ingredient("kaltsit_intellect", 10),
+    Ingredient("asparagus_seeds", 40),
+    Ingredient("carrot_seeds", 40),
+    Ingredient("corn_seeds", 40),
+    Ingredient("dragonfruit_seeds", 40),
+    Ingredient("durian_seeds", 40),
+    Ingredient("eggplant_seeds", 40),
+    Ingredient("garlic_seeds", 40),
+    Ingredient("onion_seeds", 40),
+    Ingredient("pepper_seeds", 40),
+    Ingredient("pomegranate_seeds", 40),
+    Ingredient("potato_seeds", 40),
+    Ingredient("pumpkin_seeds", 40),
+    Ingredient("tomato_seeds", 40),
+    Ingredient("watermelon_seeds", 40),
+})
+AddKaltsitIntellectRecipe("opalpreciousgem", {
+    Ingredient("kaltsit_intellect", 10),
+    Ingredient("redgem", 1),
+    Ingredient("bluegem", 1),
+    Ingredient("purplegem", 1),
+    Ingredient("greengem", 1),
+    Ingredient("orangegem", 1),
+    Ingredient("yellowgem", 1),
+})
+
+AddKaltsitIntellectRecipe("cotl_trinket", {
+    Ingredient("kaltsit_intellect", 10),
+    Ingredient("redgem", 1),
+    Ingredient("dreadstone", 9),
+})
+
+AddKaltsitIntellectRecipe("security_pulse_cage", {
+    Ingredient("kaltsit_intellect", 20),
+    Ingredient("opalpreciousgem", 1),
+    Ingredient("moonrocknugget", 9),
+    Ingredient("thulecite", 16),
+    Ingredient("goldnugget", 25),
+})
+
+AddKaltsitIntellectRecipe("chestupgrade_stacksize", {
+    Ingredient("kaltsit_intellect", 20),
+    Ingredient("hivehat", 1),
+    Ingredient("spiderhat", 2),
+    Ingredient("bundlewrap", 4),
+})
+
+AddKaltsitIntellectRecipe("alterguardianhatshard", {
+    Ingredient("kaltsit_intellect", 20),
+    Ingredient("opalpreciousgem", 1),
+    Ingredient("purebrilliance", 9),
+    Ingredient("moonglass", 16),
+})
+
+AddKaltsitIntellectRecipe("shadowheart", {
+    Ingredient("kaltsit_intellect", 100),
+    Ingredient("reviver", 1),
+    Ingredient("dreadstone", 9),
+    Ingredient("horrorfuel", 16),
+    Ingredient("nightmarefuel", 25),
+})

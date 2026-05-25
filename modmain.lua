@@ -22,10 +22,10 @@ TUNING.KALTSIT_ESPERANTA_SANITY = 800
 
 AddReplicableComponent("kaltsit_intellect")
 
+modimport "modmain/kaltsit_intellect.lua"
 modimport "modmain/kaltsit_esperanta_tech.lua"
 modimport "modmain/special_treatment_gun.lua"
 modimport "modmain/special_treatment_bullet.lua"
-modimport "modmain/kaltsit_intellect.lua"
 modimport "modmain/kaltsit_animal_affinity.lua"
 
 AddModCharacter("kaltsit_esperanta", "FEMALE", {

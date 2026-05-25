@@ -1,7 +1,9 @@
 local Badge = require("widgets/badge")
-local ImageButton = require "widgets/imagebutton"
 
 table.insert(Assets, Asset("ANIM", "anim/kaltsit_intellect_badge.zip"))
+table.insert(Assets, Asset("ATLAS", "images/inventoryimages/kaltsit_intellect.xml"))
+
+RegisterInventoryItemAtlas("images/inventoryimages/kaltsit_intellect.xml", "kaltsit_intellect.tex")
 
 AddCharacterIngredient("kaltsit_intellect", {
   Has = function(inst, amount)
@@ -114,7 +116,7 @@ end, {
   file = "components/stewer.lua",
 })
 
--- 处理绿宝石, 优先使用凯尔希智识的折扣
+-- 处理绿宝石项链, 优先使用凯尔希智识的折扣
 AddPrefabPostInit("greenamulet", function(inst)
   ArkHookFunction(inst.components.equippable, "onequipfn", function(next, inst, owner, from_ground)
     next(inst, owner, from_ground)
