@@ -164,3 +164,15 @@ AddKaltsitIntellectRecipe("shadowheart", {
     Ingredient("horrorfuel", 16),
     Ingredient("nightmarefuel", 25),
 })
+
+AddKaltsitIntellectRecipe("kaltsit_neuro_gel", {
+    Ingredient("livinglog", 1),
+    Ingredient("moonglass", 10),
+    Ingredient("pinecone", 10),
+})
+
+AddKaltsitIntellectRecipe("kaltsit_tissue_repair_solvent", {
+    Ingredient("reviver", 1),
+    Ingredient("forgetmelots", 10),
+    Ingredient("pinecone", 10),
+})

@@ -143,6 +143,36 @@ msgctxt "STRINGS.NAMES.LIFE_REPAIRING_UNITS"
 msgid "Life Repairing Units"
 msgstr "生命修复单元"
 
+#. STRINGS.NAMES.KALTSIT_NEURO_GEL
+msgctxt "STRINGS.NAMES.KALTSIT_NEURO_GEL"
+msgid "Neurotransmitter Regulating Gel"
+msgstr "神经递质调节凝剂"
+
+#. STRINGS.CHARACTERS.GENERIC.DESCRIBE.KALTSIT_NEURO_GEL
+msgctxt "STRINGS.CHARACTERS.GENERIC.DESCRIBE.KALTSIT_NEURO_GEL"
+msgid "A targeted mental stabilizer."
+msgstr "能稳定她的精神波动，也能顺带校准 Mon3tr 的战斗节奏。"
+
+#. STRINGS.RECIPE_DESC.KALTSIT_NEURO_GEL
+msgctxt "STRINGS.RECIPE_DESC.KALTSIT_NEURO_GEL"
+msgid "Stabilizes the mind and reinforces Mon3tr's combat rhythm."
+msgstr "恢复理智，并强化 Mon3tr 的战斗节奏。"
+
+#. STRINGS.NAMES.KALTSIT_TISSUE_REPAIR_SOLVENT
+msgctxt "STRINGS.NAMES.KALTSIT_TISSUE_REPAIR_SOLVENT"
+msgid "Tissue Repair Solvent"
+msgstr "组织修复型溶剂"
+
+#. STRINGS.CHARACTERS.GENERIC.DESCRIBE.KALTSIT_TISSUE_REPAIR_SOLVENT
+msgctxt "STRINGS.CHARACTERS.GENERIC.DESCRIBE.KALTSIT_TISSUE_REPAIR_SOLVENT"
+msgid "Fast repair, then sustained recovery."
+msgstr "先快速修复，再维持一段稳定恢复。"
+
+#. STRINGS.RECIPE_DESC.KALTSIT_TISSUE_REPAIR_SOLVENT
+msgctxt "STRINGS.RECIPE_DESC.KALTSIT_TISSUE_REPAIR_SOLVENT"
+msgid "Accelerates tissue recovery for Kaltsit and Mon3tr."
+msgstr "同时加速凯尔希与 Mon3tr 的组织修复。"
+
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.1
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.1"
 msgid "Locked"
