@@ -176,3 +176,12 @@ AddKaltsitIntellectRecipe("kaltsit_tissue_repair_solvent", {
     Ingredient("forgetmelots", 10),
     Ingredient("pinecone", 10),
 })
+
+
+AddRecipe2(
+    "mon3tr_signboard",
+    { Ingredient("goldnugget", 3) },
+    TECH.NONE,
+    { placer = "mon3tr_signboard_placer" },
+    { "MODS", "STRUCTURES", "LIGHT" }
+)
