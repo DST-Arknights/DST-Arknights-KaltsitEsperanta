@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Atlas>
+	<Texture filename="mon3tr_signboard.tex" />
+	<Elements>
+		<Element name="mon3tr_signboard.tex" u1="0.001" u2="0.920875" v2="0.999" v1="0.001" variant="" />
+	</Elements>
+</Atlas>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spriter_data scml_version="1.0" generator="BrashMonkey Spriter" generator_version="r11">
+	<folder id="0" name="mon3tr_signboard">
+		<file id="0" name="mon3tr_signboard/mon3tr_signboard-0.png" width="185" height="320" pivot_x="0.5" pivot_y="0.5" />
+	</folder>
+	<entity id="0" name="mon3tr_signboard">
+		<animation id="0" name="idle" length="33" interval="33">
+			<mainline>
+				<key id="0" time="0">
+					<object_ref id="0" timeline="0" key="0" z_index="0" name="bigsigh_new" />
+				</key>
+			</mainline>
+			<timeline id="0" name="bigsigh_new">
+				<key id="0" time="0" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="1.5443492" y="155.97926" scale_x="1" scale_y="1" angle="0" />
+				</key>
+			</timeline>
+		</animation>
+	</entity>
+</spriter_data>
