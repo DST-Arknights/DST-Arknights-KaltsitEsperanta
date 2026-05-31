@@ -185,3 +185,9 @@ AddRecipe2(
     { placer = "mon3tr_signboard_placer" },
     { "MODS", "STRUCTURES", "LIGHT" }
 )
+
+AddCharacterRecipe("kaltsit_calcite", {
+    Ingredient("kaltsit_intellect", 10),
+}, TECH.NONE, {
+    builder_tag = "kaltsit_esperanta",
+})

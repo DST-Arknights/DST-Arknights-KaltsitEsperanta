@@ -188,6 +188,21 @@ msgctxt "STRINGS.RECIPE_DESC.MON3TR_SIGNBOARD"
 msgid "Fierce beasts inside, do not disturb."
 msgstr "内有凶兽，请勿打扰"
 
+#. STRINGS.NAMES.KALTSIT_CALCITE
+msgctxt "STRINGS.NAMES.KALTSIT_CALCITE"
+msgid "Kaltsit Calcite"
+msgstr "共生源石结晶"
+
+#. STRINGS.CHARACTERS.GENERIC.DESCRIBE.KALTSIT_CALCITE
+msgctxt "STRINGS.CHARACTERS.GENERIC.DESCRIBE.KALTSIT_CALCITE"
+msgid "A crystalline formation of symbiotic origin."
+msgstr "共生源石的结晶体"
+
+#. STRINGS.RECIPE_DESC.KALTSIT_CALCITE
+msgctxt "STRINGS.RECIPE_DESC.KALTSIT_CALCITE"
+msgid "A crystalline formation of symbiotic origin."
+msgstr "共生源石的结晶体"
+
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.1
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.1"
 msgid "Locked"
