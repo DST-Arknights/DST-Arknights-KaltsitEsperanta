@@ -112,6 +112,9 @@ local function Fn()
   MakeHauntableLaunch(inst)
   inst:AddComponent("edible")
   inst.components.edible.foodtype = FOODTYPE.GOODIES
+	inst.components.edible.healthvalue = 0
+	inst.components.edible.hungervalue = 0
+	inst.components.edible.sanityvalue = 0
   inst.components.edible:SetOnEatenFn(OnEaten)
   return inst
 end
