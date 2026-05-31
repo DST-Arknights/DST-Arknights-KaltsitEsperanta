@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Atlas>
+	<Texture filename="kalsit_calcite.tex" />
+	<Elements>
+		<Element name="kalsit_calcite.tex" u1="0.001" u2="0.8115" v2="0.999" v1="0.001" variant="" />
+	</Elements>
+</Atlas>
