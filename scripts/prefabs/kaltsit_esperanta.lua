@@ -1,5 +1,6 @@
 local easing = require("easing")
 local MakePlayerCharacter = require "prefabs/player_common"
+local eliteConfig = require("elite_config")
 local assets =
 {
   Asset("ATLAS", "images/map_icons/kaltsit_esperanta.xml"),
@@ -45,6 +46,12 @@ end
 local function OnApplyElite(inst, elite_level)
   -- 科技站
   SetPrototyperLevel(inst, elite_level)
+  -- 属性加成
+  local config = eliteConfig.Get(elite_level)
+  local modifierKey = "kaltsit_esperanta_elite"
+  inst.components.health.maxhealthaddmodifiers:SetModifier(modifierKey, config.healthBonus)
+  inst.components.hunger.maxhungeraddmodifiers:SetModifier(modifierKey, config.hungerBonus)
+  inst.components.sanity.maxsanityaddmodifiers:SetModifier(modifierKey, config.sanityBonus)
 end
 
 -- When the character is revived from human

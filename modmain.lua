@@ -2,7 +2,7 @@ GLOBAL.setmetatable(env, { __index = function(t, k) return GLOBAL.rawget(GLOBAL,
 PrefabFiles = { "kaltsit_esperanta", "kaltsit_esperanta_none", "kaltsit_esperanta_prototyper", "life_repairing_units",
   "special_treatment_gun",
   "special_treatment_bullet", "kaltsit_neuro_gel", "kaltsit_tissue_repair_solvent", "kaltsit_calcite",
-  "mon3tr_signboard", "kaltsit_calcite" }
+  "mon3tr_signboard", "kaltsit_calcite", "kaltsit_esperanta_mon3tr", }
 Assets = {}
 
 
@@ -22,6 +22,11 @@ TUNING.KALTSIT_ESPERANTA_HEALTH = 100
 TUNING.KALTSIT_ESPERANTA_HUNGER = 100
 TUNING.KALTSIT_ESPERANTA_SANITY = 800
 
+
+TUNING.KALTSIT_ESPERANTA_MON3TR_HEALTH = 800
+TUNING.KALTSIT_ESPERANTA_MON3TR_HUNGER = 800
+TUNING.KALTSIT_ESPERANTA_MON3TR_SANITY = 800
+
 AddReplicableComponent("kaltsit_intellect")
 
 modimport "modmain/kaltsit_intellect.lua"
@@ -40,9 +45,13 @@ AddModCharacter("kaltsit_esperanta", "FEMALE", {
   },
 })
 
-
 DefineNetState("kaltsit_intellect", {
   current = "float:classified",
   max = "float:classified",
   next_build_discounted = "bool:classified",
 })
+
+
+function IsPlayerControlling(inst)
+  return inst.userid ~= nil
+end
