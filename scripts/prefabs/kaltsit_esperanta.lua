@@ -89,6 +89,7 @@ local CommonPostInit = function(inst)
   inst:AddTag("kelshi_spotlight_builder")
   inst:AddTag("kelshi_spotlight_heated")
   inst:AddTag("kelshi_spotlight_ranged")
+  inst:AddTag("kaltsit_esperanta_mon3tr_master")
 end
 
 -- This initializes for the server only. Components are added here.
@@ -148,6 +149,8 @@ local masterPostInit = function(inst)
   inst:AddComponent("kaltsit_intellect")
   inst.components.kaltsit_intellect:SetOnApplyElite(OnApplyElite)
 
+  -- mon3tr 管理
+  inst:AddComponent("kaltsit_mon3tr_master")
   -- 读书
   inst:AddComponent("reader")
 

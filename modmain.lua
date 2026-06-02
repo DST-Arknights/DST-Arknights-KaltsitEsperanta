@@ -28,12 +28,14 @@ TUNING.KALTSIT_ESPERANTA_MON3TR_HUNGER = 800
 TUNING.KALTSIT_ESPERANTA_MON3TR_SANITY = 800
 
 AddReplicableComponent("kaltsit_intellect")
+AddReplicableComponent("kaltsit_mon3tr_master")
 
 modimport "modmain/kaltsit_intellect.lua"
 modimport "modmain/kaltsit_esperanta_tech.lua"
 modimport "modmain/special_treatment_gun.lua"
 modimport "modmain/special_treatment_bullet.lua"
 modimport "modmain/kaltsit_animal_affinity.lua"
+modimport "modmain/kaltsit_esperanta_mon3tr.lua"
 
 AddModCharacter("kaltsit_esperanta", "FEMALE", {
   {
