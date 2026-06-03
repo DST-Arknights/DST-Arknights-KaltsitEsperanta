@@ -61,6 +61,7 @@ end
 -- 强效治疗弹（potent_heal_bullet）
 --   友方：4 秒内每秒恢复 15 点生命值及黑血，效果可叠加
 --   敌方：4 秒内每秒造成 15 点真实伤害（无基础伤害，全走 DoT）
+--   敌方 DoT 全部通过 DoTaskInTime 延迟触发，不与 DoAttack 冲突。
 local function OnHit_PotentHeal(inst, attacker, target)
     if target == nil or not target:IsValid() then return end
     if IsAlly(attacker, target) then
@@ -85,7 +86,8 @@ local function OnHit_PotentHeal(inst, attacker, target)
         end
         DoHealTick(4)
     else
-        inst.components.weapon:SetDamage(0)
+        inst.components.weapon:SetDamage(15)  -- 命中即造成 15 物理伤害
+        -- 后续 3 跳真伤，每跳间隔 1 秒，总计 15+15×3 = 60
         local function DoDmgTick(remaining)
             if not target:IsValid() then return end
             if target.components.health
@@ -99,7 +101,7 @@ local function OnHit_PotentHeal(inst, attacker, target)
                 target:DoTaskInTime(1, function() DoDmgTick(remaining - 1) end)
             end
         end
-        DoDmgTick(4)
+        target:DoTaskInTime(1, function() DoDmgTick(3) end)
     end
 end
 
