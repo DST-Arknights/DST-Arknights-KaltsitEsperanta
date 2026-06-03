@@ -12,42 +12,101 @@ local assets = {
 }
 
 -- ============================================================
--- Effect interfaces（待实现）
+-- Ally / enemy detection
+-- ============================================================
+-- Same logic as SPECIAL_TREAT_HEAL action target validation,
+-- with PvP awareness: in PvP other players are NOT allies unless
+-- the shot was fired via the right-click Heal action.
+local function IsAlly(attacker, target)
+    -- Right-click Heal action forces ally treatment for the next shot
+    if attacker._next_shot_is_heal then
+        attacker._next_shot_is_heal = nil
+        return true
+    end
+    if attacker == target then return true end
+    if target.components.follower ~= nil
+        and target.components.follower.leader ~= nil
+        and target.components.follower.leader:HasTag("player") then
+        return true
+    end
+    if target:HasTag("player") then
+        -- In PvP, other players are valid combat targets
+        if TheNet:GetPVPEnabled() and attacker:HasTag("player") then
+            return false
+        end
+        return true
+    end
+    return false
+end
+
+-- ============================================================
+-- Effect interfaces
 -- ============================================================
 
--- 普通治疗弹（norm_heal_bullet）：恢复目标 10 点生命值
+-- 普通治疗弹（norm_heal_bullet）
+--   友方：恢复 15 点生命值
+--   敌方：造成 10 点伤害（由 DoAttack 自动处理）
 local function OnHit_NormHeal(inst, attacker, target)
-    if target ~= nil and target.components.health then
-        target.components.health:DoDelta(10, false, "norm_heal_bullet")
+    if target == nil or not target:IsValid() then return end
+    if IsAlly(attacker, target) then
+        if target.components.health then
+            target.components.health:DoDelta(15, false, "norm_heal_bullet")
+        end
+        inst.components.weapon:SetDamage(0)
+    else
+        inst.components.weapon:SetDamage(10)
     end
 end
 
--- 强效治疗弹（potent_heal_bullet）：4 秒内每秒恢复 5 点生命值及黑血，效果可叠加
+-- 强效治疗弹（potent_heal_bullet）
+--   友方：4 秒内每秒恢复 15 点生命值及黑血，效果可叠加
+--   敌方：4 秒内每秒造成 15 点真实伤害（无基础伤害，全走 DoT）
 local function OnHit_PotentHeal(inst, attacker, target)
-    if target == nil then return end
-    local function DoTick(remaining)
-        if not target:IsValid() then return end
-        if target.components.health and not target.components.health:IsDead() then
-            target.components.health:DoDelta(5, false, "potent_heal_bullet")
-            -- 同步恢复黑血（health penalty）
-            if target.components.health.penalty ~= nil
-                and target.components.health.penalty > 0 then
-                local max_hp = target.components.health.maxhealth
-                if max_hp and max_hp > 0 then
-                    target.components.health.penalty = math.max(0,
-                        target.components.health.penalty - 5 / max_hp)
+    if target == nil or not target:IsValid() then return end
+    if IsAlly(attacker, target) then
+        inst.components.weapon:SetDamage(0)
+        local function DoHealTick(remaining)
+            if not target:IsValid() then return end
+            if target.components.health and not target.components.health:IsDead() then
+                target.components.health:DoDelta(15, false, "potent_heal_bullet")
+                -- 同步恢复黑血（health penalty）
+                if target.components.health.penalty ~= nil
+                    and target.components.health.penalty > 0 then
+                    local max_hp = target.components.health.maxhealth
+                    if max_hp and max_hp > 0 then
+                        target.components.health.penalty = math.max(0,
+                            target.components.health.penalty - 15 / max_hp)
+                    end
                 end
             end
+            if remaining > 1 then
+                target:DoTaskInTime(1, function() DoHealTick(remaining - 1) end)
+            end
         end
-        if remaining > 1 then
-            target:DoTaskInTime(1, function() DoTick(remaining - 1) end)
+        DoHealTick(4)
+    else
+        inst.components.weapon:SetDamage(0)
+        local function DoDmgTick(remaining)
+            if not target:IsValid() then return end
+            if target.components.health
+                and not target.components.health:IsDead()
+                and target.components.combat then
+                target.components.combat:GetAttacked(attacker, 0, nil, nil, {
+                    true_damage = 15
+                })
+            end
+            if remaining > 1 then
+                target:DoTaskInTime(1, function() DoDmgTick(remaining - 1) end)
+            end
         end
+        DoDmgTick(4)
     end
-    DoTick(4)
 end
 
--- 缓回治疗弹（regen_heal_bullet）：2 分钟内每 2 秒恢复 2 点生命值（共 120 血），
--- 持续时间内免疫昏睡与蜘蛛网减速，效果可叠加
+-- 缓回治疗弹（regen_heal_bullet）
+--   友方：2 分钟内每 2 秒恢复 2 点生命值（共 120 血），
+--         持续时间内免疫昏睡与蜘蛛网减速，效果可叠加
+--   敌方：10 秒减速 40% + 累积昏睡值（无基础伤害，纯 debuff）
 local function _RegenAddImmunity(target)
     target._regen_bullet_stacks = (target._regen_bullet_stacks or 0) + 1
     if target._regen_bullet_stacks == 1 then
@@ -66,33 +125,67 @@ local function _RegenRemoveImmunity(target)
 end
 
 local function OnHit_RegenHeal(inst, attacker, target)
-    if target == nil then return end
-    _RegenAddImmunity(target)
-    local function DoTick(remaining)
-        if not target:IsValid() then
-            _RegenRemoveImmunity(target)
-            return
+    if target == nil or not target:IsValid() then return end
+    if IsAlly(attacker, target) then
+        inst.components.weapon:SetDamage(0)
+        _RegenAddImmunity(target)
+        local function DoTick(remaining)
+            if not target:IsValid() then
+                _RegenRemoveImmunity(target)
+                return
+            end
+            if target.components.health and not target.components.health:IsDead() then
+                target.components.health:DoDelta(2, false, "regen_heal_bullet")
+            end
+            if remaining > 1 then
+                target:DoTaskInTime(2, function() DoTick(remaining - 1) end)
+            else
+                _RegenRemoveImmunity(target)
+            end
         end
-        if target.components.health and not target.components.health:IsDead() then
-            target.components.health:DoDelta(2, false, "regen_heal_bullet")
+        DoTick(60)  -- 60 次 × 2 秒 = 120 秒 = 2 分钟，共恢复 120 血
+    else
+        inst.components.weapon:SetDamage(0)
+        -- 减速 40%，持续 10 秒
+        if target.components.locomotor then
+            target.components.locomotor:SetExternalSpeedMultiplier(target, "kelshi_regen_slow", 0.6)
+            target:DoTaskInTime(10, function()
+                if target:IsValid() and target.components.locomotor then
+                    target.components.locomotor:RemoveExternalSpeedMultiplier(target, "kelshi_regen_slow")
+                end
+            end)
         end
-        if remaining > 1 then
-            target:DoTaskInTime(2, function() DoTick(remaining - 1) end)
-        else
-            _RegenRemoveImmunity(target)
+        -- 累积昏睡值
+        if target.components.sleeper then
+            target.components.sleeper:AddSleepiness(40, 10)
         end
     end
-    DoTick(60)  -- 60 次 × 2 秒 = 120 秒 = 2 分钟，共恢复 120 血
 end
 
--- 特制治疗弹（trait_heal_bullet）：恢复目标 20 点生命值，将目标体温重置为 20°C
+-- 特制治疗弹（trait_heal_bullet）
+--   友方：恢复 30 点生命值，将体温重置为 20°C
+--   敌方：20 点伤害（DoAttack 自动处理） + 3 秒减速 30%
 local function OnHit_TraitHeal(inst, attacker, target)
-    if target == nil then return end
-    if target.components.health then
-        target.components.health:DoDelta(20, false, "trait_heal_bullet")
-    end
-    if target.components.temperature then
-        target.components.temperature:SetTemperature(20)
+    if target == nil or not target:IsValid() then return end
+    if IsAlly(attacker, target) then
+        if target.components.health then
+            target.components.health:DoDelta(30, false, "trait_heal_bullet")
+        end
+        if target.components.temperature then
+            target.components.temperature:SetTemperature(20)
+        end
+        inst.components.weapon:SetDamage(0)
+    else
+        inst.components.weapon:SetDamage(20)
+        -- 减速 30%，持续 3 秒
+        if target.components.locomotor then
+            target.components.locomotor:SetExternalSpeedMultiplier(target, "kelshi_trait_slow", 0.7)
+            target:DoTaskInTime(3, function()
+                if target:IsValid() and target.components.locomotor then
+                    target.components.locomotor:RemoveExternalSpeedMultiplier(target, "kelshi_trait_slow")
+                end
+            end)
+        end
     end
 end
 
@@ -129,7 +222,9 @@ local ammo_defs = {
 -- ============================================================
 -- Shared handlers
 -- ============================================================
-local function OnAttack(inst, attacker, target)
+-- onprehit runs BEFORE auto DoAttack (step ① in Projectile:Hit)
+-- Set weapon damage here so DoAttack reads the correct value at step ②
+local function OnPreHit(inst, attacker, target)
   if target ~= nil and target:IsValid() and attacker ~= nil and attacker:IsValid() then
     if inst.ammo_def ~= nil and inst.ammo_def.onhit ~= nil then
       inst.ammo_def.onhit(inst, attacker, target)
@@ -176,16 +271,17 @@ local function projectile_fn(def)
 
   inst:AddComponent("weapon")
   inst.components.weapon:SetDamage(0)
-  inst.components.weapon:SetOnAttack(OnAttack)
 
   inst:AddComponent("projectile")
-  inst.components.projectile:SetSpeed(80)
+  inst.components.projectile:SetSpeed(60)
   inst.components.projectile:SetHoming(false)
-  inst.components.projectile:SetHitDist(0)
+  inst.components.projectile:SetHitDist(1)
+  inst.components.projectile:SetOnPreHitFn(OnPreHit)
   inst.components.projectile:SetOnHitFn(OnHit)
   inst.components.projectile:SetOnMissFn(OnMiss)
   inst.components.projectile:SetLaunchOffset(Vector3(1, 1, 0))
   inst.components.projectile.range = 30
+  inst.components.projectile.has_damage_set = true
 
   return inst
 end

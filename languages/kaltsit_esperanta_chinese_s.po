@@ -95,7 +95,7 @@ msgstr "被它击中的感觉意外地还不错"
 
 #. STRINGS.NAMES.TRAIT_HEAL_BULLET
 msgctxt "STRINGS.NAMES.TRAIT_HEAL_BULLET"
-msgid "Potent Heal Bullet"
+msgid "Trait Heal Bullet"
 msgstr "特制治疗弹"
 
 #. STRINGS.CHARACTERS.GENERIC.DESCRIBE.TRAIT_HEAL_BULLET
@@ -111,32 +111,32 @@ msgstr "落点会散发出一股说不清的凉意"
 #. STRINGS.NAMES.REGEN_HEAL_BULLET
 msgctxt "STRINGS.NAMES.REGEN_HEAL_BULLET"
 msgid "Regen Heal Bullet"
-msgstr "强效治疗弹"
+msgstr "缓回治疗弹"
 
 #. STRINGS.CHARACTERS.GENERIC.DESCRIBE.REGEN_HEAL_BULLET
 msgctxt "STRINGS.CHARACTERS.GENERIC.DESCRIBE.REGEN_HEAL_BULLET"
-msgid "Old wounds close at the impact site. Even older ones, too."
-msgstr "击中之处，连陈旧的伤口也开始愈合"
+msgid "A drowsiness that doesn't quite arrive. The body simply mends."
+msgstr "不会让人沉睡，只是身体会静静地自行修复"
 
 #. STRINGS.RECIPE_DESC.REGEN_HEAL_BULLET
 msgctxt "STRINGS.RECIPE_DESC.REGEN_HEAL_BULLET"
-msgid "Old wounds close at the impact site. Even older ones, too."
-msgstr "击中之处，连陈旧的伤口也开始愈合"
+msgid "A drowsiness that doesn't quite arrive. The body simply mends."
+msgstr "不会让人沉睡，只是身体会静静地自行修复"
 
 #. STRINGS.NAMES.POTENT_HEAL_BULLET
 msgctxt "STRINGS.NAMES.POTENT_HEAL_BULLET"
-msgid "Trait Heal Bullet"
-msgstr "缓回治疗弹"
+msgid "Potent Heal Bullet"
+msgstr "强效治疗弹"
 
 #. STRINGS.CHARACTERS.GENERIC.DESCRIBE.POTENT_HEAL_BULLET
 msgctxt "STRINGS.CHARACTERS.GENERIC.DESCRIBE.POTENT_HEAL_BULLET"
-msgid "A drowsiness that doesn't quite arrive. The body simply mends."
-msgstr "不会让人沉睡，只是身体会静静地自行修复"
+msgid "Old wounds close at the impact site. Even older ones, too."
+msgstr "击中之处，连陈旧的伤口也开始愈合"
 
 #. STRINGS.RECIPE_DESC.POTENT_HEAL_BULLET
 msgctxt "STRINGS.RECIPE_DESC.POTENT_HEAL_BULLET"
-msgid "A drowsiness that doesn't quite arrive. The body simply mends."
-msgstr "不会让人沉睡，只是身体会静静地自行修复"
+msgid "Old wounds close at the impact site. Even older ones, too."
+msgstr "击中之处，连陈旧的伤口也开始愈合"
 
 #. STRINGS.NAMES.LIFE_REPAIRING_UNITS
 msgctxt "STRINGS.NAMES.LIFE_REPAIRING_UNITS"

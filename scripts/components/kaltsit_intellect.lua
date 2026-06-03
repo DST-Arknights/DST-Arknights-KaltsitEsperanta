@@ -125,6 +125,17 @@ function KaltsitIntellect:SetOnApplyElite(fn)
     self.on_apply_elite = fn
 end
 
+--- 根据当前 max 计算精英等级（从高到低匹配阈值）
+--- @return number 精英等级 (1-based)
+function KaltsitIntellect:GetEliteLevel()
+    for i = #self.elite_thresholds, 1, -1 do
+        if self.max >= self.elite_thresholds[i] then
+            return i
+        end
+    end
+    return 1
+end
+
 function KaltsitIntellect:TryApplyElite(oldMax, newMax)
     -- 从高精英等级往低检查，确保一次性跨越多个门槛时高精英优先触发
     for i = #self.elite_thresholds, 1, -1 do

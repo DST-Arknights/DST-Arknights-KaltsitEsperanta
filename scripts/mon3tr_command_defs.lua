@@ -19,7 +19,9 @@ local unsummon = {
 }
 
 local defs = {
-  { unsummon, unsummon, unsummon, unsummon, unsummon, unsummon }, -- 升级后可以添加更多指令
+  { unsummon },                                    -- 精英1：1个指令
+  { unsummon, unsummon },                          -- 精英2：2个指令
+  { unsummon, unsummon, unsummon },                -- 精英3：3个指令
 }
 
 local function GetCommands(level)

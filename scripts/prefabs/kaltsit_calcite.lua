@@ -26,12 +26,11 @@ local function updatespells(inst, owner)
   if owner then
     if owner.HUD then owner.HUD:CloseSpellWheel() end
     local elite = GetMon3trElite(owner)
+    ArkLogger:Debug("Updating spells, elite", elite)
     inst.components.spellbook:SetItems(COMMANDS.GetCommands(elite))
   else
     inst.components.spellbook:SetItems(EMPTY_TABLE)
   end
-    local elite = GetMon3trElite(owner)
-    inst.components.spellbook:SetItems(COMMANDS.GetCommands(elite))
 end
 
 local function OnOwnerUpdated(inst, owner)
@@ -78,8 +77,9 @@ end
 
 local function DoClientUpdateSpells(inst, force)
   local owner = (inst.replica.inventoryitem:IsHeld() and ThePlayer) or nil
+  ArkLogger:Debug("DoClientUpdateSpells", "force", force, "owner", owner, "inst._owner", inst._owner)
   if owner ~= inst._owner then
-    updatespells(inst, inst._owner)
+    updatespells(inst, owner)
     inst._owner = owner
   end
 end

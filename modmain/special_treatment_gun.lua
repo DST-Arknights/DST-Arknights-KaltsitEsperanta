@@ -41,6 +41,8 @@ AddAction('SPECIAL_TREAT_HEAL', STRINGS.ACTIONS.HEAL.GENERIC, function(act)
     if not gun or gun.prefab ~= "special_treatment_gun" or not gun:HasTag("ammoloaded") then
         return false
     end
+    -- Mark next projectile as forced heal (overrides PvP enemy check)
+    doer._next_shot_is_heal = true
     ArkLogger:Debug("SPECIAL_TREAT_HEAL action triggered by %s on %s with %s", doer, target, gun)
     return true
 end)
@@ -53,7 +55,7 @@ AddComponentAction("EQUIPPED", "weapon", function(inst, doer, target, actions, r
     if inst.prefab ~= "special_treatment_gun" then
         return
     end
-    if target:HasTag("player") then
+    if target == doer or target:HasTag("player") then
         table.insert(actions, ACTIONS.SPECIAL_TREAT_HEAL)
     return end
     local leader = target.replica.follower and target.replica.follower:GetLeader()

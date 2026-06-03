@@ -52,6 +52,10 @@ local function OnApplyElite(inst, elite_level)
   inst.components.health.maxhealthaddmodifiers:SetModifier(modifierKey, config.healthBonus)
   inst.components.hunger.maxhungeraddmodifiers:SetModifier(modifierKey, config.hungerBonus)
   inst.components.sanity.maxsanityaddmodifiers:SetModifier(modifierKey, config.sanityBonus)
+  -- mon3tr 精英
+  if inst.components.kaltsit_mon3tr_master then
+    inst.components.kaltsit_mon3tr_master:ApplyElite(elite_level)
+  end
 end
 
 -- When the character is revived from human
