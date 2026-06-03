@@ -34,7 +34,6 @@ local function updatespells(inst, owner)
 end
 
 local function OnOwnerUpdated(inst, owner)
-  if true then return end
   -- 第一步：找到 **真正能使用花的人**
   local real_owner = nil
   if owner ~= nil then
@@ -61,6 +60,7 @@ local function OnOwnerUpdated(inst, owner)
   if inst._owner ~= nil then
     inst:RemoveEventCallback("mon3tr_master_summoncomplete", inst._onsummonstatechanged_server, inst._owner)
     inst:RemoveEventCallback("mon3tr_master_recallcomplete", inst._onsummonstatechanged_server, inst._owner)
+    inst:RemoveEventCallback("mon3tr_master_elitechanged", inst._onelitechanged_server, inst._owner)
   end
 
   -- 第五步：绑定新持有者的事件监听
@@ -68,6 +68,7 @@ local function OnOwnerUpdated(inst, owner)
   if real_owner ~= nil then
     inst:ListenForEvent("mon3tr_master_summoncomplete", inst._onsummonstatechanged_server, real_owner)
     inst:ListenForEvent("mon3tr_master_recallcomplete", inst._onsummonstatechanged_server, real_owner)
+    inst:ListenForEvent("mon3tr_master_elitechanged", inst._onelitechanged_server, real_owner)
   end
 
   -- 第六步：刷新法术列表 + 同步到客户端
@@ -142,6 +143,11 @@ local function Fn()
   end
 
   inst._onsummonstatechanged_server = function(owner)
+    inst._updatespells:push()
+    updatespells(inst, owner)
+  end
+
+  inst._onelitechanged_server = function(owner, elite)
     inst._updatespells:push()
     updatespells(inst, owner)
   end

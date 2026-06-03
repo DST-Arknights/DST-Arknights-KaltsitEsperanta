@@ -82,6 +82,7 @@ function KaltsitMon3trMaster:ApplyElite(elite)
       self.mon3tr.components.combat.defaultdamageaddmodifiers:SetModifier(modifierKey, config.mon3trAttackBonus)
     end
   end
+  self.inst:PushEvent("mon3tr_master_elitechanged", elite)
 end
 
 -- ============================================================
