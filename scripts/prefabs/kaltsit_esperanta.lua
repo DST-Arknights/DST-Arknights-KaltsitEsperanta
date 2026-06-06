@@ -46,15 +46,19 @@ end
 local function OnApplyElite(inst, elite_level)
   -- 科技站
   SetPrototyperLevel(inst, elite_level)
-  -- 属性加成
+  -- Kaltsit 自身属性加成
   local config = eliteConfig.Get(elite_level)
   local modifierKey = "kaltsit_esperanta_elite"
   inst.components.health.maxhealthaddmodifiers:SetModifier(modifierKey, config.healthBonus)
   inst.components.hunger.maxhungeraddmodifiers:SetModifier(modifierKey, config.hungerBonus)
   inst.components.sanity.maxsanityaddmodifiers:SetModifier(modifierKey, config.sanityBonus)
-  -- mon3tr 精英
-  if inst.components.kaltsit_mon3tr_master then
-    inst.components.kaltsit_mon3tr_master:ApplyElite(elite_level)
+  -- Mon3tr 精英加成（通知 Mon3tr 身上的技能组件）
+  local master = inst.components.kaltsit_mon3tr_master
+  if master and master.mon3tr and master.mon3tr:IsValid() then
+    local skills = master.mon3tr.components.kaltsit_mon3tr_skills
+    if skills then
+      skills:ApplyEliteBonuses()
+    end
   end
 end
 

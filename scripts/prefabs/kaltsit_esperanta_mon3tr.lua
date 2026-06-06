@@ -30,6 +30,10 @@ local function MasterPostInit(inst)
   inst.components.sanity:SetMax(TUNING.KALTSIT_ESPERANTA_MON3TR_SANITY)
   inst.components.sanity.externalmodifiers:SetModifier("kaltsit_esperanta_mon3tr", 200)
 
+  -- Mon3tr 技能指令管理
+  inst:AddComponent("kaltsit_mon3tr_skills")
+  inst:AddComponent("spellbookcooldowns")
+
   -- 灵魂状态变化
   inst:ListenForEvent("becameghost", onbecameghost)
 end

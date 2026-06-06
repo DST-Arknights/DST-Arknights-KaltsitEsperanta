@@ -155,12 +155,14 @@ end
 
 function KaltsitIntellect:Delta(delta)
     self.current = math.clamp(self.current + delta, 0, self.max)
+    self.inst:PushEvent("intellect_changed", { current = self.current, max = self.max })
 end
 
 function KaltsitIntellect:DeltaMax(delta)
     local max = self.max
     self.max = math.max(self.max + delta, 1) -- max 至少为1，避免除0错误
     self:TryApplyElite(max, self.max)        -- 尝试晋升
+    self.inst:PushEvent("intellect_changed", { current = self.current, max = self.max })
 end
 
 -- 激活折扣状态（内部复用）

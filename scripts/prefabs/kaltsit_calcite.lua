@@ -15,19 +15,18 @@ end
 local function CLIENT_OnCloseSpellBook(_)
 end
 
-local function GetMon3trElite(owner)
-  if owner ~= nil and owner.replica.kaltsit_mon3tr_master ~= nil then
-    return owner.replica.kaltsit_mon3tr_master:GetElite()
+local function GetMon3trIntellectMax(owner)
+  if owner ~= nil and owner.replica.kaltsit_intellect ~= nil then
+    return owner.replica.kaltsit_intellect.state.max or 1
   end
-  return nil
+  return 1
 end
 
 local function updatespells(inst, owner)
   if owner then
     if owner.HUD then owner.HUD:CloseSpellWheel() end
-    local elite = GetMon3trElite(owner)
-    ArkLogger:Debug("Updating spells, elite", elite)
-    inst.components.spellbook:SetItems(COMMANDS.GetCommands(elite))
+    local intellect_max = GetMon3trIntellectMax(owner)
+    inst.components.spellbook:SetItems(COMMANDS.GetCommands(intellect_max))
   else
     inst.components.spellbook:SetItems(EMPTY_TABLE)
   end
@@ -60,7 +59,7 @@ local function OnOwnerUpdated(inst, owner)
   if inst._owner ~= nil then
     inst:RemoveEventCallback("mon3tr_master_summoncomplete", inst._onsummonstatechanged_server, inst._owner)
     inst:RemoveEventCallback("mon3tr_master_recallcomplete", inst._onsummonstatechanged_server, inst._owner)
-    inst:RemoveEventCallback("mon3tr_master_elitechanged", inst._onelitechanged_server, inst._owner)
+    inst:RemoveEventCallback("intellect_changed", inst._onelitechanged_server, inst._owner)
   end
 
   -- 第五步：绑定新持有者的事件监听
@@ -68,7 +67,7 @@ local function OnOwnerUpdated(inst, owner)
   if real_owner ~= nil then
     inst:ListenForEvent("mon3tr_master_summoncomplete", inst._onsummonstatechanged_server, real_owner)
     inst:ListenForEvent("mon3tr_master_recallcomplete", inst._onsummonstatechanged_server, real_owner)
-    inst:ListenForEvent("mon3tr_master_elitechanged", inst._onelitechanged_server, real_owner)
+    inst:ListenForEvent("intellect_changed", inst._onelitechanged_server, real_owner)
   end
 
   -- 第六步：刷新法术列表 + 同步到客户端

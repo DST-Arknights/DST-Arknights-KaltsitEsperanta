@@ -38,20 +38,17 @@ local function setnotsummoned(self)
   self.inst:AddOrRemoveTag("mon3tr_master_notsummoned", self.notsummoned)
 end
 
-local function setelite(self)
-  self.inst.replica.kaltsit_mon3tr_master:SetElite(self.elite)
-end
-
 -- ============================================================
 -- KaltsitMon3trMaster
 -- ============================================================
+-- 仅负责 Mon3tr 生命周期（生成/召唤/召回）。
+-- 精英等级和指令管理已迁移至 kaltsit_mon3tr_commander。
 
 local KaltsitMon3trMaster = Class(function(self, inst)
   self.inst = inst
   self.mon3tr = nil
   self.summoned = false
   self.notsummoned = true
-  self.elite = 1
 
   -- 绑定模块级回调（每个实例一份 function ref，以便 RemoveEventCallback）
   self._onMon3trRemoved = function() _onMon3trRemoved(self) end
@@ -62,28 +59,7 @@ local KaltsitMon3trMaster = Class(function(self, inst)
 end, nil, {
   notsummoned = setnotsummoned,
   summoned = setsummoned,
-  elite  = setelite,
 })
-
--- ============================================================
--- 精英
--- ============================================================
-
-function KaltsitMon3trMaster:ApplyElite(elite)
-  self.elite = elite
-  if self.mon3tr and self.mon3tr:IsValid() then
-    local eliteConfig = require("elite_config")
-    local config = eliteConfig.Get(elite)
-    local modifierKey = "kaltsit_esperanta_elite"
-    if self.mon3tr.components.health then
-      self.mon3tr.components.health.maxhealthaddmodifiers:SetModifier(modifierKey, config.mon3trHealthBonus)
-    end
-    if self.mon3tr.components.combat then
-      self.mon3tr.components.combat.defaultdamageaddmodifiers:SetModifier(modifierKey, config.mon3trAttackBonus)
-    end
-  end
-  self.inst:PushEvent("mon3tr_master_elitechanged", elite)
-end
 
 -- ============================================================
 -- Mon3tr 生命周期
@@ -103,7 +79,10 @@ function KaltsitMon3trMaster:SpawnMon3tr(in_world)
   -- 主人下线时清理 Mon3tr
   self.inst:ListenForEvent("onremove", self._onMasterRemoved)
 
-  self:ApplyElite(self.elite)
+  -- 初始化 Mon3tr 的技能组件
+  if mon3tr.components.kaltsit_mon3tr_skills then
+    mon3tr.components.kaltsit_mon3tr_skills:SetMaster(self.inst)
+  end
 
   if in_world then
     self:SummonComplete()
@@ -178,11 +157,7 @@ function KaltsitMon3trMaster:OnSave()
 end
 
 function KaltsitMon3trMaster:OnLoad(data)
-  -- 自行从 kaltsit_intellect 恢复精英等级，不依赖回调链
-  local intellect = self.inst.components.kaltsit_intellect
-  if intellect then
-    self:ApplyElite(intellect:GetEliteLevel())
-  end
+  -- 精英等级由 kaltsit_mon3tr_commander 自行恢复
   if data == nil then return end
   if data.mon3tr then
     if self.spawn_mon3tr_task then
