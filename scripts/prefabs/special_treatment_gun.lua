@@ -7,8 +7,8 @@ RegisterInventoryItemAtlas("images/inventoryimages/special_treatment_gun.xml", "
 -- TUNING
 -- ============================================================
 -- TUNING.SPECIAL_TREATMENT_GUN_ATTACK_PERIOD = 1.5 -- 攻速间隔（秒），越大越慢
-TUNING.SPECIAL_TREATMENT_GUN_RANGE_MIN = 6
-TUNING.SPECIAL_TREATMENT_GUN_RANGE_MAX = 10
+TUNING.SPECIAL_TREATMENT_GUN_RANGE_SHOOT = 5
+TUNING.SPECIAL_TREATMENT_GUN_RANGE_MELEE = 1
 local gun_assets                       = {
   Asset("ANIM", "anim/special_treatment_gun.zip"),
   Asset("ANIM", "anim/swap_special_treatment_gun.zip"),
@@ -46,6 +46,7 @@ end
 
 local function OnAmmoLoaded(inst, data)
   if inst.components.weapon and data and data.item and data.slot == 1 then
+    inst.components.weapon:SetRange(TUNING.SPECIAL_TREATMENT_GUN_RANGE_SHOOT, TUNING.SPECIAL_TREATMENT_GUN_RANGE_SHOOT + 1)
     inst.components.weapon:SetProjectile(data.item.prefab .. "_proj")
     inst:AddTag("ammoloaded")
     data.item:PushEvent("ammoloaded", { slingshot = inst })
@@ -54,6 +55,7 @@ end
 
 local function OnAmmoUnloaded(inst, data)
   if inst.components.weapon and data and data.slot == 1 then
+    inst.components.weapon:SetRange(TUNING.SPECIAL_TREATMENT_GUN_RANGE_MELEE, TUNING.SPECIAL_TREATMENT_GUN_RANGE_MELEE + 1)
     inst.components.weapon:SetProjectile(nil)
     inst:RemoveTag("ammoloaded")
     if data.prev_item then
@@ -101,8 +103,8 @@ local function gun_fn()
   inst.components.equippable:SetOnEquipToModel(OnEquipToModel)
 
   inst:AddComponent("weapon")
-  inst.components.weapon:SetDamage(0)
-  inst.components.weapon:SetRange(TUNING.SPECIAL_TREATMENT_GUN_RANGE_MIN, TUNING.SPECIAL_TREATMENT_GUN_RANGE_MAX)
+  inst.components.weapon:SetDamage(5)
+  inst.components.weapon:SetRange(TUNING.SPECIAL_TREATMENT_GUN_RANGE_MELEE, TUNING.SPECIAL_TREATMENT_GUN_RANGE_MELEE + 1)
   inst.components.weapon:SetOnProjectileLaunched(OnProjectileLaunched)
   inst.components.weapon:SetProjectile(nil)
   inst.components.weapon:SetProjectileOffset(1)
