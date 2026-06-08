@@ -26,61 +26,99 @@ local function updatespells(inst, owner)
   if owner then
     if owner.HUD then owner.HUD:CloseSpellWheel() end
     local intellect_max = GetMon3trIntellectMax(owner)
+    ArkLogger:Debug("Updating spells for owner", owner, "intellect_max", intellect_max)
+    local items = COMMANDS.GetCommands(intellect_max)
+    for i, item in ipairs(items) do
+      ArkLogger:Debug(" - ", i, item.id)
+    end
     inst.components.spellbook:SetItems(COMMANDS.GetCommands(intellect_max))
   else
+    ArkLogger:Debug("No owner, clearing spells")
     inst.components.spellbook:SetItems(EMPTY_TABLE)
   end
 end
 
 local function OnOwnerUpdated(inst, owner)
-  -- 第一步：找到 **真正能使用花的人**
-  local real_owner = nil
-  if owner ~= nil then
-    if owner.components.inventoryitem ~= nil then
-      -- owner 是容器/背包 → 递归查到最终人类持有者
-      real_owner = owner.components.inventoryitem:GetGrandOwner()
-    else
-      -- owner 是玩家 → 直接用
-      real_owner = owner
+  if owner ~= nil and owner.components.container ~= nil then
+    -- We've been moved from an equipped backpack into a different container.
+    if inst._container ~= nil and
+        owner ~= inst._container and
+        (inst._container.components.equippable ~= nil and inst._container.components.equippable:IsEquipped())
+    then
+      inst:RemoveEventCallback("unequipped", inst._onunequipped, inst._container)
     end
+
+    inst._container = owner
+
+    local grandowner = owner.components.inventoryitem ~= nil and owner.components.inventoryitem:GetGrandOwner()
+
+    -- We've been put on an already equipped backpack.
+    if owner.components.equippable ~= nil and owner.components.equippable:IsEquipped() and grandowner ~= nil then
+      owner = grandowner
+
+      inst:ListenForEvent("unequipped", inst._onunequipped, inst._container)
+
+      -- We've been put on an unnequipped backpack.
+    elseif owner.components.equippable ~= nil then
+      inst:ListenForEvent("equipped", inst._onequipped, inst._container)
+    else
+      -- We're in a chest likely
+      owner = nil
+    end
+
+    -- We've been dropped or put on a regular inventory.
+  elseif inst._container ~= nil then
+    if inst._container.components.equippable ~= nil and inst._container.components.equippable:IsEquipped() then
+      inst:RemoveEventCallback("unequipped", inst._onunequipped, inst._container)
+    end
+
+    inst._container = nil
   end
 
-  -- 第二步：如果 real_owner 是背包（未装备状态）→ 视为无持有者
-  if real_owner ~= nil and real_owner:HasTag("backpack") then
-    real_owner = nil
-  end
+  if owner ~= nil and owner ~= inst._owner then
+    if inst._owner ~= nil and not inst._owner:HasTag("backpack") then
+      -- inst:RemoveEventCallback("onactivateskill_server", inst._onskillrefresh_server, inst._owner)
+      -- inst:RemoveEventCallback("ondeactivateskill_server", inst._onskillrefresh_server, inst._owner)
+      inst:RemoveEventCallback("mon3tr_master_summoncomplete", inst._onsummonstatechanged_server, inst._owner)
+      inst:RemoveEventCallback("mon3tr_master_recallcomplete", inst._onsummonstatechanged_server, inst._owner)
+      inst:RemoveEventCallback("kaltsit_elite_up", inst._onsummonstatechanged_server, inst._owner) -- 移除精英晋升事件监听
+    end
 
-  -- 第三步：如果持有者没变，直接返回
-  if real_owner == inst._owner then
-    return
-  end
+    inst._owner = owner
 
-  -- 第四步：解绑旧持有者的事件监听
-  if inst._owner ~= nil then
-    inst:RemoveEventCallback("mon3tr_master_summoncomplete", inst._onsummonstatechanged_server, inst._owner)
-    inst:RemoveEventCallback("mon3tr_master_recallcomplete", inst._onsummonstatechanged_server, inst._owner)
-    inst:RemoveEventCallback("intellect_changed", inst._onelitechanged_server, inst._owner)
-  end
+    inst._updatespells:push()
+    updatespells(inst, inst._owner)
 
-  -- 第五步：绑定新持有者的事件监听
-  inst._owner = real_owner
-  if real_owner ~= nil then
-    inst:ListenForEvent("mon3tr_master_summoncomplete", inst._onsummonstatechanged_server, real_owner)
-    inst:ListenForEvent("mon3tr_master_recallcomplete", inst._onsummonstatechanged_server, real_owner)
-    inst:ListenForEvent("intellect_changed", inst._onelitechanged_server, real_owner)
-  end
+    if not inst._owner:HasTag("backpack") then
+      -- inst:ListenForEvent("onactivateskill_server", inst._onskillrefresh_server, owner)
+      -- inst:ListenForEvent("ondeactivateskill_server", inst._onskillrefresh_server, owner)
+      inst:ListenForEvent("mon3tr_master_summoncomplete", inst._onsummonstatechanged_server, owner)
+      inst:ListenForEvent("mon3tr_master_recallcomplete", inst._onsummonstatechanged_server, owner)
+      inst:ListenForEvent("kaltsit_elite_up", inst._onsummonstatechanged_server, owner) -- 监听精英晋升事件，更新技能列表
+    end
+  elseif not owner and inst._owner then
+    if not inst._owner:HasTag("backpack") then
+      -- inst:RemoveEventCallback("onactivateskill_server", inst._onskillrefresh_server, inst._owner)
+      -- inst:RemoveEventCallback("ondeactivateskill_server", inst._onskillrefresh_server, inst._owner)
+      inst:RemoveEventCallback("mon3tr_master_summoncomplete", inst._onsummonstatechanged_server, inst._owner)
+      inst:RemoveEventCallback("mon3tr_master_recallcomplete", inst._onsummonstatechanged_server, inst._owner)
+      inst:RemoveEventCallback("kaltsit_elite_up", inst._onsummonstatechanged_server, inst._owner) -- 移除精英晋升事件监听
+    end
 
-  -- 第六步：刷新法术列表 + 同步到客户端
-  inst._updatespells:push()
-  updatespells(inst, real_owner)
+    inst._owner = nil
+
+    inst._updatespells:push()
+    updatespells(inst, inst._owner)
+  end
 end
 
 local function DoClientUpdateSpells(inst, force)
   local owner = (inst.replica.inventoryitem:IsHeld() and ThePlayer) or nil
-  ArkLogger:Debug("DoClientUpdateSpells", "force", force, "owner", owner, "inst._owner", inst._owner)
-  if owner ~= inst._owner then
+  local intellect_max = GetMon3trIntellectMax(owner)
+  if owner ~= inst._owner or intellect_max ~= inst._intellect_max then
     updatespells(inst, owner)
     inst._owner = owner
+    inst._intellect_max = intellect_max
   end
 end
 
@@ -89,23 +127,17 @@ local function OnUpdateSpellsDirty(inst)
 end
 
 local function topocket(inst, owner)
-  -- 取消地面动画定时器...
   OnOwnerUpdated(inst, owner)
 end
 
 local function toground(inst)
-  -- 启动地面动画定时器...
+  -- 清理容器装备事件监听（物品被放置到地上时）
+  if inst._container ~= nil then
+    inst:RemoveEventCallback("equipped", inst._on_equipped, inst._container)
+    inst:RemoveEventCallback("unequipped", inst._on_unequipped, inst._container)
+  end
+  inst._container = nil
   OnOwnerUpdated(inst, nil)
-end
-
-local function onequipped(inst, container, owner)
-  inst:RemoveEventCallback("equipped", inst._onequipped, container)
-  OnOwnerUpdated(inst, container)
-end
-
-local function onunequipped(inst, container)
-  inst:RemoveEventCallback("unequipped", inst._onunequipped, container)
-  OnOwnerUpdated(inst, container)
 end
 
 local function Fn()
@@ -126,7 +158,7 @@ local function Fn()
   spellbook:SetRequiredTag("mon3tr_master_summoned")
   spellbook:SetRadius(SPELLBOOK_RADIUS)
   spellbook:SetFocusRadius(SPELLBOOK_RADIUS)
-  spellbook:SetItems(COMMANDS.GetCommands())
+  spellbook:SetItems(EMPTY_TABLE)
   spellbook:SetOnOpenFn(CLIENT_OnOpenSpellBook)
   spellbook:SetOnCloseFn(CLIENT_OnCloseSpellBook)
   spellbook.opensound = "meta5/wendy/skill_wheel_open"
@@ -159,9 +191,9 @@ local function Fn()
   inst:ListenForEvent("onputininventory", topocket)
   inst:ListenForEvent("ondropped", toground)
 
-  -- 背包事件回调（不变，在 OnOwnerUpdated 内部动态注册/注销）
-  inst._onequipped   = function(container, data) onequipped(inst, container, data.owner) end
-  inst._onunequipped = function(container, data) onunequipped(inst, container) end
+  -- 容器装备事件的监听回调（在 OnOwnerUpdated 内部按需注册到具体容器）
+  inst._on_equipped   = function() OnOwnerUpdated(inst, inst._container) end
+  inst._on_unequipped = function() OnOwnerUpdated(inst, inst._container) end
   MakeHauntableLaunch(inst)
 
   return inst

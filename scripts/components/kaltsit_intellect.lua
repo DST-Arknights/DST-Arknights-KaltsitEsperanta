@@ -142,6 +142,7 @@ function KaltsitIntellect:TryApplyElite(oldMax, newMax)
         local threshold = self.elite_thresholds[i]
         if oldMax < threshold and newMax >= threshold then
             if self.on_apply_elite then
+                self.inst:PushEvent("kaltsit_elite_up", { elite_level = i }) -- 推送精英晋升事件，供其他系统监听
                 self.on_apply_elite(self.inst, i) -- 传入精英等级 (1-based, 即 index 本身)
             end
             return
