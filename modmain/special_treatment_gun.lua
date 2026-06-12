@@ -32,28 +32,50 @@ AddCharacterRecipe("special_treatment_gun",
     builder_tag = "kaltsit_esperanta",
   })
 
+local function IsGunAndEnoughBullet(inst)
+  return inst and inst.prefab == "special_treatment_gun"
+      and inst.replica.container
+      and inst.replica.container:GetItemInSlot(1)
+end
+
+local function HasGunAndBullet(inst)
+  if not inst or not inst.components.inventory then return false end
+  local equiped = inst.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS)
+  return IsGunAndEnoughBullet(equiped)
+end
+
 AddAction('SPECIAL_TREAT_HEAL', STRINGS.ACTIONS.HEAL.GENERIC, function(act)
   local doer   = act.doer
   local target = act.target
   if not doer or not target then return false end
-
-  local gun = doer.components.inventory
-      and doer.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS)
-  if not gun or gun.prefab ~= "special_treatment_gun" or not gun:HasTag("ammoloaded") then
+  if not HasGunAndBullet(doer) then
     return false
   end
   -- Mark next projectile as forced heal (overrides PvP enemy check)
   doer._next_shot_is_heal = true
-  ArkLogger:Debug("SPECIAL_TREAT_HEAL action triggered by %s on %s with %s", doer, target, gun)
+  act.doer.components.combat:DoAttack(act.target)
   return true
 end)
+
+ACTIONS.SPECIAL_TREAT_HEAL.canforce = true
+ACTIONS.SPECIAL_TREAT_HEAL.mount_valid = true
+ACTIONS.SPECIAL_TREAT_HEAL.invalid_hold_action = true
+ACTIONS.SPECIAL_TREAT_HEAL.customarrivecheck = function(inst, dest)
+  if not dest or not dest.inst then return false, true end
+  local range = inst.replica.combat and inst.replica.combat:GetAttackRangeWithWeapon()
+  local reached_dest = inst:GetDistanceSqToInst(dest.inst)
+  if range then
+    return reached_dest <= range * range, false
+  end
+  return reached_dest <= 2, false
+end
 
 -- 注册组件动作：右键点击玩家或玩家的宠物时显示"治疗"选项
 AddComponentAction("EQUIPPED", "weapon", function(inst, doer, target, actions, right)
   if right or target == nil then
     return
   end
-  if inst.prefab ~= "special_treatment_gun" then
+  if not IsGunAndEnoughBullet(inst) then
     return
   end
   if target == doer or target:HasTag("player") then
@@ -68,22 +90,13 @@ AddComponentAction("EQUIPPED", "weapon", function(inst, doer, target, actions, r
 end)
 
 -- 状态图动作处理器（适用于 wilson 系角色）
-AddStategraphActionHandler("wilson", ActionHandler(ACTIONS.SPECIAL_TREAT_HEAL, "dolongaction"))
-AddStategraphActionHandler("wilson_client", ActionHandler(ACTIONS.SPECIAL_TREAT_HEAL, "dolongaction"))
+AddStategraphActionHandler("wilson", ActionHandler(ACTIONS.SPECIAL_TREAT_HEAL, "kaltsit_shoot"))
+AddStategraphActionHandler("wilson_client", ActionHandler(ACTIONS.SPECIAL_TREAT_HEAL, "kaltsit_shoot"))
+
 table.insert(Assets, Asset("ANIM", "anim/special_treatment_gun_shoot.zip"))
 AddPlayerPostInit(function(inst)
   inst.AnimState:AddOverrideBuild("special_treatment_gun_shoot")
 end)
-
-local function HasGunAndBullet(inst)
-  local equiped = inst.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS)
-  if equiped and equiped.prefab == "special_treatment_gun" then
-    if equiped.replica.container and equiped.replica.container:GetItemInSlot(1) then
-      return true
-    end
-  end
-  return false
-end
 
 -- ============================================================
 -- 服务端状态图：拦截攻击状态，切换为凯尔希射击动画
@@ -106,7 +119,6 @@ AddStategraphState("wilson", State {
     if inst.components.rider:IsRiding() then
       inst.Transform:SetFourFaced()
     end
-    local weapon = inst.components.combat:GetWeapon()
     if HasGunAndBullet(inst) then
       inst.AnimState:PlayAnimation("special_treatment_gun_shoot")
     else
@@ -206,3 +218,13 @@ AddStategraphState("wilson_client", State {
     end),
   },
 })
+
+AddClassPostConstruct("components/combat_replica", function(self)
+  ArkHookFunction(self, "CanBeAttacked", function(next, self, attacker)
+    local weapon = attacker.replica.combat and attacker.replica.combat:GetWeapon()
+    if IsGunAndEnoughBullet(weapon) then
+      return true
+    end
+    return next(self, attacker)
+  end)
+end)
