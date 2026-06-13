@@ -39,6 +39,23 @@ local function IsAlly(attacker, target)
     return false
 end
 
+local SpawnHitAllyFx = function(target)
+  if target and target:IsValid() then
+    local fx = SpawnPrefab("special_treatment_bullet_fx_ally")
+    if fx then
+      fx.Transform:SetPosition(target.Transform:GetWorldPosition())
+    end
+  end
+end
+
+local SpawnHitEnemyFx = function(target)
+  if target and target:IsValid() then
+    local fx = SpawnPrefab("special_treatment_bullet_fx_enemy")
+    if fx then
+      fx.Transform:SetPosition(target.Transform:GetWorldPosition())
+    end
+  end
+end
 -- ============================================================
 -- Effect interfaces
 -- ============================================================
@@ -53,8 +70,10 @@ local function OnHit_NormHeal(inst, attacker, target)
             target.components.health:DoDelta(15, false, "norm_heal_bullet")
         end
         inst.components.weapon:SetDamage(0)
+        SpawnHitAllyFx(target)
     else
         inst.components.weapon:SetDamage(10)
+        SpawnHitEnemyFx(target)
     end
 end
 
@@ -85,6 +104,7 @@ local function OnHit_PotentHeal(inst, attacker, target)
             end
         end
         DoHealTick(4)
+        SpawnHitAllyFx(target)
     else
         inst.components.weapon:SetDamage(15)  -- 命中即造成 15 物理伤害
         -- 后续 3 跳真伤，每跳间隔 1 秒，总计 15+15×3 = 60
@@ -102,6 +122,7 @@ local function OnHit_PotentHeal(inst, attacker, target)
             end
         end
         target:DoTaskInTime(1, function() DoDmgTick(3) end)
+        SpawnHitEnemyFx(target)
     end
 end
 
@@ -146,6 +167,7 @@ local function OnHit_RegenHeal(inst, attacker, target)
             end
         end
         DoTick(60)  -- 60 次 × 2 秒 = 120 秒 = 2 分钟，共恢复 120 血
+        SpawnHitAllyFx(target)
     else
         inst.components.weapon:SetDamage(0)
         -- 减速 40%，持续 10 秒
@@ -161,6 +183,7 @@ local function OnHit_RegenHeal(inst, attacker, target)
         if target.components.sleeper then
             target.components.sleeper:AddSleepiness(40, 10)
         end
+        SpawnHitEnemyFx(target)
     end
 end
 
@@ -177,6 +200,7 @@ local function OnHit_TraitHeal(inst, attacker, target)
             target.components.temperature:SetTemperature(20)
         end
         inst.components.weapon:SetDamage(0)
+        SpawnHitAllyFx(target)
     else
         inst.components.weapon:SetDamage(20)
         -- 减速 30%，持续 3 秒
@@ -188,6 +212,7 @@ local function OnHit_TraitHeal(inst, attacker, target)
                 end
             end)
         end
+        SpawnHitEnemyFx(target)
     end
 end
 

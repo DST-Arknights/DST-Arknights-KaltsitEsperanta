@@ -113,7 +113,7 @@ end)
 
 AddStategraphState("wilson", State {
   name = "kaltsit_shoot",
-  tags = { "attack", "notalking", "abouttoattack", "busy" },
+  tags = { "attack", "notalking", "abouttoattack"},
 
   onenter = function(inst)
     if inst.components.rider:IsRiding() then
@@ -177,7 +177,7 @@ end)
 
 AddStategraphState("wilson_client", State {
   name = "kaltsit_shoot",
-  tags = { "attack", "notalking", "abouttoattack", "busy" },
+  tags = { "attack", "notalking", "abouttoattack" },
 
   onenter = function(inst)
     if inst.components.rider:IsRiding() then
