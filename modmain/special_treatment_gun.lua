@@ -32,23 +32,34 @@ AddCharacterRecipe("special_treatment_gun",
     builder_tag = "kaltsit_esperanta",
   })
 
-local function IsGunAndEnoughBullet(inst)
+local function IsGun(inst)
   return inst and inst.prefab == "special_treatment_gun"
       and inst.replica.container
-      and inst.replica.container:GetItemInSlot(1)
 end
 
-local function HasGunAndBullet(inst)
-  if not inst or not inst.components.inventory then return false end
-  local equiped = inst.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS)
-  return IsGunAndEnoughBullet(equiped)
+local function GetGunBullet(inst)
+  return inst.replica.container and inst.replica.container:GetItemInSlot(1) or nil
+end
+
+local function IsGunAndBullet(inst)
+  return IsGun(inst) and GetGunBullet(inst) ~= nil
+end
+local function HoldGun(inst)
+  if not inst or not inst.replica.inventory then return false end
+  local equiped = inst.replica.inventory:GetEquippedItem(EQUIPSLOTS.HANDS)
+  return IsGun(equiped) and equiped
+end
+
+local function HoldGunAndBullet(inst)
+  local gun = HoldGun(inst)
+  return IsGunAndBullet(gun)
 end
 
 AddAction('SPECIAL_TREAT_HEAL', STRINGS.ACTIONS.HEAL.GENERIC, function(act)
   local doer   = act.doer
   local target = act.target
   if not doer or not target then return false end
-  if not HasGunAndBullet(doer) then
+  if not HoldGunAndBullet(doer) then
     return false
   end
   -- Mark next projectile as forced heal (overrides PvP enemy check)
@@ -75,7 +86,7 @@ AddComponentAction("EQUIPPED", "weapon", function(inst, doer, target, actions, r
   if right or target == nil then
     return
   end
-  if not IsGunAndEnoughBullet(inst) then
+  if not IsGunAndBullet(inst) then
     return
   end
   if target == doer or target:HasTag("player") then
@@ -103,7 +114,7 @@ end)
 -- ============================================================
 AddStategraphPostInit("wilson", function(sg)
   ArkHookFunction(sg.states["attack"], "onenter", function(next, inst, ...)
-    if HasGunAndBullet(inst) then
+    if HoldGunAndBullet(inst) then
       inst.sg:GoToState("kaltsit_shoot")
       return
     end
@@ -119,7 +130,7 @@ AddStategraphState("wilson", State {
     if inst.components.rider:IsRiding() then
       inst.Transform:SetFourFaced()
     end
-    if HasGunAndBullet(inst) then
+    if HoldGunAndBullet(inst) then
       inst.AnimState:PlayAnimation("special_treatment_gun_shoot")
     else
       inst.sg:GoToState("idle")
@@ -167,7 +178,7 @@ AddStategraphState("wilson", State {
 -- ============================================================
 AddStategraphPostInit("wilson_client", function(sg)
   ArkHookFunction(sg.states["attack"], "onenter", function(next, inst, ...)
-    if HasGunAndBullet(inst) then
+    if HoldGunAndBullet(inst) then
       inst.sg:GoToState("kaltsit_shoot")
       return
     end
@@ -183,7 +194,7 @@ AddStategraphState("wilson_client", State {
     if inst.components.rider:IsRiding() then
       inst.Transform:SetFourFaced()
     end
-    if HasGunAndBullet(inst) then
+    if HoldGunAndBullet(inst) then
       inst.AnimState:PlayAnimation("special_treatment_gun_shoot")
     else
       inst.sg:GoToState("idle")
@@ -222,9 +233,44 @@ AddStategraphState("wilson_client", State {
 AddClassPostConstruct("components/combat_replica", function(self)
   ArkHookFunction(self, "CanBeAttacked", function(next, self, attacker)
     local weapon = attacker.replica.combat and attacker.replica.combat:GetWeapon()
-    if IsGunAndEnoughBullet(weapon) then
+    if IsGunAndBullet(weapon) then
       return true
     end
     return next(self, attacker)
   end)
 end)
+
+AddAction("RELOAD_SPECIAL_TREATMENT_GUN", STRINGS.ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN.GENERIC, function(act)
+  local doer = act.doer
+  local target = act.target
+  if not doer or not target then return false end
+  local hold = HoldGun(doer)
+  if not IsGun(hold) then return false end
+  -- 弹药取出
+  local bullet = doer.components.inventory:RemoveItem(target, true)
+  if not bullet then return false end
+  local loaded_bullet = GetGunBullet(hold)
+  -- 检查持有弹药, 有不同类型的就取出
+  if loaded_bullet and loaded_bullet.prefab ~= bullet.prefab then
+    local unloaded_bullet = hold.components.container:RemoveItemBySlot(1, true)
+    if unloaded_bullet then
+      doer.components.inventory:GiveItem(unloaded_bullet)
+    end
+  end
+  local stack_size = bullet.components.stackable and bullet.components.stackable:StackSize() or 1
+  return hold.components.container:GiveItem(bullet, stack_size) 
+end)
+
+ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN.priority = 10
+
+AddComponentAction("INVENTORY", "special_treatment_bullet", function(inst, doer, actions, right)
+  ArkLogger:Info("Checking reload action for", inst, "held by", doer, "right click?", right)
+  if not right then return end
+  local gun = HoldGun(doer)
+  ArkLogger:Debug("Adding reload action for %s with gun %s", inst, gun)
+  if not gun then return end
+  table.insert(actions, ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN)
+end)
+
+AddStategraphActionHandler("wilson", ActionHandler(ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN, "doshortaction"))
+AddStategraphActionHandler("wilson_client", ActionHandler(ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN, "doshortaction"))

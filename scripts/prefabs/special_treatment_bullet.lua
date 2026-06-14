@@ -342,6 +342,7 @@ local function inv_fn(def)
   inst:AddComponent("inspectable")
   inst:AddComponent("inventoryitem")
   inst:AddComponent("tradable")
+  inst:AddComponent("special_treatment_bullet")
   MakeHauntableLaunch(inst)
 
   return inst

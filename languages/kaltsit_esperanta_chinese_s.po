@@ -432,3 +432,8 @@ msgstr "王车易位"
 msgctxt "STRINGS.MON3TR_COMMAND.MELTDOWN"
 msgid "Meltdown"
 msgstr "熔毁"
+
+#. STRINGS.ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN.GENERIC
+msgctxt "STRINGS.ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN.GENERIC"
+msgid "Reload"
+msgstr "装填"
