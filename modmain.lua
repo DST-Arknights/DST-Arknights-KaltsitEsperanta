@@ -5,6 +5,9 @@ PrefabFiles = { "kaltsit_esperanta", "kaltsit_esperanta_none", "kaltsit_esperant
   "mon3tr_signboard", "kaltsit_calcite", "kaltsit_esperanta_mon3tr", "kaltsit_esperanta_fx"}
 Assets = {}
 
+assert(ARK_ITEM_PACKAGE_LOADED, "请安装前置模组: ark_item_package\n please install the required mod: ark_item_package\n[https://steamcommunity.com/sharedfiles/filedetails/?id=3677284770]")
+
+ArkLogger:DeclareLogger("INFO", "K2CEsperanta")
 
 -- 加载中文语言包
 MergePOFile('languages/kaltsit_esperanta_chinese_s.po', LOC.GetLocaleCode(LANGUAGE.CHINESE_S), true)
