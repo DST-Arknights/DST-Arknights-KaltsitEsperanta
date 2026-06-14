@@ -1,3 +1,5 @@
+local common = require("kaltsit_esperanta_common")
+
 -- scripts/prefabs/special_treatment_gun.lua
 -- 特质治疗枪 + 三种治疗弹 + 各自独立投射物
 -- 弹药机制: 枪上有 1 格物品槽，将治疗弹放入后方可发射
@@ -32,46 +34,21 @@ AddCharacterRecipe("special_treatment_gun",
     builder_tag = "kaltsit_esperanta",
   })
 
-local function IsGun(inst)
-  return inst and inst.prefab == "special_treatment_gun"
-      and inst.replica.container
-end
-
-local function GetGunBullet(inst)
-  return inst.replica.container and inst.replica.container:GetItemInSlot(1) or nil
-end
-
-local function IsGunAndBullet(inst)
-  return IsGun(inst) and GetGunBullet(inst) ~= nil
-end
-local function HoldGun(inst)
-  if not inst or not inst.replica.inventory then return false end
-  local equiped = inst.replica.inventory:GetEquippedItem(EQUIPSLOTS.HANDS)
-  return IsGun(equiped) and equiped
-end
-
-local function HoldGunAndBullet(inst)
-  local gun = HoldGun(inst)
-  return IsGunAndBullet(gun)
-end
-
-AddAction('SPECIAL_TREAT_HEAL', STRINGS.ACTIONS.HEAL.GENERIC, function(act)
+AddAction('SPECIAL_GUN_HEAL', STRINGS.ACTIONS.HEAL.GENERIC, function(act)
   local doer   = act.doer
   local target = act.target
   if not doer or not target then return false end
-  if not HoldGunAndBullet(doer) then
+  if not common.CanSpecialHealTarget(doer, target) then
     return false
   end
-  -- Mark next projectile as forced heal (overrides PvP enemy check)
-  doer._next_shot_is_heal = true
   act.doer.components.combat:DoAttack(act.target)
   return true
 end)
 
-ACTIONS.SPECIAL_TREAT_HEAL.canforce = true
-ACTIONS.SPECIAL_TREAT_HEAL.mount_valid = true
-ACTIONS.SPECIAL_TREAT_HEAL.invalid_hold_action = true
-ACTIONS.SPECIAL_TREAT_HEAL.customarrivecheck = function(inst, dest)
+ACTIONS.SPECIAL_GUN_HEAL.canforce = true
+ACTIONS.SPECIAL_GUN_HEAL.mount_valid = true
+ACTIONS.SPECIAL_GUN_HEAL.invalid_hold_action = true
+ACTIONS.SPECIAL_GUN_HEAL.customarrivecheck = function(inst, dest)
   if not dest or not dest.inst then return false, true end
   local range = inst.replica.combat and inst.replica.combat:GetAttackRangeWithWeapon()
   local reached_dest = inst:GetDistanceSqToInst(dest.inst)
@@ -81,40 +58,68 @@ ACTIONS.SPECIAL_TREAT_HEAL.customarrivecheck = function(inst, dest)
   return reached_dest <= 2, false
 end
 
--- 注册组件动作：右键点击玩家或玩家的宠物时显示"治疗"选项
+AddAction("SPECIAL_GUN_DESTROY", STRINGS.ACTIONS.DESTROY.GENERIC, function(act)
+  local doer   = act.doer
+  local target = act.target
+  if not doer or not target then return false end
+  if not common.CanSpecialDestroyTarget(doer, target) then
+    return false
+  end
+  act.doer.components.combat:DoAttack(act.target)
+  return true
+end)
+
+ACTIONS.SPECIAL_GUN_DESTROY.canforce = true
+ACTIONS.SPECIAL_GUN_DESTROY.mount_valid = true
+ACTIONS.SPECIAL_GUN_DESTROY.invalid_hold_action = true
+ACTIONS.SPECIAL_GUN_DESTROY.customarrivecheck = function(inst, dest)
+  if not dest or not dest.inst then return false, true end
+  local range = inst.replica.combat and inst.replica.combat:GetAttackRangeWithWeapon()
+  local reached_dest = inst:GetDistanceSqToInst(dest.inst)
+  if range then
+    return reached_dest <= range * range, false
+  end
+  return reached_dest <= 2, false
+end
+
+-- 注册组件动作：点击玩家或玩家的宠物时显示"治疗"选项
 AddComponentAction("EQUIPPED", "weapon", function(inst, doer, target, actions, right)
   if right or target == nil then
     return
   end
-  if not IsGunAndBullet(inst) then
+  if not common.IsGunAndBullet(inst) then
     return
   end
-  if target == doer or target:HasTag("player") then
-    table.insert(actions, ACTIONS.SPECIAL_TREAT_HEAL)
-    return
-  end
-  local leader = target.replica.follower and target.replica.follower:GetLeader()
-  if leader and leader:HasTag("player") then
-    table.insert(actions, ACTIONS.SPECIAL_TREAT_HEAL)
-    return
+  if common.CanSpecialHealTarget(doer, target) then
+    table.insert(actions, ACTIONS.SPECIAL_GUN_HEAL)
+  elseif common.CanSpecialDestroyTarget(doer, target) then
+    table.insert(actions, ACTIONS.SPECIAL_GUN_DESTROY)  
   end
 end)
 
 -- 状态图动作处理器（适用于 wilson 系角色）
-AddStategraphActionHandler("wilson", ActionHandler(ACTIONS.SPECIAL_TREAT_HEAL, "kaltsit_shoot"))
-AddStategraphActionHandler("wilson_client", ActionHandler(ACTIONS.SPECIAL_TREAT_HEAL, "kaltsit_shoot"))
+AddStategraphActionHandler("wilson", ActionHandler(ACTIONS.SPECIAL_GUN_HEAL, "kaltsit_shoot"))
+AddStategraphActionHandler("wilson_client", ActionHandler(ACTIONS.SPECIAL_GUN_HEAL, "kaltsit_shoot"))
+AddStategraphActionHandler("wilson", ActionHandler(ACTIONS.SPECIAL_GUN_DESTROY, "kaltsit_shoot"))
+AddStategraphActionHandler("wilson_client", ActionHandler(ACTIONS.SPECIAL_GUN_DESTROY, "kaltsit_shoot"))
 
 table.insert(Assets, Asset("ANIM", "anim/special_treatment_gun_shoot.zip"))
 AddPlayerPostInit(function(inst)
   inst.AnimState:AddOverrideBuild("special_treatment_gun_shoot")
 end)
 
--- ============================================================
--- 服务端状态图：拦截攻击状态，切换为凯尔希射击动画
--- ============================================================
 AddStategraphPostInit("wilson", function(sg)
   ArkHookFunction(sg.states["attack"], "onenter", function(next, inst, ...)
-    if HoldGunAndBullet(inst) then
+    if common.HoldGunAndBullet(inst) or common.CanSpecialDestroy(inst) then
+      inst.sg:GoToState("kaltsit_shoot")
+      return
+    end
+    return next(inst, ...)
+  end)
+end)
+AddStategraphPostInit("wilson_client", function(sg)
+  ArkHookFunction(sg.states["attack"], "onenter", function(next, inst, ...)
+    if common.HoldGunAndBullet(inst) or common.CanSpecialDestroy(inst) then
       inst.sg:GoToState("kaltsit_shoot")
       return
     end
@@ -130,7 +135,7 @@ AddStategraphState("wilson", State {
     if inst.components.rider:IsRiding() then
       inst.Transform:SetFourFaced()
     end
-    if HoldGunAndBullet(inst) then
+    if common.HoldGunAndBullet(inst) or common.CanSpecialDestroy(inst) then
       inst.AnimState:PlayAnimation("special_treatment_gun_shoot")
     else
       inst.sg:GoToState("idle")
@@ -173,19 +178,6 @@ AddStategraphState("wilson", State {
   },
 })
 
--- ============================================================
--- 客户端状态图：同步显示凯尔希持枪射击动画
--- ============================================================
-AddStategraphPostInit("wilson_client", function(sg)
-  ArkHookFunction(sg.states["attack"], "onenter", function(next, inst, ...)
-    if HoldGunAndBullet(inst) then
-      inst.sg:GoToState("kaltsit_shoot")
-      return
-    end
-    return next(inst, ...)
-  end)
-end)
-
 AddStategraphState("wilson_client", State {
   name = "kaltsit_shoot",
   tags = { "attack", "notalking", "abouttoattack" },
@@ -194,7 +186,7 @@ AddStategraphState("wilson_client", State {
     if inst.components.rider:IsRiding() then
       inst.Transform:SetFourFaced()
     end
-    if HoldGunAndBullet(inst) then
+    if common.HoldGunAndBullet(inst) or common.CanSpecialDestroy(inst) then
       inst.AnimState:PlayAnimation("special_treatment_gun_shoot")
     else
       inst.sg:GoToState("idle")
@@ -230,27 +222,37 @@ AddStategraphState("wilson_client", State {
   },
 })
 
-AddClassPostConstruct("components/combat_replica", function(self)
-  ArkHookFunction(self, "CanBeAttacked", function(next, self, attacker)
-    local weapon = attacker.replica.combat and attacker.replica.combat:GetWeapon()
-    if IsGunAndBullet(weapon) then
-      return true
+-- 友方以及树木可被持枪者发射弹药. 但这里不允许子弹触发伤害
+AddComponentPostInit("combat", function(self)
+  ArkHookFunction(self, "CanHitTarget", function(next, self, target, weapon)
+    if common.IsGun(weapon) then
+      if common.CanSpecialHealTarget(self.inst, target) then
+        return true
+      end
+      if common.CanBeSpecialDestroy(target) then
+        return true
+      end
     end
-    return next(self, attacker)
+    return next(self, target, weapon)
+  end)
+  ArkHookFunction(self, "GetAttacked", function(next, self, ...)
+    ArkLogger:Debug("Combat:GetAttacked called with attacker: ", self.inst)
+    return next(self, ...)
   end)
 end)
 
+-- 弹药装填
 AddAction("RELOAD_SPECIAL_TREATMENT_GUN", STRINGS.ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN.GENERIC, function(act)
   local doer = act.doer
   local target = act.invobject
   if not doer or not target then return false end
-  local hold = HoldGun(doer)
-  if not IsGun(hold) then return false end
+  local hold = common.HoldGun(doer)
+  if not common.IsGun(hold) then return false end
   -- 弹药取出
   local bullet = doer.components.inventory:RemoveItem(target, true)
   ArkLogger:Debug("Reloading gun with bullet: ", bullet)
   if not bullet then return false end
-  local loaded_bullet = GetGunBullet(hold)
+  local loaded_bullet = common.GetGunBullet(hold)
   ArkLogger:Debug("Currently loaded bullet: ", loaded_bullet)
   -- 检查持有弹药, 有不同类型的就取出
   if loaded_bullet and loaded_bullet.prefab ~= bullet.prefab then
@@ -269,10 +271,10 @@ end)
 ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN.priority = 10
 
 AddComponentAction("INVENTORY", "special_treatment_bullet", function(inst, doer, actions, right)
-  local gun = HoldGun(doer)
+  local gun = common.HoldGun(doer)
   if not gun then return end
   -- 父容器不能是枪
-  local inGun = GetGunBullet(gun) == inst
+  local inGun = common.GetGunBullet(gun) == inst
   if inGun then return end
   table.insert(actions, ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN)
 end)

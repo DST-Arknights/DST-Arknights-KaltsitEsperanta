@@ -437,3 +437,8 @@ msgstr "熔毁"
 msgctxt "STRINGS.ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN.GENERIC"
 msgid "Reload"
 msgstr "装填"
+
+#. STRINGS.ACTIONS.DESTROY.GENERIC
+msgctxt "STRINGS.ACTIONS.DESTROY.GENERIC"
+msgid "Destroy"
+msgstr "摧毁"

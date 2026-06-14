@@ -14,6 +14,15 @@ local fxs = { {
   fn = function(inst)
     inst.AnimState:SetAddColour(0.7, 0, 0, 0.7)
   end,
+},
+{
+  name = "special_treatment_bullet_destroy_fx",
+  bank = "stalker_shield",
+  build = "stalker_shield",
+  anim = "idle1",
+  fn = function(inst)
+    inst.AnimState:SetAddColour(0.7, 0.7, 0, 0.7)
+  end,
 }
 }
 
