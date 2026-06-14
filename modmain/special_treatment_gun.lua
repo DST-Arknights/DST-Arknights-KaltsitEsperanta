@@ -124,7 +124,7 @@ end)
 
 AddStategraphState("wilson", State {
   name = "kaltsit_shoot",
-  tags = { "attack", "notalking", "abouttoattack"},
+  tags = { "attack", "notalking", "abouttoattack" },
 
   onenter = function(inst)
     if inst.components.rider:IsRiding() then
@@ -242,33 +242,38 @@ end)
 
 AddAction("RELOAD_SPECIAL_TREATMENT_GUN", STRINGS.ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN.GENERIC, function(act)
   local doer = act.doer
-  local target = act.target
+  local target = act.invobject
   if not doer or not target then return false end
   local hold = HoldGun(doer)
   if not IsGun(hold) then return false end
   -- 弹药取出
   local bullet = doer.components.inventory:RemoveItem(target, true)
+  ArkLogger:Debug("Reloading gun with bullet: ", bullet)
   if not bullet then return false end
   local loaded_bullet = GetGunBullet(hold)
+  ArkLogger:Debug("Currently loaded bullet: ", loaded_bullet)
   -- 检查持有弹药, 有不同类型的就取出
   if loaded_bullet and loaded_bullet.prefab ~= bullet.prefab then
-    local unloaded_bullet = hold.components.container:RemoveItemBySlot(1, true)
+    local unloaded_bullet = hold.components.container:RemoveItem(loaded_bullet, true)
     if unloaded_bullet then
+      unloaded_bullet.prevslot = bullet.prevslot
+      unloaded_bullet.prevcontainer = bullet.prevcontainer
+      local res = { hold.components.container:GiveItem(bullet) }
       doer.components.inventory:GiveItem(unloaded_bullet)
+      return unpack(res)
     end
   end
-  local stack_size = bullet.components.stackable and bullet.components.stackable:StackSize() or 1
-  return hold.components.container:GiveItem(bullet, stack_size) 
+  return hold.components.container:GiveItem(bullet)
 end)
 
 ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN.priority = 10
 
 AddComponentAction("INVENTORY", "special_treatment_bullet", function(inst, doer, actions, right)
-  ArkLogger:Info("Checking reload action for", inst, "held by", doer, "right click?", right)
-  if not right then return end
   local gun = HoldGun(doer)
-  ArkLogger:Debug("Adding reload action for %s with gun %s", inst, gun)
   if not gun then return end
+  -- 父容器不能是枪
+  local inGun = GetGunBullet(gun) == inst
+  if inGun then return end
   table.insert(actions, ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN)
 end)
 
