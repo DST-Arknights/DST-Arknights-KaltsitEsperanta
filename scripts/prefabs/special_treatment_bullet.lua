@@ -244,10 +244,6 @@ local function MakeAmmoOnHit(def)
       if def.OnHealAlly then def.OnHealAlly(attacker, target) end
       SpawnHitAllyFx(target)
     else
-      -- 基础伤害
-      if def.damage and target.components.combat then
-        target.components.combat:GetAttacked(attacker, def.damage)
-      end
       if def.OnHarmEnemy then def.OnHarmEnemy(attacker, target) end
       SpawnHitEnemyFx(target)
     end
@@ -304,15 +300,15 @@ local function projectile_fn(def, make_on_hit_fn)
   inst.persists = false
 
   inst:AddComponent("weapon")
-  inst.components.weapon:SetDamage(0)
+  inst.components.weapon:SetDamage(def.damage or 0)
 
   inst:AddComponent("projectile")
   inst.components.projectile:SetSpeed(50)
   inst.components.projectile:SetHoming(true)
-  inst.components.projectile:SetHitDist(1)
+  inst.components.projectile:SetHitDist(2)
   inst.components.projectile:SetOnHitFn(make_on_hit_fn(def))
   inst.components.projectile:SetOnMissFn(OnMiss)
-  inst.components.projectile:SetLaunchOffset(Vector3(1, 1, 0))
+  inst.components.projectile:SetLaunchOffset(Vector3(3, 1, 0))
   inst.components.projectile.range = 30
   inst.components.projectile.has_damage_set = true
 
@@ -336,7 +332,7 @@ local function inv_fn(def)
   inst.AnimState:SetBuild("special_treatment_bullet")
   inst.AnimState:PlayAnimation(def.idle_anim)
   MakeInventoryFloatable(inst, "small", .2, { .85, .9, .85 })
-
+  inst:AddTag("special_treatment_bullet")
   inst.entity:SetPristine()
   if not TheWorld.ismastersim then return inst end
 

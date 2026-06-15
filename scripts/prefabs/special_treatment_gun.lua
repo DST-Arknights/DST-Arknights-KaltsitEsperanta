@@ -27,7 +27,7 @@ local function RefreshProjectileFromLoadedAmmo(inst)
 
   local ammo = inst.components.container and inst.components.container:GetItemInSlot(1) or nil
   if ammo ~= nil then
-    inst.components.weapon:SetRange(TUNING.SPECIAL_TREATMENT_GUN_RANGE_SHOOT, TUNING.SPECIAL_TREATMENT_GUN_RANGE_SHOOT + 1)
+    inst.components.weapon:SetRange(TUNING.SPECIAL_TREATMENT_GUN_RANGE_SHOOT, TUNING.SPECIAL_TREATMENT_GUN_RANGE_SHOOT + 5)
     inst.components.weapon:SetProjectile(ammo.prefab .. "_proj")
     inst:AddTag("ammoloaded")
   else

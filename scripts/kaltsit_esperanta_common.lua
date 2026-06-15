@@ -48,8 +48,8 @@ local function IsSpecialTreatmentDestroyableTarget(inst)
 end
 
 local function IsSpecialTreatmentDestroySkillActive(inst)
-  return true
-  -- return GetEquippedSpecialTreatmentGun(inst) and inst.replica.ark_skill and inst.replica.ark_skill:IsActivating("kaltsit_esperanta_skill2")
+  -- return true
+  return GetEquippedSpecialTreatmentGun(inst) and inst.replica.ark_skill and inst.replica.ark_skill:IsActivating("kaltsit_esperanta_skill2")
 end
 
 local function CanHitSpecialTreatmentDestroyTarget(inst, target)

@@ -55,6 +55,9 @@ containers.params.special_treatment_gun =
   },
   type = "hand_inv",
   excludefromcrafting = true,
+  itemtestfn = function(container, item, slot)
+    return not container.inst._unloading and item:HasTag("special_treatment_bullet")
+  end,
 }
 
 -- 配方: 治疗枪 , 1齿轮1绿宝石10金子, 无需科技, 仅凯尔希可制作
@@ -263,7 +266,9 @@ AddComponentPostInit("combat", function(self)
         return true
       end
     end
-    return next(self, target, weapon)
+    local res = { next(self, target, weapon) }
+    ArkLogger:Debug("Combat:CanHitTarget result for", self.inst, "attacking", target, "with weapon", weapon, "is", unpack(res))
+    return unpack(res)
   end)
 end)
 
@@ -294,14 +299,42 @@ end)
 
 ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN.priority = 10
 
+-- 弹药卸下：打标记阻止容器回塞，从枪中取出弹药放入物品栏，满了则扔地上
+AddAction("UNLOAD_SPECIAL_TREATMENT_GUN", STRINGS.ACTIONS.UNLOAD_SPECIAL_TREATMENT_GUN.GENERIC, function(act)
+  local doer = act.doer
+  local target = act.invobject
+  if not doer or not target then return false end
+  local hold = common.GetEquippedSpecialTreatmentGun(doer)
+  if not common.IsSpecialTreatmentGun(hold) then return false end
+  -- 只有当前已装填的弹药才能卸下
+  local loaded_bullet = common.GetSpecialTreatmentGunLoadedAmmo(hold)
+  if loaded_bullet ~= target then return false end
+  -- 打上卸载标记，防止 GiveItem 把弹药重新塞回枪
+  hold._unloading = true
+  local bullet = hold.components.container:RemoveItem(target, true)
+  if bullet then
+    doer.components.inventory:GiveItem(bullet)
+  end
+  hold._unloading = nil
+  return bullet ~= nil
+end)
+
+ACTIONS.UNLOAD_SPECIAL_TREATMENT_GUN.priority = 10
+
 AddComponentAction("INVENTORY", "special_treatment_bullet", function(inst, doer, actions, right)
   local gun = common.GetEquippedSpecialTreatmentGun(doer)
   if not gun then return end
-  -- 父容器不能是枪
   local inGun = common.GetSpecialTreatmentGunLoadedAmmo(gun) == inst
-  if inGun then return end
-  table.insert(actions, ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN)
+  if inGun then
+    -- 弹药在枪里：显示"卸下"
+    table.insert(actions, ACTIONS.UNLOAD_SPECIAL_TREATMENT_GUN)
+  else
+    -- 弹药在物品栏：显示"装填"
+    table.insert(actions, ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN)
+  end
 end)
 
 AddStategraphActionHandler("wilson", ActionHandler(ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN, "doshortaction"))
 AddStategraphActionHandler("wilson_client", ActionHandler(ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN, "doshortaction"))
+AddStategraphActionHandler("wilson", ActionHandler(ACTIONS.UNLOAD_SPECIAL_TREATMENT_GUN, "doshortaction"))
+AddStategraphActionHandler("wilson_client", ActionHandler(ACTIONS.UNLOAD_SPECIAL_TREATMENT_GUN, "doshortaction"))
