@@ -9,6 +9,7 @@ RegisterInventoryItemAtlas("images/inventoryimages/special_treatment_gun.xml", "
 -- TUNING.SPECIAL_TREATMENT_GUN_ATTACK_PERIOD = 1.5 -- 攻速间隔（秒），越大越慢
 TUNING.SPECIAL_TREATMENT_GUN_RANGE_SHOOT = 5
 TUNING.SPECIAL_TREATMENT_GUN_RANGE_MELEE = 0
+local SPECIAL_TREATMENT_DESTROY_PROJECTILE = "special_treatment_destroy_proj"
 local gun_assets                       = {
   Asset("ANIM", "anim/special_treatment_gun.zip"),
   Asset("ANIM", "anim/swap_special_treatment_gun.zip"),
@@ -16,7 +17,40 @@ local gun_assets                       = {
 }
 
 local gun_prefabs                      = {
+  SPECIAL_TREATMENT_DESTROY_PROJECTILE,
 }
+
+local function RefreshProjectileFromLoadedAmmo(inst)
+  if inst.components.weapon == nil then
+    return
+  end
+
+  local ammo = inst.components.container and inst.components.container:GetItemInSlot(1) or nil
+  if ammo ~= nil then
+    inst.components.weapon:SetRange(TUNING.SPECIAL_TREATMENT_GUN_RANGE_SHOOT, TUNING.SPECIAL_TREATMENT_GUN_RANGE_SHOOT + 1)
+    inst.components.weapon:SetProjectile(ammo.prefab .. "_proj")
+    inst:AddTag("ammoloaded")
+  else
+    inst.components.weapon:SetRange(TUNING.SPECIAL_TREATMENT_GUN_RANGE_MELEE, TUNING.SPECIAL_TREATMENT_GUN_RANGE_MELEE + 1)
+    inst.components.weapon:SetProjectile(nil)
+    inst:RemoveTag("ammoloaded")
+  end
+end
+
+local function PrepareDestroyProjectile(inst)
+  if inst.components.weapon == nil then
+    return
+  end
+
+  inst._special_treatment_destroy_projectile_pending = true
+  inst.components.weapon:SetRange(TUNING.SPECIAL_TREATMENT_GUN_RANGE_SHOOT, TUNING.SPECIAL_TREATMENT_GUN_RANGE_SHOOT + 1)
+  inst.components.weapon:SetProjectile(SPECIAL_TREATMENT_DESTROY_PROJECTILE)
+end
+
+local function RestoreProjectileAfterSpecialShot(inst)
+  inst._special_treatment_destroy_projectile_pending = nil
+  RefreshProjectileFromLoadedAmmo(inst)
+end
 
 local function OnEquip(inst, owner)
   owner.AnimState:OverrideSymbol("swap_object", "swap_special_treatment_gun", "swap_special_treatment_gun")
@@ -46,18 +80,16 @@ end
 
 local function OnAmmoLoaded(inst, data)
   if inst.components.weapon and data and data.item and data.slot == 1 then
-    inst.components.weapon:SetRange(TUNING.SPECIAL_TREATMENT_GUN_RANGE_SHOOT, TUNING.SPECIAL_TREATMENT_GUN_RANGE_SHOOT + 1)
-    inst.components.weapon:SetProjectile(data.item.prefab .. "_proj")
-    inst:AddTag("ammoloaded")
+    RefreshProjectileFromLoadedAmmo(inst)
     data.item:PushEvent("ammoloaded", { slingshot = inst })
   end
 end
 
 local function OnAmmoUnloaded(inst, data)
   if inst.components.weapon and data and data.slot == 1 then
-    inst.components.weapon:SetRange(TUNING.SPECIAL_TREATMENT_GUN_RANGE_MELEE, TUNING.SPECIAL_TREATMENT_GUN_RANGE_MELEE + 1)
-    inst.components.weapon:SetProjectile(nil)
-    inst:RemoveTag("ammoloaded")
+    if not inst._special_treatment_destroy_projectile_pending then
+      RefreshProjectileFromLoadedAmmo(inst)
+    end
     if data.prev_item then
       data.prev_item:PushEvent("ammounloaded", { slingshot = inst })
     end
@@ -65,6 +97,12 @@ local function OnAmmoUnloaded(inst, data)
 end
 
 local function OnProjectileLaunched(inst, attacker, target, proj)
+  if proj ~= nil and proj.prefab == SPECIAL_TREATMENT_DESTROY_PROJECTILE then
+    -- 技能消耗后续在这里补。
+    RestoreProjectileAfterSpecialShot(inst)
+    return
+  end
+
   if inst.components.container then
     local ammo_stack = inst.components.container:GetItemInSlot(1)
     local item = inst.components.container:RemoveItem(ammo_stack, false)
@@ -75,6 +113,14 @@ local function OnProjectileLaunched(inst, attacker, target, proj)
       item:Remove()
     end
   end
+end
+
+local function OnPrepareDestroyProjectile(inst)
+  PrepareDestroyProjectile(inst)
+end
+
+local function OnRestoreProjectileAfterSpecialShot(inst)
+  RestoreProjectileAfterSpecialShot(inst)
 end
 
 local function gun_fn()
@@ -117,6 +163,8 @@ local function gun_fn()
   inst.components.container.stay_open_on_hide = true
   inst:ListenForEvent("itemget", OnAmmoLoaded)
   inst:ListenForEvent("itemlose", OnAmmoUnloaded)
+  inst:ListenForEvent("special_treatment_prepare_destroy_projectile", OnPrepareDestroyProjectile)
+  inst:ListenForEvent("special_treatment_restore_projectile", OnRestoreProjectileAfterSpecialShot)
   MakeHauntableLaunch(inst)
   return inst
 end

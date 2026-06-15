@@ -1,4 +1,4 @@
-local function CanSpecialHealTarget(inst, target)
+local function CanHitSpecialTreatmentHealTarget(inst, target)
   if not inst or not target then
     return false
   end
@@ -15,66 +15,67 @@ local function CanSpecialHealTarget(inst, target)
   return false
 end
 
-local function IsGun(inst)
+local function IsSpecialTreatmentGun(inst)
   return inst and inst.prefab == "special_treatment_gun"
       and inst.replica.container
 end
 
-local function HoldGun(inst)
-  if not inst or not inst.replica.inventory then return false end
-  local equiped = inst.replica.inventory:GetEquippedItem(EQUIPSLOTS.HANDS)
-  return IsGun(equiped) and equiped
+local function GetEquippedSpecialTreatmentGun(inst)
+  if not inst or not inst.replica.inventory then return nil end
+  local equipped = inst.replica.inventory:GetEquippedItem(EQUIPSLOTS.HANDS)
+  return IsSpecialTreatmentGun(equipped) and equipped or nil
 end
 
-local function GetGunBullet(inst)
+local function HasEquippedSpecialTreatmentGun(inst)
+  return GetEquippedSpecialTreatmentGun(inst) ~= nil
+end
+
+local function GetSpecialTreatmentGunLoadedAmmo(inst)
   return inst.replica.container and inst.replica.container:GetItemInSlot(1) or nil
 end
 
-local function IsGunAndBullet(inst)
-  return IsGun(inst) and GetGunBullet(inst) ~= nil
+local function HasEquippedLoadedSpecialTreatmentGun(inst)
+  local gun = GetEquippedSpecialTreatmentGun(inst)
+  return gun ~= nil and GetSpecialTreatmentGunLoadedAmmo(gun) ~= nil
 end
 
-local function HoldGunAndBullet(inst)
-  local gun = HoldGun(inst)
-  return IsGunAndBullet(gun)
-end
-
-local DestroyableTags = { "CHOP_workable", "MINE_workable", "HAMMER_workable", "DIG_workable" }
-local function CanBeSpecialDestroy(inst)
-  return inst:HasAnyTag(unpack(DestroyableTags))
-end
-
-local function CanSpecialDestroy(inst)
-  return HoldGun(inst) and inst.replica.ark_skill and inst.replica.ark_skill:IsActivating("kaltsit_esperanta_skill2")
-end
-
-
-local function CanSpecialDestroyTarget(inst, target)
-  if target.components.combat and target.components.combat:CanBeAttacked(inst) then
+local destroyableTags = { "CHOP_workable", "MINE_workable", "HAMMER_workable", "DIG_workable" }
+local function IsSpecialTreatmentDestroyableTarget(inst)
+  if inst == nil then
     return false
   end
-  -- 只有二技能有子弹的情况下可以摧毁
-  return CanSpecialDestroy(inst) and CanBeSpecialDestroy(target)
+  return inst:HasAnyTag(unpack(destroyableTags))
 end
 
-local function CanSpecialHarmTarget(inst, target)
-  return not CanSpecialHealTarget(inst, target) and not CanSpecialDestroyTarget(inst, target)
+local function IsSpecialTreatmentDestroySkillActive(inst)
+  return true
+  -- return GetEquippedSpecialTreatmentGun(inst) and inst.replica.ark_skill and inst.replica.ark_skill:IsActivating("kaltsit_esperanta_skill2")
 end
 
-local function CanPlayerShoot(inst)
-  return HoldGunAndBullet(inst) or CanSpecialDestroy(inst)
+local function CanHitSpecialTreatmentDestroyTarget(inst, target)
+  return IsSpecialTreatmentDestroySkillActive(inst) and IsSpecialTreatmentDestroyableTarget(target)
+end
+
+local function CanTriggerSpecialTreatmentHealAction(inst, target)
+  return HasEquippedLoadedSpecialTreatmentGun(inst)
+      and CanHitSpecialTreatmentHealTarget(inst, target)
+end
+
+local function CanTriggerSpecialTreatmentDestroyAction(inst, target)
+  return HasEquippedSpecialTreatmentGun(inst)
+      and CanHitSpecialTreatmentDestroyTarget(inst, target)
 end
 
 return {
-  CanSpecialHealTarget = CanSpecialHealTarget,
-  CanSpecialDestroyTarget = CanSpecialDestroyTarget,
-  CanSpecialHarmTarget = CanSpecialHarmTarget,
-  CanSpecialDestroy = CanSpecialDestroy,
-  HoldGun = HoldGun,
-  IsGun = IsGun,
-  GetGunBullet = GetGunBullet,
-  IsGunAndBullet = IsGunAndBullet,
-  HoldGunAndBullet = HoldGunAndBullet,
-  CanPlayerShoot = CanPlayerShoot,
-  CanBeSpecialDestroy = CanBeSpecialDestroy,
+  CanHitSpecialTreatmentHealTarget = CanHitSpecialTreatmentHealTarget,
+  CanHitSpecialTreatmentDestroyTarget = CanHitSpecialTreatmentDestroyTarget,
+  CanTriggerSpecialTreatmentHealAction = CanTriggerSpecialTreatmentHealAction,
+  CanTriggerSpecialTreatmentDestroyAction = CanTriggerSpecialTreatmentDestroyAction,
+  HasEquippedSpecialTreatmentGun = HasEquippedSpecialTreatmentGun,
+  GetEquippedSpecialTreatmentGun = GetEquippedSpecialTreatmentGun,
+  IsSpecialTreatmentGun = IsSpecialTreatmentGun,
+  GetSpecialTreatmentGunLoadedAmmo = GetSpecialTreatmentGunLoadedAmmo,
+  HasEquippedLoadedSpecialTreatmentGun = HasEquippedLoadedSpecialTreatmentGun,
+  IsSpecialTreatmentDestroySkillActive = IsSpecialTreatmentDestroySkillActive,
+  destroyableTags = destroyableTags,
 }

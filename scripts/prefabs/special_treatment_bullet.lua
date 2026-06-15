@@ -22,6 +22,48 @@ local SpawnHitAllyFx = function(target)
   end
 end
 
+local PlayHitAllySound = function(target)
+  if target and target:IsValid() then
+    local sound = "dontstarve/impacts/impact_flesh_med_dull"
+    if target.SoundEmitter then
+      target.SoundEmitter:PlaySound(sound)
+    end
+  end
+end
+
+
+local WORKABLES_CANT_TAGS = { "insect", "INLIMBO" }
+
+local function DestroyRange(doer, pos)
+  local destroy_range = 3
+  local ents = TheSim:FindEntities(pos.x, pos.y, pos.z, destroy_range, nil, WORKABLES_CANT_TAGS, common.destroyableTags)
+  local destroyed = false
+  for _, ent in ipairs(ents) do
+    if ent.components.workable and ent.components.workable:CanBeWorked() then
+        SpawnPrefab("collapse_small").Transform:SetPosition(ent.Transform:GetWorldPosition())
+        if ent.components.lootdropper ~= nil and (ent:HasTag("tree") or ent:HasTag("boulder")) then
+            ent.components.lootdropper:SetLoot({})
+        end
+      ent.components.workable:Destroy(doer)
+      destroyed = true
+    end
+  end
+  return destroyed
+end
+
+local function CommonDestroy(doer, target)
+  local x, y, z = target.Transform:GetWorldPosition()
+  local fx = SpawnPrefab("special_treatment_bullet_destroy_fx")
+  if fx then
+    fx.Transform:SetPosition(x, y, z)
+  end
+  local destroyed = DestroyRange(doer, Vector3(x, y, z))
+  -- 如果有摧毁物, 0.2秒后再次尝试摧毁
+  if destroyed then
+    doer:DoTaskInTime(0.2, function() DestroyRange(doer, Vector3(x, y, z)) end)
+  end
+end
+
 local SpawnHitEnemyFx = function(target)
   if target and target:IsValid() then
     local fx = SpawnPrefab("special_treatment_bullet_fx_enemy")
@@ -37,7 +79,7 @@ end
 -- ============================================================
 -- Ammo definitions
 -- ============================================================
--- 每个弹药定义必须提供 OnHealAlly 和 OnDestroy 两个回调。
+-- 每个弹药定义必须提供 OnHealAlly 回调。
 -- OnHarmEnemy 为可选，不提供则对敌人无额外效果。
 local ammo_defs = {
 
@@ -51,9 +93,7 @@ local ammo_defs = {
       if target.components.health then
         target.components.health:DoDelta(15, false, "norm_heal_bullet")
       end
-    end,
-    OnDestroy = function(attacker, target)
-      ArkLogger:Debug("Special Destroy triggered on", target, "by", attacker)
+      PlayHitAllySound(target)
     end,
   },
 
@@ -68,6 +108,7 @@ local ammo_defs = {
         if not target:IsValid() then return end
         if target.components.health and not target.components.health:IsDead() then
           target.components.health:DoDelta(15, false, "potent_heal_bullet")
+        PlayHitAllySound(target)
           if target.components.health.penalty ~= nil
               and target.components.health.penalty > 0 then
             local max_hp = target.components.health.maxhealth
@@ -82,9 +123,6 @@ local ammo_defs = {
         end
       end
       DoHealTick(4)
-    end,
-    OnDestroy = function(attacker, target)
-      ArkLogger:Debug("Special Destroy triggered on", target, "by", attacker)
     end,
     OnHarmEnemy = function(attacker, target)
       local function DoDmgTick(remaining)
@@ -142,9 +180,7 @@ local ammo_defs = {
         end
       end
       DoTick(60)
-    end,
-    OnDestroy = function(attacker, target)
-      ArkLogger:Debug("Special Destroy triggered on", target, "by", attacker)
+      PlayHitAllySound(target)
     end,
     OnHarmEnemy = function(attacker, target)
       if target.components.locomotor then
@@ -174,9 +210,7 @@ local ammo_defs = {
       if target.components.temperature then
         target.components.temperature:SetTemperature(20)
       end
-    end,
-    OnDestroy = function(attacker, target)
-      ArkLogger:Debug("Special Destroy triggered on", target, "by", attacker)
+      PlayHitAllySound(target)
     end,
     OnHarmEnemy = function(attacker, target)
       if target.components.locomotor then
@@ -191,21 +225,24 @@ local ammo_defs = {
   },
 }
 
+local destroy_projectile_def = {
+  name = "special_treatment_destroy_proj",
+  fly_anim = "norm_fly_loop",
+}
+
 -- ============================================================
 -- OnHit factory
 -- ============================================================
 -- 通过工厂函数生成命中回调，避免把定义挂在预制体实例上。
-local function MakeOnHit(def)
+local function MakeAmmoOnHit(def)
   return function(inst, attacker, target)
     if target == nil or not target:IsValid() then
       inst:Remove()
       return
     end
-    if common.CanSpecialHealTarget(attacker, target) then
+    if common.CanHitSpecialTreatmentHealTarget(attacker, target) then
       if def.OnHealAlly then def.OnHealAlly(attacker, target) end
       SpawnHitAllyFx(target)
-    elseif common.CanSpecialDestroyTarget(attacker, target) then
-      if def.OnDestroy then def.OnDestroy(attacker, target) end
     else
       -- 基础伤害
       if def.damage and target.components.combat then
@@ -221,6 +258,22 @@ local function MakeOnHit(def)
   end
 end
 
+local function MakeDestroyProjectileOnHit()
+  return function(inst, attacker, target)
+    if target == nil or not target:IsValid() then
+      inst:Remove()
+      return
+    end
+    if common.CanHitSpecialTreatmentDestroyTarget(attacker, target) then
+      CommonDestroy(attacker, target)
+    end
+    if target.components.combat then
+      target.components.combat:RemoveShouldAvoidAggro(attacker)
+    end
+    inst:Remove()
+  end
+end
+
 local function OnMiss(inst, owner, target)
   inst:Remove()
 end
@@ -228,7 +281,7 @@ end
 -- ============================================================
 -- Projectile factory
 -- ============================================================
-local function projectile_fn(def)
+local function projectile_fn(def, make_on_hit_fn)
   local inst = CreateEntity()
 
   inst.entity:AddTransform()
@@ -255,9 +308,9 @@ local function projectile_fn(def)
 
   inst:AddComponent("projectile")
   inst.components.projectile:SetSpeed(50)
-  inst.components.projectile:SetHoming(false)
+  inst.components.projectile:SetHoming(true)
   inst.components.projectile:SetHitDist(1)
-  inst.components.projectile:SetOnHitFn(MakeOnHit(def))
+  inst.components.projectile:SetOnHitFn(make_on_hit_fn(def))
   inst.components.projectile:SetOnMissFn(OnMiss)
   inst.components.projectile:SetLaunchOffset(Vector3(1, 1, 0))
   inst.components.projectile.range = 30
@@ -307,7 +360,10 @@ local all_prefabs = {}
 for _, def in ipairs(ammo_defs) do
   table.insert(all_prefabs,
     Prefab(def.name, function() return inv_fn(def) end, assets, { def.name .. "_proj" }))
-  table.insert(all_prefabs, Prefab(def.name .. "_proj", function() return projectile_fn(def) end, assets))
+  table.insert(all_prefabs, Prefab(def.name .. "_proj", function() return projectile_fn(def, MakeAmmoOnHit) end, assets))
 end
+
+table.insert(all_prefabs, Prefab(destroy_projectile_def.name,
+  function() return projectile_fn(destroy_projectile_def, MakeDestroyProjectileOnHit) end, assets))
 
 return unpack(all_prefabs)
