@@ -37,18 +37,15 @@ local WORKABLES_CANT_TAGS = { "insect", "INLIMBO" }
 local function DestroyRange(doer, pos)
   local destroy_range = 3
   local ents = TheSim:FindEntities(pos.x, pos.y, pos.z, destroy_range, nil, WORKABLES_CANT_TAGS, common.destroyableTags)
-  local destroyed = false
   for _, ent in ipairs(ents) do
+    -- 对同一实体连续摧毁，直到不可再被 work（摧毁后可能降级但实体仍在）
     if ent.components.workable and ent.components.workable:CanBeWorked() then
-        SpawnPrefab("collapse_small").Transform:SetPosition(ent.Transform:GetWorldPosition())
-        if ent.components.lootdropper ~= nil and (ent:HasTag("tree") or ent:HasTag("boulder")) then
-            ent.components.lootdropper:SetLoot({})
-        end
-      ent.components.workable:Destroy(doer)
-      destroyed = true
+      SpawnPrefab("collapse_small").Transform:SetPosition(ent.Transform:GetWorldPosition())
+      repeat
+        ent.components.workable:Destroy(doer)
+      until not (ent:IsValid() and ent.components.workable and ent.components.workable:CanBeWorked())
     end
   end
-  return destroyed
 end
 
 local function CommonDestroy(doer, target)
@@ -57,11 +54,7 @@ local function CommonDestroy(doer, target)
   if fx then
     fx.Transform:SetPosition(x, y, z)
   end
-  local destroyed = DestroyRange(doer, Vector3(x, y, z))
-  -- 如果有摧毁物, 0.2秒后再次尝试摧毁
-  if destroyed then
-    doer:DoTaskInTime(0.2, function() DestroyRange(doer, Vector3(x, y, z)) end)
-  end
+  DestroyRange(doer, Vector3(x, y, z))
 end
 
 local SpawnHitEnemyFx = function(target)
