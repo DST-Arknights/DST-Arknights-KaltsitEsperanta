@@ -1,17 +1,11 @@
 local common = require("kaltsit_esperanta_common")
 
-local function IsSpecialTreatmentDestroyBufferedAction(inst)
-  local bufferedaction = inst:GetBufferedAction()
-  return bufferedaction and bufferedaction.action == ACTIONS.SPECIAL_GUN_DESTROY
-end
-
 local function CanEnterSpecialTreatmentShootState(inst)
   if common.HasEquippedLoadedSpecialTreatmentGun(inst) then
     return true
   end
 
-  return IsSpecialTreatmentDestroyBufferedAction(inst)
-      and common.HasEquippedSpecialTreatmentGun(inst)
+  return common.HasEquippedSpecialTreatmentGun(inst)
       and common.IsSpecialTreatmentDestroySkillActive(inst)
 end
 

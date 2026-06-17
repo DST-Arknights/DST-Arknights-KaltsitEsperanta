@@ -119,6 +119,7 @@ local function fn()
   if not TheWorld.ismastersim then
     return inst
   end
+  inst.accepted_items = {}
   inst:AddComponent("inspectable")
   inst:AddComponent("inventoryitem")
   inst:AddComponent("equippable")
@@ -129,7 +130,6 @@ local function fn()
   inst.components.equippable:SetOnUnequip(OnUnEquip)
   ApplyDapperness(inst)
 
-  inst.accepted_items = {}
 
   inst:AddComponent("trader")
   inst.components.trader:SetAbleToAcceptTest(AbleToAcceptTest)
