@@ -2,7 +2,7 @@ GLOBAL.setmetatable(env, { __index = function(t, k) return GLOBAL.rawget(GLOBAL,
 PrefabFiles = { "kaltsit_esperanta", "kaltsit_esperanta_none", "kaltsit_esperanta_prototyper", "life_repairing_units",
   "special_treatment_gun",
   "special_treatment_bullet", "kaltsit_neuro_gel", "kaltsit_tissue_repair_solvent", "kaltsit_calcite",
-  "mon3tr_signboard", "kaltsit_calcite", "kaltsit_esperanta_mon3tr", "kaltsit_esperanta_fx"}
+  "mon3tr_signboard", "kaltsit_calcite", "kaltsit_esperanta_mon3tr", "kaltsit_esperanta_fx", "kaltsit_esperanta_buff" }
 Assets = {}
 
 assert(ARK_ITEM_PACKAGE_LOADED, "请安装前置模组: ark_item_package\n please install the required mod: ark_item_package\n[https://steamcommunity.com/sharedfiles/filedetails/?id=3677284770]")
@@ -39,6 +39,7 @@ modimport "modmain/special_treatment_gun.lua"
 modimport "modmain/special_treatment_bullet.lua"
 modimport "modmain/kaltsit_animal_affinity.lua"
 modimport "modmain/kaltsit_esperanta_mon3tr.lua"
+modimport "modmain/kaltsit_esperanta_skill.lua"
 
 AddModCharacter("kaltsit_esperanta", "FEMALE", {
   {

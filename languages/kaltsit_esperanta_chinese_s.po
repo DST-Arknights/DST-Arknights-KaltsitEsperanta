@@ -8,12 +8,12 @@ msgstr ""
 #. STRINGS.CHARACTER_TITLES.kaltsit_esperanta
 msgctxt "STRINGS.CHARACTER_TITLES.kaltsit_esperanta"
 msgid "Kaltsit Esperanta"
-msgstr "凯尔希·思衡托"
+msgstr "凯尔希思衡托"
 
 #. STRINGS.CHARACTER_NAMES.kaltsit_esperanta
 msgctxt "STRINGS.CHARACTER_NAMES.kaltsit_esperanta"
 msgid "Kaltsit Esperanta"
-msgstr "凯尔希·思衡托"
+msgstr "凯尔希思衡托"
 
 #. STRINGS.CHARACTER_DESCRIPTIONS.kaltsit_esperanta
 msgctxt "STRINGS.CHARACTER_DESCRIPTIONS.kaltsit_esperanta"
@@ -33,27 +33,12 @@ msgstr "独行之人"
 #. STRINGS.NAMES.KALTSIT_ESPERANTA
 msgctxt "STRINGS.NAMES.KALTSIT_ESPERANTA"
 msgid "Kaltsit Esperanta"
-msgstr "凯尔希·思衡托"
+msgstr "凯尔希思衡托"
 
 #. STRINGS.NAMES.KALTSIT_INTELLECT
 msgctxt "STRINGS.NAMES.KALTSIT_INTELLECT"
 msgid "Kaltsit Intellect"
 msgstr "凯尔希智识"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.1
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.1"
-msgid "Stratagem: Hyperpressurized Link"
-msgstr "策略：超压链接"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.2
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.2"
-msgid "Stratagem: Overload"
-msgstr "策略：超负荷"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.3
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.3"
-msgid "Stratagem: Meltdown"
-msgstr "策略：熔毁"
 
 #. STRINGS.NAMES.SPECIAL_TREATMENT_GUN
 msgctxt "STRINGS.NAMES.SPECIAL_TREATMENT_GUN"
@@ -223,6 +208,21 @@ msgctxt "STRINGS.ACTIONS.COMMAND_MON3TR.GENERIC"
 msgid "Command:"
 msgstr "指令:"
 
+#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.1
+msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.1"
+msgid "Stratagem: Hyperpressurized Link"
+msgstr "医者丰碑"
+
+#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.2
+msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.2"
+msgid "Stratagem: Overload"
+msgstr "保护性拒止"
+
+#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.3
+msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.3"
+msgid "Stratagem: Meltdown"
+msgstr "破梏重生"
+
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.1
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.1"
 msgid "Locked"
@@ -240,153 +240,19 @@ msgstr "// :TODO"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.1
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.1"
-msgid "The next heal is increased to 110% of ATK, and bounce count per heal +1"
-msgstr "下次攻击可以恢复附近最多4位友军相当于攻击力110%的生命"
+msgid ""
+msgstr "-消耗40生命值与40精神值\n-自身与半径20单位圆内友方获得增益:\n 获得1层护盾，抵挡一次伤害\n 每秒回复2生命值，持续20秒"
 
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.2
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.2"
-msgid "The next heal is increased to 110% of ATK, and bounce count per heal +1"
-msgstr "下次攻击可以恢复附近最多4位友军相当于攻击力110%的生命"
+#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2
+msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2"
+msgid ""
+msgstr "-消耗200点精神值\n-特质治疗枪的弹药为特殊弹药，命中时:\n 对附近范围造成%d真实伤害\n 对附近友方单位回复%d点生命值\n 摧毁附近范围内的可砍伐/挖掘对象\n-需要装备特质治疗枪与生命修复单元"
 
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.3
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.3"
-msgid "The next heal is increased to 110% of ATK, and bounce count per heal +1"
-msgstr "下次攻击可以恢复附近最多4位友军相当于攻击力110%的生命"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.4
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.4"
-msgid "The next heal is increased to 110% of ATK, and bounce count per heal +1"
-msgstr "下次攻击可以恢复附近最多4位友军相当于攻击力110%的生命"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.5
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.5"
-msgid "The next heal is increased to 110% of ATK, and bounce count per heal +1"
-msgstr "下次攻击可以恢复附近最多4位友军相当于攻击力110%的生命"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.6
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.6"
-msgid "The next heal is increased to 110% of ATK, and bounce count per heal +1"
-msgstr "下次攻击可以恢复附近最多4位友军相当于攻击力110%的生命"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.7
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.7"
-msgid "The next heal is increased to 110% of ATK, and bounce count per heal +1"
-msgstr "下次攻击可以恢复附近最多4位友军相当于攻击力110%的生命"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.8
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.8"
-msgid "The next heal is increased to 110% of ATK, and bounce count per heal +1"
-msgstr "下次攻击可以恢复附近最多4位友军相当于攻击力110%的生命"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.9
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.9"
-msgid "The next heal is increased to 110% of ATK, and bounce count per heal +1"
-msgstr "下次攻击可以恢复附近最多4位友军相当于攻击力110%的生命"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.10
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.10"
-msgid "The next heal is increased to 110% of ATK, and bounce count per heal +1"
-msgstr "下次攻击可以恢复附近最多4位友军相当于攻击力110%的生命"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2.1
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2.1"
-msgid "When skill is active, prioritizes healing the Reconstruction; whenever the Reconstruction is healed by Mon3tr, it will perform a bouncing heal; Talent 2's effect increases to 1.5 times"
-msgstr "技能期间每次攻击都会恢复附近最多3位友军相当于攻击力100%的生命，治疗提升攻速的效果提升至1.5倍"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2.2
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2.2"
-msgid "When skill is active, prioritizes healing the Reconstruction; whenever the Reconstruction is healed by Mon3tr, it will perform a bouncing heal; Talent 2's effect increases to 1.5 times"
-msgstr "技能期间每次攻击都会恢复附近最多3位友军相当于攻击力100%的生命，第二天赋的效果提升至1.5倍"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2.3
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2.3"
-msgid "When skill is active, prioritizes healing the Reconstruction; whenever the Reconstruction is healed by Mon3tr, it will perform a bouncing heal; Talent 2's effect increases to 1.5 times"
-msgstr "技能期间每次攻击都会恢复附近最多3位友军相当于攻击力100%的生命，第二天赋的效果提升至1.5倍"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2.4
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2.4"
-msgid "When skill is active, prioritizes healing the Reconstruction; whenever the Reconstruction is healed by Mon3tr, it will perform a bouncing heal; Talent 2's effect increases to 1.5 times"
-msgstr "技能期间每次攻击都会恢复附近最多3位友军相当于攻击力100%的生命，第二天赋的效果提升至1.5倍"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2.5
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2.5"
-msgid "When skill is active, prioritizes healing the Reconstruction; whenever the Reconstruction is healed by Mon3tr, it will perform a bouncing heal; Talent 2's effect increases to 1.5 times"
-msgstr "技能期间每次攻击都会恢复附近最多3位友军相当于攻击力100%的生命，第二天赋的效果提升至1.5倍"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2.6
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2.6"
-msgid "When skill is active, prioritizes healing the Reconstruction; whenever the Reconstruction is healed by Mon3tr, it will perform a bouncing heal; Talent 2's effect increases to 1.5 times"
-msgstr "技能期间每次攻击都会恢复附近最多3位友军相当于攻击力100%的生命，第二天赋的效果提升至1.5倍"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2.7
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2.7"
-msgid "When skill is active, prioritizes healing the Reconstruction; whenever the Reconstruction is healed by Mon3tr, it will perform a bouncing heal; Talent 2's effect increases to 1.5 times"
-msgstr "技能期间每次攻击都会恢复附近最多3位友军相当于攻击力100%的生命，第二天赋的效果提升至1.5倍"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2.8
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2.8"
-msgid "When skill is active, prioritizes healing the Reconstruction; whenever the Reconstruction is healed by Mon3tr, it will perform a bouncing heal; Talent 2's effect increases to 1.5 times"
-msgstr "技能期间每次攻击都会恢复附近最多3位友军相当于攻击力100%的生命，第二天赋的效果提升至1.5倍"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2.9
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2.9"
-msgid "When skill is active, prioritizes healing the Reconstruction; whenever the Reconstruction is healed by Mon3tr, it will perform a bouncing heal; Talent 2's effect increases to 1.5 times"
-msgstr "技能期间每次攻击都会恢复附近最多3位友军相当于攻击力100%的生命，第二天赋的效果提升至1.5倍"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2.10
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2.10"
-msgid "When skill is active, prioritizes healing the Reconstruction; whenever the Reconstruction is healed by Mon3tr, it will perform a bouncing heal; Talent 2's effect increases to 1.5 times"
-msgstr "技能期间每次攻击都会恢复附近最多3位友军相当于攻击力100%的生命，第二天赋的效果提升至1.5倍"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.3.1
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.3.1"
-msgid "Attack Range changes, and Mon3tr Moves to the position of the Reconstruction. ATK +200%, Block +2, Max HP +5000, Attack Interval reduces, loses 80 HP per second, attacks all blocked enemies, attacks deal True damage and heal self for 50% ATK. When skill ends or letha damage is taken, Mon3tr returns to her original position"
-msgstr "解除手持装备，吸收重构体武器最高10%的耐久转为基础攻击力\n普通攻击时对附近造成300%基础攻击力的真实伤害\n生命上限+5000，每秒流失80点生命值\n攻击时治疗自身基础攻击力100%的生命。\n技能结束或受到致命伤害时，返回初始位置"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.3.2
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.3.2"
-msgid "Attack Range changes, and Mon3tr Moves to the position of the Reconstruction. ATK +200%, Block +2, Max HP +5000, Attack Interval reduces, loses 80 HP per second, attacks all blocked enemies, attacks deal True damage and heal self for 50% ATK. When skill ends or letha damage is taken, Mon3tr returns to her original position"
-msgstr "解除手持装备，攻击范围改变，若有重构体\n则移动至重构体位置，攻击力+200%，攻击\n间隔降低，生命上限+500，每秒流失16点\n生命值，同时攻击附近所有敌人，伤害类型\n变为真实，攻击治疗自身相当于攻击力50%\n的生命。技能期间每次攻击都会恢复附近最\n多3位友军相当于攻击力100%生命\n技能结束或受到致命伤害时，返回初始位置"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.3.3
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.3.3"
-msgid "Attack Range changes, and Mon3tr Moves to the position of the Reconstruction. ATK +200%, Block +2, Max HP +5000, Attack Interval reduces, loses 80 HP per second, attacks all blocked enemies, attacks deal True damage and heal self for 50% ATK. When skill ends or letha damage is taken, Mon3tr returns to her original position"
-msgstr "解除手持装备，攻击范围改变，若有重构体\n则移动至重构体位置，攻击力+200%，攻击\n间隔降低，生命上限+500，每秒流失16点\n生命值，同时攻击附近所有敌人，伤害类型\n变为真实，攻击治疗自身相当于攻击力50%\n的生命。技能期间每次攻击都会恢复附近最\n多3位友军相当于攻击力100%生命\n技能结束或受到致命伤害时，返回初始位置"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.3.4
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.3.4"
-msgid "Attack Range changes, and Mon3tr Moves to the position of the Reconstruction. ATK +200%, Block +2, Max HP +5000, Attack Interval reduces, loses 80 HP per second, attacks all blocked enemies, attacks deal True damage and heal self for 50% ATK. When skill ends or letha damage is taken, Mon3tr returns to her original position"
-msgstr "解除手持装备，攻击范围改变，若有重构体\n则移动至重构体位置，攻击力+200%，攻击\n间隔降低，生命上限+500，每秒流失16点\n生命值，同时攻击附近所有敌人，伤害类型\n变为真实，攻击治疗自身相当于攻击力50%\n的生命。技能期间每次攻击都会恢复附近最\n多3位友军相当于攻击力100%生命\n技能结束或受到致命伤害时，返回初始位置"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.3.5
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.3.5"
-msgid "Attack Range changes, and Mon3tr Moves to the position of the Reconstruction. ATK +200%, Block +2, Max HP +5000, Attack Interval reduces, loses 80 HP per second, attacks all blocked enemies, attacks deal True damage and heal self for 50% ATK. When skill ends or letha damage is taken, Mon3tr returns to her original position"
-msgstr "解除手持装备，攻击范围改变，若有重构体\n则移动至重构体位置，攻击力+200%，攻击\n间隔降低，生命上限+500，每秒流失16点\n生命值，同时攻击附近所有敌人，伤害类型\n变为真实，攻击治疗自身相当于攻击力50%\n的生命。技能期间每次攻击都会恢复附近最\n多3位友军相当于攻击力100%生命\n技能结束或受到致命伤害时，返回初始位置"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.3.6
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.3.6"
-msgid "Attack Range changes, and Mon3tr Moves to the position of the Reconstruction. ATK +200%, Block +2, Max HP +5000, Attack Interval reduces, loses 80 HP per second, attacks all blocked enemies, attacks deal True damage and heal self for 50% ATK. When skill ends or letha damage is taken, Mon3tr returns to her original position"
-msgstr "解除手持装备，攻击范围改变，若有重构体\n则移动至重构体位置，攻击力+200%，攻击\n间隔降低，生命上限+500，每秒流失16点\n生命值，同时攻击附近所有敌人，伤害类型\n变为真实，攻击治疗自身相当于攻击力50%\n的生命。技能期间每次攻击都会恢复附近最\n多3位友军相当于攻击力100%生命\n技能结束或受到致命伤害时，返回初始位置"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.3.7
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.3.7"
-msgid "Attack Range changes, and Mon3tr Moves to the position of the Reconstruction. ATK +200%, Block +2, Max HP +5000, Attack Interval reduces, loses 80 HP per second, attacks all blocked enemies, attacks deal True damage and heal self for 50% ATK. When skill ends or letha damage is taken, Mon3tr returns to her original position"
-msgstr "解除手持装备，攻击范围改变，若有重构体\n则移动至重构体位置，攻击力+200%，攻击\n间隔降低，生命上限+500，每秒流失16点\n生命值，同时攻击附近所有敌人，伤害类型\n变为真实，攻击治疗自身相当于攻击力50%\n的生命。技能期间每次攻击都会恢复附近最\n多3位友军相当于攻击力100%生命\n技能结束或受到致命伤害时，返回初始位置"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.3.8
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.3.8"
-msgid "Attack Range changes, and Mon3tr Moves to the position of the Reconstruction. ATK +200%, Block +2, Max HP +5000, Attack Interval reduces, loses 80 HP per second, attacks all blocked enemies, attacks deal True damage and heal self for 50% ATK. When skill ends or letha damage is taken, Mon3tr returns to her original position"
-msgstr "解除手持装备，攻击范围改变，若有重构体\n则移动至重构体位置，攻击力+200%，攻击\n间隔降低，生命上限+500，每秒流失16点\n生命值，同时攻击附近所有敌人，伤害类型\n变为真实，攻击治疗自身相当于攻击力50%\n的生命。技能期间每次攻击都会恢复附近最\n多3位友军相当于攻击力100%生命\n技能结束或受到致命伤害时，返回初始位置"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.3.9
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.3.9"
-msgid "Attack Range changes, and Mon3tr Moves to the position of the Reconstruction. ATK +200%, Block +2, Max HP +5000, Attack Interval reduces, loses 80 HP per second, attacks all blocked enemies, attacks deal True damage and heal self for 50% ATK. When skill ends or letha damage is taken, Mon3tr returns to her original position"
-msgstr "解除手持装备，攻击范围改变，若有重构体\n则移动至重构体位置，攻击力+200%，攻击\n间隔降低，生命上限+500，每秒流失16点\n生命值，同时攻击附近所有敌人，伤害类型\n变为真实，攻击治疗自身相当于攻击力50%\n的生命。技能期间每次攻击都会恢复附近最\n多3位友军相当于攻击力100%生命\n技能结束或受到致命伤害时，返回初始位置"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.3.10
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.3.10"
-msgid "Attack Range changes, and Mon3tr Moves to the position of the Reconstruction. ATK +200%, Block +2, Max HP +5000, Attack Interval reduces, loses 80 HP per second, attacks all blocked enemies, attacks deal True damage and heal self for 50% ATK. When skill ends or letha damage is taken, Mon3tr returns to her original position"
-msgstr "解除手持装备，攻击范围改变，若有重构体\n则移动至重构体位置，攻击力+200%，攻击\n间隔降低，生命上限+500，每秒流失16点\n生命值，同时攻击附近所有敌人，伤害类型\n变为真实，攻击治疗自身相当于攻击力50%\n的生命。技能期间每次攻击都会恢复附近最\n多3位友军相当于攻击力100%生命\n技能结束或受到致命伤害时，返回初始位置"
+msgid ""
+msgstr "-指定位置部署一个锚点并释放一次无消耗的[医者丰碑]，并生成一个领域，领域内：\n 友方单位每秒恢复2%生命值\n 友方单位攻击力提升20%"
 
 #. STRINGS.MON3TR_COMMAND.STANDBY
 msgctxt "STRINGS.MON3TR_COMMAND.STANDBY"

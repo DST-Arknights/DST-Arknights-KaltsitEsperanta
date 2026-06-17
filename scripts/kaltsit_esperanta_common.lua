@@ -48,8 +48,8 @@ local function IsSpecialTreatmentDestroyableTarget(inst)
 end
 
 local function IsSpecialTreatmentDestroySkillActive(inst)
-  -- return true
-  return GetEquippedSpecialTreatmentGun(inst) and inst.replica.ark_skill and inst.replica.ark_skill:IsActivating("kaltsit_esperanta_skill2")
+  local skill = inst.replica.ark_skill and inst.replica.ark_skill:GetSkill("kaltsit_esperanta_skill2")
+  return skill and skill:IsActivating() and GetEquippedSpecialTreatmentGun(inst)
 end
 
 local function CanHitSpecialTreatmentDestroyTarget(inst, target)
@@ -66,6 +66,28 @@ local function CanTriggerSpecialTreatmentDestroyAction(inst, target)
       and CanHitSpecialTreatmentDestroyTarget(inst, target)
 end
 
+local function FindFriendlyEntities(instOrPos, range, fn)
+  local inst = nil
+  local pos = nil
+  if EntityScript.is_instance(instOrPos) then
+    inst = instOrPos
+    pos = instOrPos:GetPosition()
+  else
+    pos = instOrPos
+  end
+  -- pvp 的时候, 友方单位只有自己的宠物与自己, 否则包含玩家以及有玩家主人的宠物
+  return TheSim:FindEntities(pos.x, pos.y, pos.z, range, function(ent)
+    local base = false
+    local leader = ent.replica.follower and ent.replica.follower:GetLeader()
+    if TheNet:GetPVPEnabled()then
+      base = ent == inst or (inst and leader == inst)
+    else
+      base = ent:HasTag("player") or (leader and leader:HasTag("player"))
+    end
+    return base and (not fn or fn(ent))
+  end, { "INLIMBO" })
+end
+
 return {
   CanHitSpecialTreatmentHealTarget = CanHitSpecialTreatmentHealTarget,
   CanHitSpecialTreatmentDestroyTarget = CanHitSpecialTreatmentDestroyTarget,
@@ -78,4 +100,5 @@ return {
   HasEquippedLoadedSpecialTreatmentGun = HasEquippedLoadedSpecialTreatmentGun,
   IsSpecialTreatmentDestroySkillActive = IsSpecialTreatmentDestroySkillActive,
   destroyableTags = destroyableTags,
+  FindFriendlyEntities = FindFriendlyEntities,
 }

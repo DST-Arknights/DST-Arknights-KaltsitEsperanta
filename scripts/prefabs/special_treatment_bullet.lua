@@ -32,31 +32,6 @@ local PlayHitAllySound = function(target)
 end
 
 
-local WORKABLES_CANT_TAGS = { "insect", "INLIMBO" }
-
-local function DestroyRange(doer, pos)
-  local destroy_range = 3
-  local ents = TheSim:FindEntities(pos.x, pos.y, pos.z, destroy_range, nil, WORKABLES_CANT_TAGS, common.destroyableTags)
-  for _, ent in ipairs(ents) do
-    -- 对同一实体连续摧毁，直到不可再被 work（摧毁后可能降级但实体仍在）
-    if ent.components.workable and ent.components.workable:CanBeWorked() then
-      SpawnPrefab("collapse_small").Transform:SetPosition(ent.Transform:GetWorldPosition())
-      repeat
-        ent.components.workable:Destroy(doer)
-      until not (ent:IsValid() and ent.components.workable and ent.components.workable:CanBeWorked())
-    end
-  end
-end
-
-local function CommonDestroy(doer, target)
-  local x, y, z = target.Transform:GetWorldPosition()
-  local fx = SpawnPrefab("special_treatment_bullet_destroy_fx")
-  if fx then
-    fx.Transform:SetPosition(x, y, z)
-  end
-  DestroyRange(doer, Vector3(x, y, z))
-end
-
 local SpawnHitEnemyFx = function(target)
   if target and target:IsValid() then
     local fx = SpawnPrefab("special_treatment_bullet_fx_enemy")
@@ -218,9 +193,20 @@ local ammo_defs = {
   },
 }
 
+local function DestroyOnPreHit(inst, attacker, target)
+  local true_damage = 2000
+  local skill = attacker and attacker.replica.ark_skill and attacker.replica.ark_skill:GetSkill("kaltsit_esperanta_skill2")
+  if skill then
+    local levelParams = skill:GetLevelParams()
+    true_damage = levelParams.damage or true_damage
+  end
+  inst.components.weapon.true_damage = true_damage
+end
+
 local destroy_projectile_def = {
   name = "special_treatment_destroy_proj",
   fly_anim = "norm_fly_loop",
+  OnPreHit = DestroyOnPreHit,
 }
 
 -- ============================================================
@@ -254,7 +240,36 @@ local function MakeDestroyProjectileOnHit()
       return
     end
     if common.CanHitSpecialTreatmentDestroyTarget(attacker, target) then
-      CommonDestroy(attacker, target)
+      local x, y, z = target.Transform:GetWorldPosition()
+      local fx = SpawnPrefab("special_treatment_bullet_destroy_fx")
+      if fx then
+        fx.Transform:SetPosition(x, y, z)
+      end
+      local skill = attacker and attacker.components.ark_skill and attacker.components.ark_skill:GetSkill("kaltsit_esperanta_skill2")
+      local levelParams = skill and skill:GetLevelParams() or {}
+      local destroy_range = levelParams.aoeRange or 3
+      local health = levelParams.health or 80
+      local ents = TheSim:FindEntities(x, y, z, destroy_range, nil,
+        { "insect", "INLIMBO" }, common.destroyableTags)
+      for _, ent in ipairs(ents) do
+        if ent.components.workable and ent.components.workable:CanBeWorked() then
+          SpawnPrefab("collapse_small").Transform:SetPosition(ent.Transform:GetWorldPosition())
+          repeat
+            ent.components.workable:Destroy(attacker)
+          until not (ent:IsValid() and ent.components.workable and ent.components.workable:CanBeWorked())
+        end
+      end
+      local friends = common.FindFriendlyEntities(attacker, destroy_range, function(ent)
+        return not ent:HasTag("ghost")
+      end)
+      for _, friend in ipairs(friends) do
+        if friend.components.health then
+          friend.components.health:DoDelta(health)
+        end
+      end
+      if skill then
+        skill:CutBullet()
+      end
     end
     if target.components.combat then
       target.components.combat:RemoveShouldAvoidAggro(attacker)
@@ -294,11 +309,13 @@ local function projectile_fn(def, make_on_hit_fn)
 
   inst:AddComponent("weapon")
   inst.components.weapon:SetDamage(def.damage or 0)
-
   inst:AddComponent("projectile")
   inst.components.projectile:SetSpeed(50)
   inst.components.projectile:SetHoming(true)
   inst.components.projectile:SetHitDist(2)
+  if def.OnPreHit then
+    inst.components.projectile:SetOnPreHitFn(def.OnPreHit)
+  end
   inst.components.projectile:SetOnHitFn(make_on_hit_fn(def))
   inst.components.projectile:SetOnMissFn(OnMiss)
   inst.components.projectile:SetLaunchOffset(Vector3(3, 1, 0))

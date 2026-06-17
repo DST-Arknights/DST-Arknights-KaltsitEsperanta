@@ -73,7 +73,7 @@ end
 
 
 -- When loading or spawning the character
-local function Onload(inst)
+local function OnLoad(inst)
   inst:ListenForEvent("ms_respawnedfromghost", onbecamehuman)
   inst:ListenForEvent("ms_becameghost", onbecameghost)
 
@@ -82,6 +82,13 @@ local function Onload(inst)
   else
     onbecamehuman(inst)
   end
+end
+
+local function OnNewSpawn(inst)
+  inst.components.ark_skill:AddSkill("kaltsit_esperanta_skill1")
+  inst.components.ark_skill:AddSkill("kaltsit_esperanta_skill2")
+  -- inst.components.ark_skill:AddSkill("kaltsit_esperanta_skill3")
+  OnLoad(inst)
 end
 
 -- This initializes for both the server and client. Tags can be added here.
@@ -168,7 +175,8 @@ local masterPostInit = function(inst)
     inst:AddTag("mermdisguise")
   end)
 
-  inst.OnLoad = Onload
+  inst.OnLoad = OnLoad
+  inst.OnNewSpawn = OnNewSpawn
 end
 
 return MakePlayerCharacter("kaltsit_esperanta", prefabs, assets, CommonPostInit, masterPostInit, start_inv)
