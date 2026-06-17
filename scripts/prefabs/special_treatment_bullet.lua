@@ -233,43 +233,41 @@ local function MakeAmmoOnHit(def)
   end
 end
 
-local function MakeDestroyProjectileOnHit()
+local function MakeDestroyProjectileOnHit(def)
   return function(inst, attacker, target)
     if target == nil or not target:IsValid() then
       inst:Remove()
       return
     end
-    if common.CanHitSpecialTreatmentDestroyTarget(attacker, target) then
-      local x, y, z = target.Transform:GetWorldPosition()
-      local fx = SpawnPrefab("special_treatment_bullet_destroy_fx")
-      if fx then
-        fx.Transform:SetPosition(x, y, z)
+    local x, y, z = target.Transform:GetWorldPosition()
+    local fx = SpawnPrefab("special_treatment_bullet_destroy_fx")
+    if fx then
+      fx.Transform:SetPosition(x, y, z)
+    end
+    local skill = attacker and attacker.components.ark_skill and attacker.components.ark_skill:GetSkill("kaltsit_esperanta_skill2")
+    local levelParams = skill and skill:GetLevelParams() or {}
+    local destroy_range = levelParams.aoeRange or 3
+    local health = levelParams.health or 80
+    local ents = TheSim:FindEntities(x, y, z, destroy_range, nil,
+      { "insect", "INLIMBO" }, common.destroyableTags)
+    for _, ent in ipairs(ents) do
+      if ent.components.workable and ent.components.workable:CanBeWorked() then
+        SpawnPrefab("collapse_small").Transform:SetPosition(ent.Transform:GetWorldPosition())
+        repeat
+          ent.components.workable:Destroy(attacker)
+        until not (ent:IsValid() and ent.components.workable and ent.components.workable:CanBeWorked())
       end
-      local skill = attacker and attacker.components.ark_skill and attacker.components.ark_skill:GetSkill("kaltsit_esperanta_skill2")
-      local levelParams = skill and skill:GetLevelParams() or {}
-      local destroy_range = levelParams.aoeRange or 3
-      local health = levelParams.health or 80
-      local ents = TheSim:FindEntities(x, y, z, destroy_range, nil,
-        { "insect", "INLIMBO" }, common.destroyableTags)
-      for _, ent in ipairs(ents) do
-        if ent.components.workable and ent.components.workable:CanBeWorked() then
-          SpawnPrefab("collapse_small").Transform:SetPosition(ent.Transform:GetWorldPosition())
-          repeat
-            ent.components.workable:Destroy(attacker)
-          until not (ent:IsValid() and ent.components.workable and ent.components.workable:CanBeWorked())
-        end
+    end
+    local friends = common.FindFriendlyEntities(attacker, destroy_range, function(ent)
+      return not ent:HasTag("ghost")
+    end)
+    for _, friend in ipairs(friends) do
+      if friend.components.health then
+        friend.components.health:DoDelta(health)
       end
-      local friends = common.FindFriendlyEntities(attacker, destroy_range, function(ent)
-        return not ent:HasTag("ghost")
-      end)
-      for _, friend in ipairs(friends) do
-        if friend.components.health then
-          friend.components.health:DoDelta(health)
-        end
-      end
-      if skill then
-        skill:CutBullet()
-      end
+    end
+    if skill then
+      skill:CutBullet()
     end
     if target.components.combat then
       target.components.combat:RemoveShouldAvoidAggro(attacker)

@@ -15,20 +15,6 @@ local function CanEnterSpecialTreatmentShootState(inst)
       and common.IsSpecialTreatmentDestroySkillActive(inst)
 end
 
-local function PrepareDestroyProjectileForAttack(doer)
-  local gun = common.GetEquippedSpecialTreatmentGun(doer)
-  if gun ~= nil then
-    gun:PushEvent("special_treatment_prepare_destroy_projectile")
-  end
-  return gun
-end
-
-local function RestoreProjectileAfterAttack(gun)
-  if gun ~= nil and gun:IsValid() then
-    gun:PushEvent("special_treatment_restore_projectile")
-  end
-end
-
 -- scripts/prefabs/special_treatment_gun.lua
 -- 特质治疗枪 + 三种治疗弹 + 各自独立投射物
 -- 弹药机制: 枪上有 1 格物品槽，将治疗弹放入后方可发射
@@ -97,9 +83,9 @@ AddAction("SPECIAL_GUN_DESTROY", STRINGS.ACTIONS.DESTROY.GENERIC, function(act)
   if not common.CanTriggerSpecialTreatmentDestroyAction(doer, target) then
     return false
   end
-  local gun = PrepareDestroyProjectileForAttack(doer)
+  -- local gun = PrepareDestroyProjectileForAttack(doer)
   act.doer.components.combat:DoAttack(act.target)
-  RestoreProjectileAfterAttack(gun)
+  -- RestoreProjectileAfterAttack(gun)
   return true
 end)
 

@@ -7,49 +7,42 @@ RegisterInventoryItemAtlas("images/inventoryimages/special_treatment_gun.xml", "
 -- TUNING
 -- ============================================================
 -- TUNING.SPECIAL_TREATMENT_GUN_ATTACK_PERIOD = 1.5 -- 攻速间隔（秒），越大越慢
-TUNING.SPECIAL_TREATMENT_GUN_RANGE_SHOOT = 5
-TUNING.SPECIAL_TREATMENT_GUN_RANGE_MELEE = 0
+TUNING.SPECIAL_TREATMENT_GUN_RANGE_SHOOT   = 5
+TUNING.SPECIAL_TREATMENT_GUN_RANGE_MELEE   = 0
 local SPECIAL_TREATMENT_DESTROY_PROJECTILE = "special_treatment_destroy_proj"
-local gun_assets                       = {
+local gun_assets                           = {
   Asset("ANIM", "anim/special_treatment_gun.zip"),
   Asset("ANIM", "anim/swap_special_treatment_gun.zip"),
   Asset("ATLAS", "images/inventoryimages/special_treatment_gun.xml"),
 }
 
-local gun_prefabs                      = {
+local gun_prefabs                          = {
   SPECIAL_TREATMENT_DESTROY_PROJECTILE,
 }
 
-local function RefreshProjectileFromLoadedAmmo(inst)
+local function RefreshProjectile(inst)
   if inst.components.weapon == nil then
     return
   end
 
   local ammo = inst.components.container and inst.components.container:GetItemInSlot(1) or nil
-  if ammo ~= nil then
-    inst.components.weapon:SetRange(TUNING.SPECIAL_TREATMENT_GUN_RANGE_SHOOT, TUNING.SPECIAL_TREATMENT_GUN_RANGE_SHOOT + 5)
-    inst.components.weapon:SetProjectile(ammo.prefab .. "_proj")
-    inst:AddTag("ammoloaded")
+  local owner = inst.components.inventoryitem and inst.components.inventoryitem:GetGrandOwner()
+  local skill = owner and owner.components.ark_skill and owner.components.ark_skill:GetSkill("kaltsit_esperanta_skill2")
+  local skill_activating = skill and skill:IsActivating()
+  ArkLogger:Debug("Refreshing projectile, ammo:", ammo, "skill activating:", skill_activating)
+  if ammo ~= nil or skill_activating then
+    inst.components.weapon:SetRange(TUNING.SPECIAL_TREATMENT_GUN_RANGE_SHOOT,
+      TUNING.SPECIAL_TREATMENT_GUN_RANGE_SHOOT + 5)
+    if skill_activating then
+      inst.components.weapon:SetProjectile(SPECIAL_TREATMENT_DESTROY_PROJECTILE)
+    else
+      inst.components.weapon:SetProjectile(ammo.prefab .. "_proj")
+    end
   else
-    inst.components.weapon:SetRange(TUNING.SPECIAL_TREATMENT_GUN_RANGE_MELEE, TUNING.SPECIAL_TREATMENT_GUN_RANGE_MELEE + 1)
+    inst.components.weapon:SetRange(TUNING.SPECIAL_TREATMENT_GUN_RANGE_MELEE,
+      TUNING.SPECIAL_TREATMENT_GUN_RANGE_MELEE + 1)
     inst.components.weapon:SetProjectile(nil)
-    inst:RemoveTag("ammoloaded")
   end
-end
-
-local function PrepareDestroyProjectile(inst)
-  if inst.components.weapon == nil then
-    return
-  end
-
-  inst._special_treatment_destroy_projectile_pending = true
-  inst.components.weapon:SetRange(TUNING.SPECIAL_TREATMENT_GUN_RANGE_SHOOT, TUNING.SPECIAL_TREATMENT_GUN_RANGE_SHOOT + 1)
-  inst.components.weapon:SetProjectile(SPECIAL_TREATMENT_DESTROY_PROJECTILE)
-end
-
-local function RestoreProjectileAfterSpecialShot(inst)
-  inst._special_treatment_destroy_projectile_pending = nil
-  RefreshProjectileFromLoadedAmmo(inst)
 end
 
 local function OnEquip(inst, owner)
@@ -60,6 +53,10 @@ local function OnEquip(inst, owner)
   if inst.components.container ~= nil then
     inst.components.container:Open(owner)
   end
+  ArkLogger:Debug("Equipped, refreshing projectile")
+  RefreshProjectile(inst)
+  inst:ListenForEvent("ark_skill_activate_effect", inst._OnSkillActivating, owner)
+  inst:ListenForEvent("ark_skill_deactivate", inst._OnSkillActivating, owner)
 end
 
 local function OnUnequip(inst, owner)
@@ -69,6 +66,9 @@ local function OnUnequip(inst, owner)
   if inst.components.container ~= nil then
     inst.components.container:Close()
   end
+  RefreshProjectile(inst)
+  inst:RemoveEventCallback("ark_skill_activate_effect", inst._OnSkillActivating, owner)
+  inst:RemoveEventCallback("ark_skill_deactivate", inst._OnSkillActivating, owner)
 end
 
 -- 放入模型展示时（从地面捡起时的模型状态），关闭容器 UI
@@ -78,49 +78,19 @@ local function OnEquipToModel(inst, owner, from_ground)
   end
 end
 
-local function OnAmmoLoaded(inst, data)
-  if inst.components.weapon and data and data.item and data.slot == 1 then
-    RefreshProjectileFromLoadedAmmo(inst)
-    data.item:PushEvent("ammoloaded", { slingshot = inst })
-  end
-end
-
-local function OnAmmoUnloaded(inst, data)
-  if inst.components.weapon and data and data.slot == 1 then
-    if not inst._special_treatment_destroy_projectile_pending then
-      RefreshProjectileFromLoadedAmmo(inst)
-    end
-    if data.prev_item then
-      data.prev_item:PushEvent("ammounloaded", { slingshot = inst })
-    end
-  end
-end
-
 local function OnProjectileLaunched(inst, attacker, target, proj)
-  if proj ~= nil and proj.prefab == SPECIAL_TREATMENT_DESTROY_PROJECTILE then
-    -- 技能消耗后续在这里补。
-    RestoreProjectileAfterSpecialShot(inst)
-    return
-  end
-
-  if inst.components.container then
+  local owner = inst.components.inventoryitem and inst.components.inventoryitem:GetGrandOwner()
+  local skill = owner and owner.components.ark_skill and owner.components.ark_skill:GetSkill("kaltsit_esperanta_skill2")
+  local skill_activating = skill and skill:IsActivating()
+  if not skill_activating then
+    -- 如果是普通弹药，则消耗弹药
     local ammo_stack = inst.components.container:GetItemInSlot(1)
     local item = inst.components.container:RemoveItem(ammo_stack, false)
     if item ~= nil then
-      if item == ammo_stack then
-        item:PushEvent("ammounloaded", { slingshot = inst })
-      end
       item:Remove()
     end
   end
-end
-
-local function OnPrepareDestroyProjectile(inst)
-  PrepareDestroyProjectile(inst)
-end
-
-local function OnRestoreProjectileAfterSpecialShot(inst)
-  RestoreProjectileAfterSpecialShot(inst)
+  RefreshProjectile(inst)
 end
 
 local function gun_fn()
@@ -140,6 +110,14 @@ local function gun_fn()
   MakeInventoryFloatable(inst, "med", 0.07, { 0.53, 0.5, 0.5 })
   inst.entity:SetPristine()
   if not TheWorld.ismastersim then return inst end
+
+  inst._OnSkillActivating = function(owner, data)
+    if data.skillId == "kaltsit_esperanta_skill2" then
+      ArkLogger:Debug("Skill activating, refreshing projectile")
+      RefreshProjectile(inst)
+    end
+  end
+
   inst:AddComponent("inspectable")
   inst:AddComponent("inventoryitem")
   inst:AddComponent("equippable")
@@ -161,10 +139,8 @@ local function gun_fn()
   inst.components.container:WidgetSetup("special_treatment_gun")
   inst.components.container.canbeopened = false
   inst.components.container.stay_open_on_hide = true
-  inst:ListenForEvent("itemget", OnAmmoLoaded)
-  inst:ListenForEvent("itemlose", OnAmmoUnloaded)
-  inst:ListenForEvent("special_treatment_prepare_destroy_projectile", OnPrepareDestroyProjectile)
-  inst:ListenForEvent("special_treatment_restore_projectile", OnRestoreProjectileAfterSpecialShot)
+  inst:ListenForEvent("itemget", RefreshProjectile)
+  inst:ListenForEvent("itemlose", RefreshProjectile)
   MakeHauntableLaunch(inst)
   return inst
 end
