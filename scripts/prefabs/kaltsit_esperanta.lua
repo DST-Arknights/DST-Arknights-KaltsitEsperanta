@@ -86,8 +86,9 @@ end
 
 local function OnNewSpawn(inst)
   inst.components.ark_skill:AddSkill("kaltsit_esperanta_skill1")
+  inst.components.ark_skill:GetSkill("kaltsit_esperanta_skill1"):Unlock()
   inst.components.ark_skill:AddSkill("kaltsit_esperanta_skill2")
-  -- inst.components.ark_skill:AddSkill("kaltsit_esperanta_skill3")
+  inst.components.ark_skill:AddSkill("kaltsit_esperanta_skill3")
   OnLoad(inst)
 end
 

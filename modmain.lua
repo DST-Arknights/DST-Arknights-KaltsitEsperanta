@@ -2,7 +2,7 @@ GLOBAL.setmetatable(env, { __index = function(t, k) return GLOBAL.rawget(GLOBAL,
 PrefabFiles = { "kaltsit_esperanta", "kaltsit_esperanta_none", "kaltsit_esperanta_prototyper", "life_repairing_units",
   "special_treatment_gun",
   "special_treatment_bullet", "kaltsit_neuro_gel", "kaltsit_tissue_repair_solvent", "kaltsit_calcite",
-  "mon3tr_signboard", "kaltsit_calcite", "kaltsit_esperanta_mon3tr", "kaltsit_esperanta_fx", "kaltsit_esperanta_buff", "tactical_anchor" }
+  "mon3tr_signboard", "kaltsit_calcite", "kaltsit_esperanta_mon3tr", "kaltsit_esperanta_fx", "kaltsit_esperanta_buff", "tactical_anchor", "kaltsit_esperanta_reticule" }
 Assets = {}
 
 assert(ARK_ITEM_PACKAGE_LOADED, "请安装前置模组: ark_item_package\n please install the required mod: ark_item_package\n[https://steamcommunity.com/sharedfiles/filedetails/?id=3677284770]")
@@ -29,6 +29,8 @@ TUNING.KALTSIT_ESPERANTA_SANITY = 800
 TUNING.KALTSIT_ESPERANTA_MON3TR_HEALTH = 800
 TUNING.KALTSIT_ESPERANTA_MON3TR_HUNGER = 800
 TUNING.KALTSIT_ESPERANTA_MON3TR_SANITY = 800
+
+TUNING.KALTSIT_ESPERANTA_SKILL3_RANGE = 20
 
 AddReplicableComponent("kaltsit_intellect")
 AddReplicableComponent("kaltsit_mon3tr_master")
