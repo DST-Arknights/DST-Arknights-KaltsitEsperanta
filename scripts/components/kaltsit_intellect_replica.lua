@@ -2,6 +2,9 @@ local KaltsitIntellectReplica = Class(function(self, inst)
     self.inst = inst
     self.state = NetState(inst, "kaltsit_intellect")
     self.state:Attach(self.inst)
+    self.state:Watch("current", function ()
+      UpdateCharacterIngredient(self.inst, "kaltsit_intellect", self.state.current)
+    end)
     self.state:Watch({"current", "max",}, function ()
       local badge = GetArkBadge("kaltsit_intellect_badge", self.inst)
       if badge then
