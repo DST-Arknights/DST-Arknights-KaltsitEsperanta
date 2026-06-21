@@ -52,6 +52,18 @@ local function OnApplyElite(inst, elite_level)
   inst.components.health.maxhealthaddmodifiers:SetModifier(modifierKey, config.healthBonus)
   inst.components.hunger.maxhungeraddmodifiers:SetModifier(modifierKey, config.hungerBonus)
   inst.components.sanity.maxsanityaddmodifiers:SetModifier(modifierKey, config.sanityBonus)
+  if elite_level == 2 then
+    local skill2 = inst.components.ark_skill:GetSkill("kaltsit_esperanta_skill2")
+    if skill2 then
+      skill2:Unlock()
+    end
+  end
+  if elite_level == 3 then
+    local skill3 = inst.components.ark_skill:GetSkill("kaltsit_esperanta_skill3")
+    if skill3 then
+      skill3:Unlock()
+    end
+  end
   -- Mon3tr 精英加成（通知 Mon3tr 身上的技能组件）
   local master = inst.components.kaltsit_mon3tr_master
   if master and master.mon3tr and master.mon3tr:IsValid() then
