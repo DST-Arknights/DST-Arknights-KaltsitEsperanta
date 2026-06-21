@@ -251,18 +251,18 @@ msgstr "// :TODO"
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.1
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.1"
 msgid ""
-msgstr "-消耗40生命值与40精神值\n-自身与半径20单位圆内友方获得增益:\n 获得1层护盾，抵挡一次伤害\n 每秒回复2生命值，持续20秒"
+msgstr "-消耗40生命值与40精神值\n-自身与半径20单位圆内友方获得增益:\n   获得1层护盾，抵挡一次伤害\n   每秒回复2生命值，持续20秒"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2"
 msgid ""
-msgstr "-消耗200点精神值\n-特质治疗枪的弹药为特殊弹药，命中时:\n 对附近范围造成%d真实伤害\n 对附近友方单位回复%d点生命值\n 摧毁附近范围内的可砍伐/挖掘对象\n-需要装备特质治疗枪与生命修复单元"
+msgstr "-消耗200点精神值\n-特质治疗枪的弹药为特殊弹药，命中时:\n   对附近范围造成%d真实伤害\n   对附近友方单位回复%d点生命值\n   摧毁附近范围内的可砍伐/挖掘对象\n-需要装备特质治疗枪与生命修复单元"
 
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.3.1
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.3.1"
 msgid ""
-msgstr "-指定位置部署一个锚点并释放一次无消耗的[医者丰碑]，并生成一个领域，领域内：\n 友方单位每秒恢复2%生命值\n 友方单位攻击力提升20%"
+msgstr "-指定位置部署一个锚点并释放一次无消耗的[医者丰碑]，并生成一个领域，领域内：\n   友方单位每秒恢复2%生命值\n   友方单位攻击力提升20%"
 
 #. STRINGS.MON3TR_COMMAND.STANDBY
 msgctxt "STRINGS.MON3TR_COMMAND.STANDBY"

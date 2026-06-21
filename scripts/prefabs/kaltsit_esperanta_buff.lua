@@ -2,8 +2,11 @@ local buffers = { {
   name = "doctors_monuments_invincible_buff",
   duration = 10,
   keepondespawn = true,
-    icon_atlas = "images/ui_mon3tr_skill.xml",
-    icon_image = "skill1.tex",
+  -- TODO: 修正图片与描述
+  title = "医者丰碑被动一标题",
+  description = "医者丰碑被动一描述",
+  icon_atlas = "images/ui_kaltsit_esperanta_skill.xml",
+  icon_image = "skill1.tex",
   OnAttached = function(inst, target)
     if target.components.health then
       target.components.health.externalabsorbmodifiers:SetModifier(inst, 1.0)
@@ -18,8 +21,11 @@ local buffers = { {
   name = "doctors_monuments_treatment_buff",
   keepondespawn = true,
   duration = 20,
-    icon_atlas = "images/ui_mon3tr_skill.xml",
-    icon_image = "skill2.tex",
+  -- TODO: 修正图片与描述
+  title = "医者丰碑被动二标题",
+  description = "医者丰碑被动二描述",
+  icon_atlas = "images/ui_kaltsit_esperanta_skill.xml",
+  icon_image = "skill1.tex",
   OnAttached = function(inst, target, followsymbol, followoffset, data, buffer)
     -- 每秒回复的数值
     local health = data and data.health or 2
