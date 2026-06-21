@@ -21,7 +21,6 @@ local function fn()
   if not TheWorld.ismastersim then
     return inst
   end
-
   inst:AddComponent("inspectable")
   -- 不存档
   inst.persists = false

@@ -72,8 +72,11 @@ local function FindFriendlyEntities(instOrPos, range, fn)
   if EntityScript.is_instance(instOrPos) then
     inst = instOrPos
     pos = instOrPos:GetPosition()
-  else
+  elseif Vector3.is_instance(instOrPos) then
     pos = instOrPos
+  elseif type(instOrPos) == "table" then
+    inst = instOrPos.inst
+    pos = instOrPos.pos or instOrPos:GetPosition()
   end
   -- pvp 的时候, 友方单位只有自己的宠物与自己, 否则包含玩家以及有玩家主人的宠物
   return TheSim:FindEntities(pos.x, pos.y, pos.z, range, function(ent)
