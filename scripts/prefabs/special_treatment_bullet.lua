@@ -244,7 +244,7 @@ local function MakeDestroyProjectileOnHit(def)
     if fx then
       fx.Transform:SetPosition(x, y, z)
     end
-    attacker:DoTaskInTime(0.56, function()
+    attacker:DoTaskInTime(0.3, function()
       local fx = SpawnPrefab("special_treatment_bullet_fx_ally")
       if fx then
         fx.Transform:SetPosition(x, y, z)

@@ -22,7 +22,7 @@ local function ActiveDoctorsMonumentsBuff(instOrPos, levelParams)
   end
 end
 
-local skill1DefaultParams = { range = 20, health = 2, invincible_duration = 10, treatment_duration = 20, health_cost = 20, sanity_cost = 10 }
+local skill1DefaultParams = { range = 20, health = 2, invincible_duration = 10, treatment_duration = 20, health_cost = 40, sanity_cost = 40 }
 
 local function OnSkill1ActivateTest(skill)
   local inst = skill.inst
