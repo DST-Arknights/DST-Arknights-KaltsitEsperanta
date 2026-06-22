@@ -57,7 +57,7 @@ local function CanHitSpecialTreatmentDestroyTarget(inst, target)
 end
 
 local function CanTriggerSpecialTreatmentHealAction(inst, target)
-  return HasEquippedLoadedSpecialTreatmentGun(inst)
+  return HasEquippedSpecialTreatmentGun(inst)
       and CanHitSpecialTreatmentHealTarget(inst, target)
 end
 
