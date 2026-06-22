@@ -240,10 +240,16 @@ local function MakeDestroyProjectileOnHit(def)
       return
     end
     local x, y, z = target.Transform:GetWorldPosition()
-    local fx = SpawnPrefab("special_treatment_bullet_destroy_fx")
+    local fx = SpawnPrefab("special_treatment_bullet_fx_enemy")
     if fx then
       fx.Transform:SetPosition(x, y, z)
     end
+    attacker:DoTaskInTime(0.56, function()
+      local fx = SpawnPrefab("special_treatment_bullet_fx_ally")
+      if fx then
+        fx.Transform:SetPosition(x, y, z)
+      end
+    end)
     local skill = attacker and attacker.components.ark_skill and attacker.components.ark_skill:GetSkill("kaltsit_esperanta_skill2")
     local levelParams = skill and skill:GetLevelParams() or {}
     local destroy_range = levelParams.aoeRange or 3
