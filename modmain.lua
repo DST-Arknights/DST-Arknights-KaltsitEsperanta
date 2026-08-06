@@ -10,7 +10,7 @@ assert(ARK_ITEM_PACKAGE_LOADED, "请安装前置模组: ark_item_package\n pleas
 ArkLogger:DeclareLogger("INFO", "K2CEsperanta")
 
 -- 加载中文语言包
-MergePOFile('languages/kaltsit_esperanta_chinese_s.po', LOC.GetLocaleCode(LANGUAGE.CHINESE_S), true)
+MergePOFile('languages/kaltsit_esperanta_chinese_s.po', LOC.GetLocaleCode(LANGUAGE.CHINESE_S))
 
 local kaltsit_esperanta_starting_items = {
   "special_treatment_gun",
@@ -34,6 +34,7 @@ TUNING.KALTSIT_ESPERANTA_SKILL3_RANGE = 20
 
 AddReplicableComponent("kaltsit_intellect")
 AddReplicableComponent("kaltsit_mon3tr_master")
+AddReplicableComponent("tactical_anchor")
 
 modimport "modmain/kaltsit_intellect.lua"
 modimport "modmain/kaltsit_esperanta_tech.lua"
@@ -42,6 +43,7 @@ modimport "modmain/special_treatment_bullet.lua"
 modimport "modmain/kaltsit_animal_affinity.lua"
 modimport "modmain/kaltsit_esperanta_mon3tr.lua"
 modimport "modmain/kaltsit_esperanta_skill.lua"
+modimport "modmain/tactical_anchor_action.lua"
 
 AddModCharacter("kaltsit_esperanta", "FEMALE", {
   {

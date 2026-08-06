@@ -1,10 +1,23 @@
-name = ChooseTranslationTable({
+-- 对不支持的语言兜底到英文（DST 原版 ChooseTranslationTable 只回退到 tbl[1]，
+-- 但我们用字典键值而非数字索引，非 en/zh 语言会返回 nil 导致崩溃）
+local function T(tbl)
+    return ChooseTranslationTable(tbl) or tbl["en"]
+end
+
+name = T({
     en = "Kaltsit Esperanta",
     zh = "凯尔希 思衡托"
 })
-description = ChooseTranslationTable({
-    en = [[TODO:]],
-    zh = [[TODO:]]
+-- 版本更新说明（由发布脚本自动维护，请勿手动编辑）
+local UPDATE_EN = [[]]
+
+local UPDATE_ZH = [[]]
+
+description = T({
+    en = [[TODO:
+]] .. UPDATE_EN,
+    zh = [[TODO:
+]] .. UPDATE_ZH,
 })
 author = ""
 version = "0.0.1"

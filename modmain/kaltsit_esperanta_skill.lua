@@ -1,26 +1,10 @@
 table.insert(Assets, Asset("ATLAS", "images/ui_kaltsit_esperanta_skill.xml"))
 
+table.insert(Assets, Asset("ANIM", "anim/wortox_portal.zip"))
+
 local ARK_CONSTANTS = require("ark_constants")
 local common = require("kaltsit_esperanta_common")
 
-local function ActiveDoctorsMonumentsBuff(instOrPos, levelParams)
-  local ents = common.FindFriendlyEntities(instOrPos, levelParams.range, function(ent)
-    return not ent:HasTag("ghost")
-  end)
-  for _, ent in ipairs(ents) do
-    ent:AddDebuff("doctors_monuments_invincible_buff", "doctors_monuments_invincible_buff", {
-      buffConfig = {
-        duration = levelParams.invincible_duration,
-      }
-    })
-    ent:AddDebuff("doctors_monuments_treatment_buff", "doctors_monuments_treatment_buff", {
-      health = levelParams.health,
-      buffConfig = {
-        duration = levelParams.treatment_duration,
-      }
-    })
-  end
-end
 
 local skill1DefaultParams = { range = 20, health = 2, invincible_duration = 10, treatment_duration = 20, health_cost = 40, sanity_cost = 40 }
 
@@ -46,7 +30,7 @@ local function OnSkill1Activate(skill, data)
   if skill.inst.components.sanity then
     skill.inst.components.sanity:DoDelta(-levelParams.sanity_cost)
   end
-  ActiveDoctorsMonumentsBuff(skill.inst, levelParams)
+  common.ActiveDoctorsMonumentsBuff(skill.inst, nil, levelParams)
 end
 
 local function OnSkill2ActivateTest(skill)
@@ -84,10 +68,7 @@ local function OnSkill3Activate(skill, data)
   skill:SetState("anchor", anchor)
   local skill1 = inst.components.ark_skill:GetSkill("kaltsit_esperanta_skill1")
   local skill1Params = skill1 and skill1:GetLevelParams() or skill1DefaultParams
-  ActiveDoctorsMonumentsBuff({
-    inst = inst,
-    pos = pos,
-  }, skill1Params)
+  common.ActiveDoctorsMonumentsBuff(inst, pos, skill1Params)
   return true
 end
 
@@ -97,6 +78,10 @@ local function OnSkill3Recast(skill, data)
   if not anchor then
     return false
   end
+  local ta = anchor.components.tactical_anchor
+  if not ta:CanTargetTeleported(inst) then
+    return false
+  end
   if skill:GetState("recast") then
     return false
   end
@@ -104,13 +89,9 @@ local function OnSkill3Recast(skill, data)
   local anchorPos = anchor:GetPosition()
   local skill1 = skill.inst.components.ark_skill:GetSkill("kaltsit_esperanta_skill1")
   local skill1Params = skill1 and skill1:GetLevelParams() or skill1DefaultParams
-  ActiveDoctorsMonumentsBuff({
-    inst = inst,
-    pos = anchorPos,
-  }, skill1Params)
-  -- 在目标点可降落
-  local teleportPos = anchorPos + Vector3(1, 0, 1)
-  inst.Physics:Teleport(teleportPos:Get())
+  common.ActiveDoctorsMonumentsBuff(inst, anchorPos, skill1Params)
+  local buff = BufferedAction(inst, anchor, ACTIONS.USE_TACTICAL_ANCHOR, nil, anchorPos, nil, nil, true)
+  inst:PushBufferedAction(buff)
   return true
 end
 
@@ -197,7 +178,6 @@ local skills = { {
   recipe_image = "skill3_recipe.tex",
   OnActivate = OnSkill3Activate,
   OnRecast = OnSkill3Recast,
-  OnActivateEffect = OnSkill3ActivateEffect,
   OnDeactivate = OnSkill3Deactivate,
   targeting = {
     mode = 'aoe',
@@ -218,7 +198,7 @@ local skills = { {
     -- buffDuration = 120,
     buffDuration = 20,
     desc = STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC[3][1],
-    params = { range = 20, health_percent = 0.02, damage_multiplier = 0.2}
+    params = { range = 20, health_percent = 0.02, damage_multiplier = 0.2 }
   } }
 } }
 

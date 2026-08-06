@@ -66,29 +66,56 @@ local function CanTriggerSpecialTreatmentDestroyAction(inst, target)
       and CanHitSpecialTreatmentDestroyTarget(inst, target)
 end
 
-local function FindFriendlyEntities(instOrPos, range, fn)
-  local inst = nil
-  local pos = nil
-  if EntityScript.is_instance(instOrPos) then
-    inst = instOrPos
-    pos = instOrPos:GetPosition()
-  elseif Vector3.is_instance(instOrPos) then
-    pos = instOrPos
-  elseif type(instOrPos) == "table" then
-    inst = instOrPos.inst
-    pos = instOrPos.pos or instOrPos:GetPosition()
+-- source_inst 与 pos 至少传一个：pos 缺省时用 source_inst 的位置。
+-- source_inst 可空（如只有位置），但二者不能同时为空。
+local function FindFriendlyEntities(source_inst, pos, range, fn)
+  if range == nil or range <= 0 then
+    return {}
   end
+  if pos == nil then
+    if source_inst ~= nil then
+      pos = source_inst:GetPosition()
+    else
+      return {}
+    end
+  end
+  local inst = source_inst
   -- pvp 的时候, 友方单位只有自己的宠物与自己, 否则包含玩家以及有玩家主人的宠物
-  return TheSim:FindEntities(pos.x, pos.y, pos.z, range, function(ent)
+  local ents = TheSim:FindEntities(pos.x, pos.y, pos.z, range, nil, { "INLIMBO" })
+  local results = {}
+  for i, ent in ipairs(ents) do
     local base = false
     local leader = ent.replica.follower and ent.replica.follower:GetLeader()
-    if TheNet:GetPVPEnabled()then
+    if TheNet:GetPVPEnabled() then
       base = ent == inst or (inst and leader == inst)
     else
       base = ent:HasTag("player") or (leader and leader:HasTag("player"))
     end
-    return base and (not fn or fn(ent))
-  end, { "INLIMBO" })
+    if base and (not fn or fn(ent)) then
+      table.insert(results, ent)
+    end
+  end
+  return results
+end
+
+-- 医者丰碑 buff：以 doer 为中心，覆盖 levelParams.range 内友方。
+local function ActiveDoctorsMonumentsBuff(doer, pos, levelParams)
+  local ents = FindFriendlyEntities(doer, pos, levelParams.range, function(ent)
+    return not ent:HasTag("ghost")
+  end)
+  for _, ent in ipairs(ents) do
+    ent:AddDebuff("doctors_monuments_invincible_buff", "doctors_monuments_invincible_buff", {
+      buffConfig = {
+        duration = levelParams.invincible_duration,
+      }
+    })
+    ent:AddDebuff("doctors_monuments_treatment_buff", "doctors_monuments_treatment_buff", {
+      health = levelParams.health,
+      buffConfig = {
+        duration = levelParams.treatment_duration,
+      }
+    })
+  end
 end
 
 return {
@@ -104,4 +131,5 @@ return {
   IsSpecialTreatmentDestroySkillActive = IsSpecialTreatmentDestroySkillActive,
   destroyableTags = destroyableTags,
   FindFriendlyEntities = FindFriendlyEntities,
+  ActiveDoctorsMonumentsBuff = ActiveDoctorsMonumentsBuff,
 }

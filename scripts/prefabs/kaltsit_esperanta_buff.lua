@@ -2,6 +2,7 @@ local buffers = { {
   name = "doctors_monuments_invincible_buff",
   duration = 10,
   keepondespawn = true,
+  prefabs = { "forcefieldfx" },
   -- TODO: 修正图片与描述
   title = "医者丰碑被动一标题",
   description = "医者丰碑被动一描述",
@@ -11,10 +12,23 @@ local buffers = { {
     if target.components.health then
       target.components.health.externalabsorbmodifiers:SetModifier(inst, 1.0)
     end
+    -- 铥矿皇冠同款力场护盾特效（forcefieldfx），无敌可见
+    if inst._forcefield_fx == nil then
+      inst._forcefield_fx = SpawnPrefab("forcefieldfx")
+      inst._forcefield_fx.entity:SetParent(target.entity)
+      inst._forcefield_fx.Transform:SetPosition(0, 0.2, 0)
+      inst._forcefield_fx.Light:Enable(false)
+    end
   end,
   OnDetached = function(inst, target)
     if target.components.health then
       target.components.health.externalabsorbmodifiers:RemoveModifier(inst)
+    end
+    if inst._forcefield_fx ~= nil then
+      if inst._forcefield_fx:IsValid() and inst._forcefield_fx.kill_fx ~= nil then
+        inst._forcefield_fx:kill_fx()
+      end
+      inst._forcefield_fx = nil
     end
   end,
 }, {

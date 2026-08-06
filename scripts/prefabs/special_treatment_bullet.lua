@@ -264,7 +264,7 @@ local function MakeDestroyProjectileOnHit(def)
         until not (ent:IsValid() and ent.components.workable and ent.components.workable:CanBeWorked())
       end
     end
-    local friends = common.FindFriendlyEntities(attacker, destroy_range, function(ent)
+    local friends = common.FindFriendlyEntities(attacker, nil, destroy_range, function(ent)
       return not ent:HasTag("ghost")
     end)
     for _, friend in ipairs(friends) do

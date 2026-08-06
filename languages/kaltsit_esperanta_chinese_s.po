@@ -323,3 +323,8 @@ msgstr "卸下"
 msgctxt "STRINGS.ACTIONS.DESTROY.GENERIC"
 msgid "Destroy"
 msgstr "摧毁"
+
+#. STRINGS.ACTIONS.USE_TACTICAL_ANCHOR.GENERIC
+msgctxt "STRINGS.ACTIONS.USE_TACTICAL_ANCHOR.GENERIC"
+msgid "Teleport"
+msgstr "折跃"
