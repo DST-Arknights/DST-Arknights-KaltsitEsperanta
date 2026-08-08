@@ -9,8 +9,10 @@ assert(ARK_ITEM_PACKAGE_LOADED, "请安装前置模组: ark_item_package\n pleas
 
 ArkLogger:DeclareLogger("INFO", "K2CEsperanta")
 
--- 加载中文语言包
-MergePOFile('languages/kaltsit_esperanta_chinese_s.po', LOC.GetLocaleCode(LANGUAGE.CHINESE_S))
+-- 加载语言包 (auto 跟随游戏语言, 无英文包时非中文自动回退 en 失败 → 返回 nil 不加载)
+RegisterPOFile(GetModConfigData("language"), {
+  zh = 'languages/kaltsit_esperanta_chinese_s.po',
+})
 
 local kaltsit_esperanta_starting_items = {
   "special_treatment_gun",

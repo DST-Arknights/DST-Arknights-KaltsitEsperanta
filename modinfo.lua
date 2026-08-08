@@ -36,7 +36,33 @@ icon = "modicon.tex"
 
 
 server_filter_tags = {"character", "KaltsitEsperanta",  "kaltsit", "arknights", "明日方舟" }
-configuration_options = {}
+configuration_options = {
+    {
+        name = "language",
+        label = T({
+            en = "Text Language",
+            zh = "界面文本语言"
+        }),
+        hover = T({
+            en = "Choose the mod's UI text language (Auto follows game language)",
+            zh = "选择模组界面文本的语言 (Auto 跟随游戏语言)"
+        }),
+        options = {{
+            description = T({
+                en = "Auto (follow game)",
+                zh = "自动 (跟随游戏)"
+            }),
+            data = "auto"
+        }, {
+            description = T({
+                en = "Simplified Chinese",
+                zh = "简体中文"
+            }),
+            data = "zh"
+        }},
+        default = "auto"
+    },
+}
 
 
 mod_dependencies = {
