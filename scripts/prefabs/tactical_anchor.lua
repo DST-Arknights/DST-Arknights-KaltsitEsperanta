@@ -23,6 +23,7 @@ local function fn()
   end
   inst:AddComponent("inspectable")
   inst:AddComponent("tactical_anchor")
+  inst:AddTag("reviver") -- 复活来源判定：source 带此 tag 时走原地复活
   inst.persists = false
   return inst
 end
