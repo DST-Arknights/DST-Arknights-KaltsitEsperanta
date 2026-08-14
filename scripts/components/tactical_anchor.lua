@@ -17,12 +17,17 @@
 --   玩家复活完成（ms_respawnedfromghost）或下线（onremove）时解锁，允许另一锚点
 --   在其再次死亡时接手。释放逻辑不依赖锚点本身，锚点销毁无需清理锁。
 --
+--   领域效果：锚点作为领域中心，playerprox 组件在 prefab 上直接添加（不套
+--   组件），追踪 20 距离内进出领域的玩家（playerprox 只追踪玩家，不含非玩家
+--   单位），进入时挂领域 buff（每秒回最大生命 2% + 攻击力提升 20%），离开或
+--   变幽灵时移除。领域 buff 的强度由技能放置锚点时通过 SetFieldParams 传入。
+--
 -- 记录键使用玩家 userid（跨端一致、重生后稳定），非玩家（无 userid）不限制。
 -- 锚点实体的生命周期由技能组件（ark_skill）管理；本组件不监听 onremove，实体
 -- 销毁后系统自动停止其 DoPeriodicTask。
 -- ============================================================
 
-local REVIVE_RADIUS = 40
+local REVIVE_RADIUS = 20
 local REVIVE_SCAN_INTERVAL = 0.5
 
 -- 模块级共享锁：Lua 组件文件仅 require 一次，所有锚点实例共享此表。
@@ -33,6 +38,7 @@ local TacticalAnchor = Class(function(self, inst)
   self.inst = inst
   self._revivedSet = {}  -- 本锚点已复活过的玩家 userid 集合（每锚点对每位玩家仅一次）
   self._scanTask = nil
+  self._fieldParams = { health_percent = 0.02, damage_multiplier = 0.2 } -- 领域 buff 强度，技能放置时覆盖
 
   if TheWorld.ismastersim then
     self._scanTask = inst:DoPeriodicTask(REVIVE_SCAN_INTERVAL, function()
@@ -40,6 +46,14 @@ local TacticalAnchor = Class(function(self, inst)
     end)
   end
 end)
+
+-- 技能放置锚点时设置领域 buff 强度（health_percent / damage_multiplier）
+function TacticalAnchor:SetFieldParams(params)
+  if params then
+    self._fieldParams.health_percent = params.health_percent or self._fieldParams.health_percent
+    self._fieldParams.damage_multiplier = params.damage_multiplier or self._fieldParams.damage_multiplier
+  end
+end
 
 -- 组件被单独移除（inst:RemoveComponent）时取消扫描任务：此时实体仍存在，
 -- DoPeriodicTask 挂在实体上不会自动停止，不清理会继续持有组件并泄漏。

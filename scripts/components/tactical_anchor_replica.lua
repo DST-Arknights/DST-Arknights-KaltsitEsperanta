@@ -66,10 +66,10 @@ end
 -- 目标是否已折跃过（非玩家恒为 false，不限制）
 function TacticalAnchorReplica:CanTargetTeleported(target)
   local uid = GetUserID(target)
-  if uid == nil then
-    return false
+  if not uid then
+    return true
   end
-  return self._teleportedSet[uid] == true
+  return not self._teleportedSet[uid]
 end
 
 -- 读取全部已折跃 userid（服务端组件 OnSave 代理用）

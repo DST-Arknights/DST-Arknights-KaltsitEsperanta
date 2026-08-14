@@ -65,6 +65,8 @@ local function OnSkill3Activate(skill, data)
   end
   local anchor = SpawnPrefab("tactical_anchor")
   anchor.Transform:SetPosition(pos:Get())
+  -- 领域 buff 强度：每秒回最大生命 2% + 攻击力提升 20%（health_percent / damage_multiplier）
+  anchor.components.tactical_anchor:SetFieldParams(skill:GetLevelParams())
   skill:SetState("anchor", anchor)
   local skill1 = inst.components.ark_skill:GetSkill("kaltsit_esperanta_skill1")
   local skill1Params = skill1 and skill1:GetLevelParams() or skill1DefaultParams
