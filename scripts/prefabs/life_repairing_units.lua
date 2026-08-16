@@ -90,7 +90,7 @@ local function OnEquip(inst, owner)
     owner:PushEvent("equipskinneditem", inst:GetSkinName())
     fx.AnimState:OverrideItemSkinSymbol("swap_body", skin_build, "swap_body", inst.GUID, "life_repairing_units")
   end
-  fx.Follower:FollowSymbol(owner.GUID, "swap_body", 0, -200, 0, true)
+  fx.Follower:FollowSymbol(owner.GUID, "swap_body", 0, -200, 0, false)
   fx.components.highlightchild:SetOwner(owner)
 
   if not owner.components.ark_flyer then
