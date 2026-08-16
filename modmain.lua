@@ -37,6 +37,7 @@ TUNING.KALTSIT_ESPERANTA_SKILL3_RANGE = 20
 AddReplicableComponent("kaltsit_intellect")
 AddReplicableComponent("kaltsit_mon3tr_master")
 AddReplicableComponent("tactical_anchor")
+AddReplicableComponent("lru_upgrade")
 
 modimport "modmain/kaltsit_intellect.lua"
 modimport "modmain/kaltsit_esperanta_tech.lua"
@@ -63,6 +64,60 @@ DefineNetState("kaltsit_intellect", {
   next_build_discounted = "bool:classified",
 })
 
+local LIFE_REPAIRING_UNITS_TRADABLE = require("life_repairing_units_tradable")
+local prefabs = {}
+for _, def in pairs(LIFE_REPAIRING_UNITS_TRADABLE) do
+  table.insert(prefabs, def.prefab)
+end
+RegisterEnhanceType("life_repairing_units", prefabs)
+
+-- 生命修复单元: 预声明容器定义(初始 12 格; 升级后的格子由 lru_upgrade 动态生成 widget)
+local containers = require "containers"
+
+-- 生命修复单元容器最大 16 格, 确保 container_classified 槽位池足够(照抄 upgradeable chest 的做法)
+containers.MAXITEMSLOTS = math.max(containers.MAXITEMSLOTS, 16)
+
+local function AddLifeRepairingUnitsContainer(name, cols, rows)
+  local param = {
+    widget = {
+      slotpos = {},
+      animbank = "ui_backpack_2x4",  -- TODO: 对应背包 UI 背景资源
+      animbuild = "ui_backpack_2x4",
+      pos = Vector3(-5, -80, 0),
+    },
+    issidewidget = true,
+    type = "pack",
+    openlimit = 1,
+  }
+  for y = 0, rows - 1 do
+    for x = 0, cols - 1 do
+      table.insert(param.widget.slotpos, Vector3(-162 + 75 * x, -75 * y + 114, 0))
+    end
+  end
+  containers.params[name] = param
+end
+
+AddLifeRepairingUnitsContainer("life_repairing_units", 2, 6)  -- 12 格(实体prefab名, 客户端初始查这个)
+-- 升级后的格子(14/16)由 lru_upgrade 组件动态生成 widget, 无需预声明
+
+-- 容器打开时应用背景缩放/位移(lru_upgrade 动态拉长背包背景, 照抄 upgradeable chest 的 BGReScale)
+AddClassPostConstruct("widgets/containerwidget", function(self)
+  local _Open = self.Open
+  self.Open = function(self, container, doer)
+    _Open(self, container, doer)
+    local widget = container.replica.container:GetWidget()
+    if widget ~= nil then
+      if widget.bgscale ~= nil then
+        self.bganim:SetScale(widget.bgscale)
+        self.bgimage:SetScale(widget.bgscale)
+      end
+      if widget.bgshift ~= nil then
+        self.bganim:SetPosition(widget.bgshift)
+        self.bgimage:SetPosition(widget.bgshift)
+      end
+    end
+  end
+end)
 
 function IsPlayerControlling(inst)
   return inst.userid ~= nil

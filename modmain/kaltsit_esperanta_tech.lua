@@ -191,3 +191,12 @@ AddCharacterRecipe("kaltsit_calcite", {
 }, TECH.NONE, {
     builder_tag = "kaltsit_esperanta",
 })
+
+-- 10齿轮, 10绿宝石, 100铥矿
+AddCharacterRecipe("life_repairing_units", {
+    Ingredient("gears", 10),
+    Ingredient("greengem", 10),
+    Ingredient("thulecite", 100),
+}, TECH.NONE, {
+    builder_tag = "kaltsit_esperanta",
+})
