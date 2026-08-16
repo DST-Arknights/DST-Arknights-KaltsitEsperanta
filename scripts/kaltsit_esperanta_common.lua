@@ -30,6 +30,20 @@ local function HasEquippedSpecialTreatmentGun(inst)
   return GetEquippedSpecialTreatmentGun(inst) ~= nil
 end
 
+-- 是否装备生命修复单元（技能2的特殊弹药发射前置条件）
+-- 遍历全部装备槽而非固定 BODY：五格/六格等扩展槽模组会把装备归到不同槽位
+local function HasEquippedLifeRepairingUnits(inst)
+  if not inst or not inst.replica.inventory then return false end
+  local equips = inst.replica.inventory:GetEquips()
+  if equips == nil then return false end
+  for _, item in pairs(equips) do
+    if item ~= nil and item.prefab == "life_repairing_units" then
+      return true
+    end
+  end
+  return false
+end
+
 local function GetSpecialTreatmentGunLoadedAmmo(inst)
   return inst.replica.container and inst.replica.container:GetItemInSlot(1) or nil
 end
@@ -49,7 +63,7 @@ end
 
 local function IsSpecialTreatmentDestroySkillActive(inst)
   local skill = inst.replica.ark_skill and inst.replica.ark_skill:GetSkill("kaltsit_esperanta_skill2")
-  return skill and skill:IsActivating() and GetEquippedSpecialTreatmentGun(inst)
+  return skill and skill:IsActivating() and HasEquippedLifeRepairingUnits(inst) and GetEquippedSpecialTreatmentGun(inst)
 end
 
 local function CanHitSpecialTreatmentDestroyTarget(inst, target)
@@ -124,6 +138,7 @@ return {
   CanTriggerSpecialTreatmentHealAction = CanTriggerSpecialTreatmentHealAction,
   CanTriggerSpecialTreatmentDestroyAction = CanTriggerSpecialTreatmentDestroyAction,
   HasEquippedSpecialTreatmentGun = HasEquippedSpecialTreatmentGun,
+  HasEquippedLifeRepairingUnits = HasEquippedLifeRepairingUnits,
   GetEquippedSpecialTreatmentGun = GetEquippedSpecialTreatmentGun,
   IsSpecialTreatmentGun = IsSpecialTreatmentGun,
   GetSpecialTreatmentGunLoadedAmmo = GetSpecialTreatmentGunLoadedAmmo,

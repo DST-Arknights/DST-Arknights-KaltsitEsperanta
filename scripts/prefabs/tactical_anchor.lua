@@ -51,7 +51,7 @@ local function fn()
     local range_fx = SpawnPrefab("tactical_anchor_range")
     range_fx.entity:SetParent(inst.entity)
   end)
-  -- inst.persists = false
+  inst.persists = false
   return inst
 end
 return Prefab("tactical_anchor", fn, assets, prefabs)

@@ -1,6 +1,8 @@
 -- ============================================================
 -- 物品图标注册
 -- ============================================================
+local common = require("kaltsit_esperanta_common")
+
 RegisterInventoryItemAtlas("images/inventoryimages/special_treatment_gun.xml", "special_treatment_gun.tex")
 
 -- ============================================================
@@ -29,11 +31,13 @@ local function RefreshProjectile(inst)
   local owner = inst.components.inventoryitem and inst.components.inventoryitem:GetGrandOwner()
   local skill = owner and owner.components.ark_skill and owner.components.ark_skill:GetSkill("kaltsit_esperanta_skill2")
   local skill_activating = skill and skill:IsActivating()
-  ArkLogger:Debug("Refreshing projectile, ammo:", ammo, "skill activating:", skill_activating)
-  if ammo ~= nil or skill_activating then
+  -- 特殊弹药（技能2）需装备生命修复单元才可发射；否则有普通弹药就走普通弹
+  local destroy_ready = skill_activating and common.HasEquippedLifeRepairingUnits(owner)
+  ArkLogger:Debug("Refreshing projectile, ammo:", ammo, "skill activating:", skill_activating, "destroy ready:", destroy_ready)
+  if ammo ~= nil or destroy_ready then
     inst.components.weapon:SetRange(TUNING.SPECIAL_TREATMENT_GUN_RANGE_SHOOT,
       TUNING.SPECIAL_TREATMENT_GUN_RANGE_SHOOT + 5)
-    if skill_activating then
+    if destroy_ready then
       inst.components.weapon:SetProjectile(SPECIAL_TREATMENT_DESTROY_PROJECTILE)
     else
       inst.components.weapon:SetProjectile(ammo.prefab .. "_proj")
@@ -57,6 +61,9 @@ local function OnEquip(inst, owner)
   RefreshProjectile(inst)
   inst:ListenForEvent("ark_skill_activate_effect", inst._OnSkillActivating, owner)
   inst:ListenForEvent("ark_skill_deactivate", inst._OnSkillActivating, owner)
+  -- 装备/卸下生命修复单元时刷新：特殊弹的发射前置条件会变化
+  inst:ListenForEvent("equip", inst._OnEquipChanged, owner)
+  inst:ListenForEvent("unequip", inst._OnEquipChanged, owner)
 end
 
 local function OnUnequip(inst, owner)
@@ -69,6 +76,8 @@ local function OnUnequip(inst, owner)
   RefreshProjectile(inst)
   inst:RemoveEventCallback("ark_skill_activate_effect", inst._OnSkillActivating, owner)
   inst:RemoveEventCallback("ark_skill_deactivate", inst._OnSkillActivating, owner)
+  inst:RemoveEventCallback("equip", inst._OnEquipChanged, owner)
+  inst:RemoveEventCallback("unequip", inst._OnEquipChanged, owner)
 end
 
 -- 放入模型展示时（从地面捡起时的模型状态），关闭容器 UI
@@ -82,7 +91,9 @@ local function OnProjectileLaunched(inst, attacker, target, proj)
   local owner = inst.components.inventoryitem and inst.components.inventoryitem:GetGrandOwner()
   local skill = owner and owner.components.ark_skill and owner.components.ark_skill:GetSkill("kaltsit_esperanta_skill2")
   local skill_activating = skill and skill:IsActivating()
-  if not skill_activating then
+  -- 只有特殊弹药（技能2 + 生命修复单元）不消耗枪内弹药；普通弹药一律消耗
+  local destroy_ready = skill_activating and common.HasEquippedLifeRepairingUnits(owner)
+  if not destroy_ready then
     -- 如果是普通弹药，则消耗弹药
     local ammo_stack = inst.components.container:GetItemInSlot(1)
     local item = inst.components.container:RemoveItem(ammo_stack, false)
@@ -116,6 +127,11 @@ local function gun_fn()
       ArkLogger:Debug("Skill activating, refreshing projectile")
       RefreshProjectile(inst)
     end
+  end
+
+  -- owner 装备/卸下生命修复单元时刷新特殊弹可用状态
+  inst._OnEquipChanged = function()
+    RefreshProjectile(inst)
   end
 
   inst:AddComponent("inspectable")
