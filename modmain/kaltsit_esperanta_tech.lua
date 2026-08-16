@@ -178,7 +178,7 @@ AddKaltsitIntellectRecipe("kaltsit_tissue_repair_solvent", {
 })
 
 
-AddRecipe2(
+AddCharacterRecipe(
     "mon3tr_signboard",
     { Ingredient("goldnugget", 3) },
     TECH.NONE,

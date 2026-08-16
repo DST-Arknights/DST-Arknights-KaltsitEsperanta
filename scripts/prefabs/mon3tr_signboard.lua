@@ -33,6 +33,7 @@ local function fn()
 	inst.AnimState:SetBuild("mon3tr_signboard")
 	inst.AnimState:PlayAnimation("idle", true)
 	inst.AnimState:SetBloomEffectHandle("shaders/anim.ksh")
+	inst.AnimState:SetScale(2.2, 2.2, 2.2)
 
 	inst.Light:SetFalloff(0.7)
 	inst.Light:SetIntensity(0.45)
@@ -64,4 +65,4 @@ local function fn()
 end
 
 return Prefab("mon3tr_signboard", fn, assets),
-	MakePlacer("mon3tr_signboard_placer", "mon3tr_signboard", "mon3tr_signboard", "idle")
+	MakePlacer("mon3tr_signboard_placer", "mon3tr_signboard", "mon3tr_signboard", "idle", nil, nil, nil, 2.2)

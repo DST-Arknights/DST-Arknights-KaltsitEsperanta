@@ -20,7 +20,7 @@ local function fn()
   inst.AnimState:PlayAnimation("idle", true)
   inst.AnimState:SetScale(3, 3, 3)
   inst.AnimState:SetBloomEffectHandle("shaders/anim.ksh")
-
+  inst.entity:SetPristine()
   if not TheWorld.ismastersim then
     return inst
   end
@@ -51,7 +51,7 @@ local function fn()
     local range_fx = SpawnPrefab("tactical_anchor_range")
     range_fx.entity:SetParent(inst.entity)
   end)
-  inst.persists = false
+  -- inst.persists = false
   return inst
 end
 return Prefab("tactical_anchor", fn, assets, prefabs)

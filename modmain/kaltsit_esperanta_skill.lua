@@ -71,6 +71,8 @@ local function OnSkill3Activate(skill, data)
   local skill1 = inst.components.ark_skill:GetSkill("kaltsit_esperanta_skill1")
   local skill1Params = skill1 and skill1:GetLevelParams() or skill1DefaultParams
   common.ActiveDoctorsMonumentsBuff(inst, pos, skill1Params)
+  inst.SoundEmitter:PlaySound("dontstarve/wilson/attack_whoosh", nil, nil, true)
+  inst.sg:GoToState("quickcastspell")
   return true
 end
 
