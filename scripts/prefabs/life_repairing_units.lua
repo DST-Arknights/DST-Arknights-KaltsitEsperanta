@@ -93,10 +93,9 @@ local function OnEquip(inst, owner)
   fx.Follower:FollowSymbol(owner.GUID, "swap_body", 0, -200, 0, false)
   fx.components.highlightchild:SetOwner(owner)
 
-  if not owner.components.ark_flyer then
-    owner:AddComponent("ark_flyer")
+  if owner.components.ark_flyer then
+    owner.components.ark_flyer:TakeOff()
   end
-  owner.components.ark_flyer:TakeOff()
 
   inst._wearer_owner = owner
   SyncWearerBuffs(inst)
@@ -117,10 +116,9 @@ local function OnUnEquip(inst, owner)
   if skin_build ~= nil then
     owner:PushEvent("unequipskinneditem", inst:GetSkinName())
   end
-  if not owner.components.ark_flyer then
-    owner:AddComponent("ark_flyer")
+  if owner.components.ark_flyer then
+    owner.components.ark_flyer:Land()
   end
-  owner.components.ark_flyer:Land()
 
   if inst.components.container ~= nil then
     inst.components.container:Close(owner)

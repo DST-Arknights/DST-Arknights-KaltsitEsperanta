@@ -15,9 +15,9 @@
 local materials = {
   { prefab = "armorruins",       absorb = 0.05 },
   { prefab = "armor_lunarplant", absorb = 0.05, planardefense = 5 },
-  { prefab = "armor_wagpunk",    walkspeed = 0.05, planardefense = 5 },
+  { prefab = "armorwagpunk",    walkspeed = 0.05, planardefense = 5 },
 
-  { prefab = "armor_dragonfly",  fireproof = true },
+  { prefab = "armordragonfly",  fireproof = true },
   { prefab = "raincoat",         waterproof = true, lightningproof = true },
   { prefab = "hawaiianshirt",    summerinsulation = 240 },
   { prefab = "trunkvest_winter",        winterinsulation = 240 },

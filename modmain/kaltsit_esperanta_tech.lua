@@ -183,14 +183,15 @@ AddCharacterRecipe(
     { Ingredient("goldnugget", 3) },
     TECH.NONE,
     { placer = "mon3tr_signboard_placer" },
-    { "MODS", "STRUCTURES", "LIGHT" }
+    { "CHARACTER", "MODS", "STRUCTURES", "LIGHT" }
 )
 
-AddCharacterRecipe("kaltsit_calcite", {
-    Ingredient("kaltsit_intellect", 10),
-}, TECH.NONE, {
-    builder_tag = "kaltsit_esperanta",
-})
+-- 召唤石
+-- AddCharacterRecipe("kaltsit_calcite", {
+--     Ingredient("kaltsit_intellect", 10),
+-- }, TECH.NONE, {
+--     builder_tag = "kaltsit_esperanta",
+-- })
 
 -- 10齿轮, 10绿宝石, 100铥矿
 AddCharacterRecipe("life_repairing_units", {
