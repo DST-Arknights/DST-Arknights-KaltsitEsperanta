@@ -201,3 +201,12 @@ AddCharacterRecipe("life_repairing_units", {
 }, TECH.NONE, {
     builder_tag = "kaltsit_esperanta",
 })
+
+-- Mon3tr 手持玩偶: 2月球环形山地皮 + 2牛毛 + 2蜘蛛丝
+AddCharacterRecipe("mon3tr_handheld_doll", {
+    Ingredient("turf_meteor", 2),
+    Ingredient("beefalowool", 2),
+    Ingredient("silk", 2),
+}, TECH.NONE, {
+    builder_tag = "kaltsit_esperanta",
+})

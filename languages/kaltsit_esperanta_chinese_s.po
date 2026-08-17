@@ -328,3 +328,18 @@ msgstr "摧毁"
 msgctxt "STRINGS.ACTIONS.USE_TACTICAL_ANCHOR.GENERIC"
 msgid "Teleport"
 msgstr "折跃"
+
+#. STRINGS.NAMES.MON3TR_HANDHELD_DOLL
+msgctxt "STRINGS.NAMES.MON3TR_HANDHELD_DOLL"
+msgid "Mon3tr Handheld Doll"
+msgstr "耄嘶塔"
+
+#. STRINGS.CHARACTERS.GENERIC.DESCRIBE.MON3TR_HANDHELD_DOLL
+msgctxt "STRINGS.CHARACTERS.GENERIC.DESCRIBE.MON3TR_HANDHELD_DOLL"
+msgid "Pat pat. The real Mon3tr would never stand for this."
+msgstr "摸摸头。真正的 Mon3tr 可绝不会容忍这种事。"
+
+#. STRINGS.RECIPE_DESC.MON3TR_HANDHELD_DOLL
+msgctxt "STRINGS.RECIPE_DESC.MON3TR_HANDHELD_DOLL"
+msgid "Holding it steadies the mind. Feed it a Walking Cane and it'll drag you along faster."
+msgstr "握着它，心神便稳。喂它一根步行手杖，它便拖着你跑得更快。"

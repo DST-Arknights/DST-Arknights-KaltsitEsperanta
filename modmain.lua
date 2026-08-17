@@ -2,7 +2,7 @@ GLOBAL.setmetatable(env, { __index = function(t, k) return GLOBAL.rawget(GLOBAL,
 PrefabFiles = { "kaltsit_esperanta", "kaltsit_esperanta_none", "kaltsit_esperanta_prototyper", "life_repairing_units",
   "special_treatment_gun",
   "special_treatment_bullet", "kaltsit_neuro_gel", "kaltsit_tissue_repair_solvent", "kaltsit_calcite",
-  "mon3tr_signboard", "kaltsit_calcite", "kaltsit_esperanta_mon3tr", "kaltsit_esperanta_fx", "kaltsit_esperanta_buff", "tactical_anchor", "tactical_anchor_range", "kaltsit_esperanta_reticule" }
+  "mon3tr_signboard", "kaltsit_calcite", "kaltsit_esperanta_mon3tr", "kaltsit_esperanta_fx", "kaltsit_esperanta_buff", "tactical_anchor", "tactical_anchor_range", "kaltsit_esperanta_reticule", "mon3tr_handheld_doll" }
 Assets = {}
 
 assert(ARK_ITEM_PACKAGE_LOADED, "请安装前置模组: ark_item_package\n please install the required mod: ark_item_package\n[https://steamcommunity.com/sharedfiles/filedetails/?id=3677284770]")
@@ -70,6 +70,9 @@ for _, def in pairs(LIFE_REPAIRING_UNITS_TRADABLE) do
   table.insert(prefabs, def.prefab)
 end
 RegisterEnhanceType("life_repairing_units", prefabs)
+
+-- Mon3tr 手持玩偶: 喂步行手杖强化(强化后手持移速 +25%)
+RegisterEnhanceType("mon3tr_handheld_doll", { "cane" })
 
 -- 生命修复单元: 预声明容器定义(初始 12 格; 升级后的格子由 lru_upgrade 动态生成 widget)
 local containers = require "containers"
