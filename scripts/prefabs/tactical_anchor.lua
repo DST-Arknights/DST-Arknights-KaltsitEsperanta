@@ -18,7 +18,7 @@ local function fn()
   inst.AnimState:SetBank("tactical_anchor")
   inst.AnimState:SetBuild("tactical_anchor")
   inst.AnimState:PlayAnimation("idle", true)
-  inst.AnimState:SetScale(3, 3, 3)
+  inst.AnimState:SetScale(2.5, 2.5, 2.5)
   inst.AnimState:SetBloomEffectHandle("shaders/anim.ksh")
   inst.entity:SetPristine()
   if not TheWorld.ismastersim then

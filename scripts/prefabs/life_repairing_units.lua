@@ -86,12 +86,12 @@ local function OnEquip(inst, owner)
   end
   local fx = inst._followfx
   fx.entity:SetParent(owner.entity)
-  if skin_build ~= nil then
-    owner:PushEvent("equipskinneditem", inst:GetSkinName())
-    fx.AnimState:OverrideItemSkinSymbol("swap_body", skin_build, "swap_body", inst.GUID, "life_repairing_units")
-  end
-  fx.Follower:FollowSymbol(owner.GUID, "swap_body", 0, -200, 0, false)
-  fx.components.highlightchild:SetOwner(owner)
+  -- if skin_build ~= nil then
+  --   owner:PushEvent("equipskinneditem", inst:GetSkinName())
+  --   fx.AnimState:OverrideItemSkinSymbol("swap_body", skin_build, "swap_body", inst.GUID, "life_repairing_units")
+  -- end
+  -- fx.Follower:FollowSymbol(owner.GUID, "swap_body", 0, -200, 0)
+  -- fx.components.highlightchild:SetOwner(owner)
 
   if owner.components.ark_flyer then
     owner.components.ark_flyer:TakeOff()
@@ -204,7 +204,7 @@ local function fn()
   MakeInventoryPhysics(inst)
   inst.AnimState:SetBank("life_repairing_units")
   inst.AnimState:SetBuild("life_repairing_units")
-  inst.AnimState:PlayAnimation("anim")
+  inst.AnimState:PlayAnimation("idle")
   inst:AddTag("heavyarmor")
   inst:AddTag("hardarmor")
   inst:AddTag("backpack")
@@ -286,13 +286,13 @@ local function fxfn()
   inst.entity:AddNetwork()
 
   inst:AddTag("FX")
+  inst.Transform:SetFourFaced()
 
   inst.AnimState:SetBank("life_repairing_units")
   inst.AnimState:SetBuild("life_repairing_units")
   inst.AnimState:PlayAnimation("anim")
-  inst.AnimState:SetFinalOffset(1)
-
-  inst:AddComponent("highlightchild")
+  inst.AnimState:SetFinalOffset(-1)
+  -- inst:AddComponent("highlightchild")
 
   inst.entity:SetPristine()
 

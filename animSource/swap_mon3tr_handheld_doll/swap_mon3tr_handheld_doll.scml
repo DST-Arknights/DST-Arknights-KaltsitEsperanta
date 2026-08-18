@@ -1,20 +1,215 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<spriter_data scml_version="1.0" generator="BrashMonkey Spriter" generator_version="b5">
-    <folder id="0" name="swap_mon3tr_handheld_doll">
-        <file id="0" name="swap_mon3tr_handheld_doll/swap_mon3tr_handheld_doll-0.png" width="368" height="368" pivot_x="0.486486" pivot_y="0.272973"/>
-    </folder>
-    <entity id="0" name="swap_mon3tr_handheld_doll">
-        <animation id="0" name="BUILD" length="1000">
-            <mainline>
-                <key id="0">
-                    <object_ref id="0" name="swap_mon3tr_handheld_doll-0" folder="0" file="0" abs_x="0" abs_y="0" abs_pivot_x="0.486486" abs_pivot_y="0.272973" abs_angle="360" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="0" key="0" z_index="0"/>
-                </key>
-            </mainline>
-            <timeline id="0" name="swap_mon3tr_handheld_doll-0">
-                <key id="0" spin="0">
-                    <object folder="0" file="0"/>
-                </key>
-            </timeline>
-        </animation>
-    </entity>
+<spriter_data scml_version="1.0" generator="BrashMonkey Spriter" generator_version="r11">
+	<folder id="0" name="swap_mon3tr_handheld_doll">
+		<file id="0" name="swap_mon3tr_handheld_doll/swap_mon3tr_handheld_doll-0-0.png" width="137" height="150" pivot_x="0.5393637" pivot_y="0.3924406" />
+		<file id="1" name="swap_mon3tr_handheld_doll/swap_mon3tr_handheld_doll-0-1.png" width="137" height="150" pivot_x="0.5393637" pivot_y="0.3924406" />
+		<file id="2" name="swap_mon3tr_handheld_doll/swap_mon3tr_handheld_doll-0-2.png" width="137" height="150" pivot_x="0.5393637" pivot_y="0.3924406" />
+		<file id="3" name="swap_mon3tr_handheld_doll/swap_mon3tr_handheld_doll-0-3.png" width="137" height="150" pivot_x="0.5393637" pivot_y="0.3924406" />
+		<file id="4" name="swap_mon3tr_handheld_doll/swap_mon3tr_handheld_doll-0-4.png" width="137" height="150" pivot_x="0.5393637" pivot_y="0.3924406" />
+		<file id="5" name="swap_mon3tr_handheld_doll/swap_mon3tr_handheld_doll-0-5.png" width="137" height="150" pivot_x="0.5393637" pivot_y="0.3924406" />
+		<file id="6" name="swap_mon3tr_handheld_doll/swap_mon3tr_handheld_doll-0-6.png" width="137" height="150" pivot_x="0.5393637" pivot_y="0.3924406" />
+		<file id="7" name="swap_mon3tr_handheld_doll/swap_mon3tr_handheld_doll-0-7.png" width="137" height="150" pivot_x="0.5393637" pivot_y="0.3924406" />
+		<file id="8" name="swap_mon3tr_handheld_doll/swap_mon3tr_handheld_doll-0-8.png" width="137" height="150" pivot_x="0.5393637" pivot_y="0.3924406" />
+		<file id="9" name="swap_mon3tr_handheld_doll/swap_mon3tr_handheld_doll-0-9.png" width="137" height="150" pivot_x="0.5393637" pivot_y="0.3924406" />
+	</folder>
+	<entity id="0" name="swap_mon3tr_handheld_doll">
+		<animation id="0" name="BUILD" length="1023" interval="33">
+			<mainline>
+				<key id="0" time="0">
+					<object_ref id="0" timeline="0" key="0" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="1" time="33">
+					<object_ref id="0" timeline="0" key="1" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="2" time="66">
+					<object_ref id="0" timeline="0" key="2" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="3" time="99">
+					<object_ref id="0" timeline="0" key="3" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="4" time="132">
+					<object_ref id="0" timeline="0" key="4" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="5" time="165">
+					<object_ref id="0" timeline="0" key="5" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="6" time="198">
+					<object_ref id="0" timeline="0" key="6" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="7" time="231">
+					<object_ref id="0" timeline="0" key="7" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="8" time="264">
+					<object_ref id="0" timeline="0" key="8" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="9" time="297">
+					<object_ref id="0" timeline="0" key="9" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="10" time="330">
+					<object_ref id="0" timeline="0" key="10" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="11" time="363">
+					<object_ref id="0" timeline="0" key="11" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="12" time="396">
+					<object_ref id="0" timeline="0" key="12" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="13" time="429">
+					<object_ref id="0" timeline="0" key="13" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="14" time="462">
+					<object_ref id="0" timeline="0" key="14" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="15" time="495">
+					<object_ref id="0" timeline="0" key="15" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="16" time="528">
+					<object_ref id="0" timeline="0" key="16" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="17" time="561">
+					<object_ref id="0" timeline="0" key="17" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="18" time="594">
+					<object_ref id="0" timeline="0" key="18" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="19" time="627">
+					<object_ref id="0" timeline="0" key="19" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="20" time="660">
+					<object_ref id="0" timeline="0" key="20" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="21" time="693">
+					<object_ref id="0" timeline="0" key="21" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="22" time="726">
+					<object_ref id="0" timeline="0" key="22" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="23" time="759">
+					<object_ref id="0" timeline="0" key="23" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="24" time="792">
+					<object_ref id="0" timeline="0" key="24" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="25" time="825">
+					<object_ref id="0" timeline="0" key="25" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="26" time="858">
+					<object_ref id="0" timeline="0" key="26" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="27" time="891">
+					<object_ref id="0" timeline="0" key="27" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="28" time="924">
+					<object_ref id="0" timeline="0" key="28" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="29" time="957">
+					<object_ref id="0" timeline="0" key="29" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="30" time="990">
+					<object_ref id="0" timeline="0" key="30" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+				<key id="31" time="1023">
+					<object_ref id="0" timeline="0" key="31" z_index="0" name="swap_mon3tr_handheld_doll" />
+				</key>
+			</mainline>
+			<timeline id="0" name="swap_mon3tr_handheld_doll">
+				<key id="0" time="0" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="1" time="33" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="2" time="66" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="3" time="99" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="4" time="132" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="5" time="165" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="6" time="198" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="7" time="231" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="8" time="264" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="9" time="297" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="10" time="330" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="11" time="363" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="12" time="396" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="13" time="429" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="14" time="462" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="15" time="495" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="16" time="528" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="17" time="561" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="18" time="594" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="19" time="627" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="20" time="660" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="21" time="693" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="22" time="726" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="23" time="759" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="24" time="792" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="25" time="825" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="26" time="858" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="27" time="891" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="28" time="924" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="29" time="957" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="30" time="990" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+				<key id="31" time="1023" spin="0" curve_type="instant">
+					<object folder="0" file="0" x="0" y="-0" scale_x="1" scale_y="1" angle="0" />
+				</key>
+			</timeline>
+		</animation>
+	</entity>
 </spriter_data>

@@ -86,7 +86,7 @@ local function AddLifeRepairingUnitsContainer(name, cols, rows)
   local param = {
     widget = {
       slotpos = {},
-      animbank = "ui_backpack_2x4",  -- TODO: 对应背包 UI 背景资源
+      animbank = "ui_backpack_2x4",
       animbuild = "ui_backpack_2x4",
       pos = Vector3(-5, -80, 0),
     },

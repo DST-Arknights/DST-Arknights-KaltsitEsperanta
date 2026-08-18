@@ -22,13 +22,13 @@ msgstr "*行走在这片大地之上\n*在众多领域皆拥有渊博智识"
 
 #. STRINGS.CHARACTER_QUOTES.kaltsit_esperanta
 msgctxt "STRINGS.CHARACTER_QUOTES.kaltsit_esperanta"
-msgid "Destroy, and heal."
-msgstr "独行之人"
+msgid "The head of Rhodes Island's medical department."
+msgstr "罗德岛医疗部门负责人"
 
 #. STRINGS.CHARACTER_SURVIVABILITY.kaltsit_esperanta
 msgctxt "STRINGS.CHARACTER_SURVIVABILITY.kaltsit_esperanta"
-msgid "All can live."
-msgstr "独行之人"
+msgid "Unknown"
+msgstr "未知"
 
 #. STRINGS.NAMES.KALTSIT_ESPERANTA
 msgctxt "STRINGS.NAMES.KALTSIT_ESPERANTA"
@@ -236,17 +236,17 @@ msgstr "破梏重生"
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.1
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.1"
 msgid "Locked"
-msgstr "// :TODO"
+msgstr "许多事物我都要重新熟悉"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.2
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.2"
 msgid "Locked"
-msgstr "// :TODO"
+msgstr "许多事物我都要重新熟悉"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.3
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.3"
 msgid "Locked"
-msgstr "// :TODO"
+msgstr "许多事物我都要重新熟悉"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.1
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.1"

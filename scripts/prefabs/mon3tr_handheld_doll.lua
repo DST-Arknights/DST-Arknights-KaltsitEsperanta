@@ -35,12 +35,16 @@ local function OnEquip(inst, owner)
   owner.AnimState:OverrideSymbol("swap_object", "swap_mon3tr_handheld_doll", "swap_mon3tr_handheld_doll")
   owner.AnimState:Show("ARM_carry")
   owner.AnimState:Hide("ARM_normal")
+  owner.AnimState:HideSymbol("arm_lower")
+  owner.AnimState:HideSymbol("hand")
 end
 
 local function OnUnequip(inst, owner)
   owner.AnimState:Hide("ARM_carry")
   owner.AnimState:Show("ARM_normal")
   owner.AnimState:ClearOverrideSymbol("swap_object")
+  owner.AnimState:ShowSymbol("arm_lower")
+  owner.AnimState:ShowSymbol("hand")
 end
 
 local function fn()
