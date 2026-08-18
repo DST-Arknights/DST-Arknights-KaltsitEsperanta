@@ -1,15 +1,20 @@
 -- ============================================================
--- 战术锚点：点击折跃
+-- 战术锚点：点击折跃（懒人魔杖 / The Lazy Explorer 风格）
 -- ============================================================
--- 其他玩家（含凯尔希）点击锚点 -> 折跃到锚点附近安全落点。
+-- 其他玩家（含凯尔希）点击锚点 -> 折跃到锚点位置。
 -- 每个目标仅能折跃一次（锚点组件按目标 GUID 记录，经 OnSave/OnLoad 存档）。
 --
 -- 动作链路（源码验证）：
 --   拾取器自动触发：PlayerActionPicker 拾取 -> DoAction -> LocoMotor:PushAction
---                    -> PushBufferedAction -> SG(portal_jumpin_pre) -> PerformBufferedAction -> fn
+--                    -> PushBufferedAction -> SG(quicktele) -> PerformBufferedAction -> fn
 --   手动直接触发：PlayerController:DoAction(BufferedAction(...)) -> LocoMotor:PushAction
 --                  -> PushBufferedAction -> SG -> PerformBufferedAction -> fn
 --   两条链路汇合于同一 fn，最大化代码复用。
+--
+-- 折跃表现：复用原版懒人魔杖（orange staff）的 quicktele 状态（SGwilson/SGwilson_client
+--   内建，服务端/客户端均已加载）。quicktele 播 atk_pre/atk 挥舞动画，fn 内模拟
+--   blinkstaff:Blink（锚点不是魔杖，无 blinkstaff 组件，故直接内联实现）：
+--   播完挥舞后隐藏角色 -> 0.25s 后 Physics:Teleport 到锚点 -> 重现 + sand_puff 特效。
 --
 -- 职责分离：
 --   fn 只做折跃 + 记已折跃；"是否需要额外触发技能效果"放在 fn 成功后的
@@ -32,19 +37,55 @@ AddAction("USE_TACTICAL_ANCHOR", STRINGS.ACTIONS.USE_TACTICAL_ANCHOR.GENERIC, fu
   if not ta:CanTargetTeleported(doer) then
     return false
   end
-	local act_pos = target:GetPosition()
-  local anchorPos = target:GetPosition()
+	local anchorPos = target:GetPosition()
+  local x, y, z = doer.Transform:GetWorldPosition()
+  -- 折跃可用性检查（同原版 blinkstaff:Blink）
+  if not IsTeleportingPermittedFromPointToPoint(x, y, z, anchorPos.x, anchorPos.y, anchorPos.z)
+    or not TheWorld.Map:IsPassableAtPoint(anchorPos:Get())
+    or TheWorld.Map:IsGroundTargetBlocked(anchorPos) then
+    return false
+  end
   ta:MarkTeleported(doer)
   local skill3 = doer.components.ark_skill and doer.components.ark_skill:GetSkill(SKILL3_ID)
   if skill3 ~= nil and skill3:IsActivating() and skill3:GetState("anchor") == target and skill3:GetState("recast") == nil then
     common.ActiveDoctorsMonumentsBuff(doer, anchorPos, skill3:GetLevelParams())
   end
-  local platform = TheWorld.Map:GetPlatformAtPoint(act_pos.x, act_pos.z)
-  local platformoffset
-  if platform then
-      platformoffset = platform:GetPosition() - act_pos
+
+  -- 懒人魔杖式折跃：quicktele 状态已在 ActionHandler 进入（播 atk_pre/atk 挥舞动画）。
+  -- 以下模拟原版 blinkstaff:Blink / OnBlinked —— 隐藏 -> 0.25s 后传送到锚点 -> 重现。
+  doer.sg.statemem.onstartblinking = function()
+    doer.sg:AddStateTag("noattack")
+    if doer.components.health then doer.components.health:SetInvincible(true) end
+    if doer.DynamicShadow then doer.DynamicShadow:Enable(false) end
+    doer:Hide()
   end
-  act.doer.sg:GoToState("portal_jumpin", {dest = act_pos, platform = platform, platformoffset = platformoffset,})
+  doer.sg.statemem.onstopblinking = function()
+    doer.sg:RemoveStateTag("noattack")
+    if doer.sg.statemem.endbusy then doer.sg:RemoveStateTag("busy") end
+    if doer.components.health then doer.components.health:SetInvincible(false) end
+    if doer.DynamicShadow then doer.DynamicShadow:Enable(true) end
+    doer:Show()
+  end
+  -- 原地消散特效 + 音效
+  SpawnPrefab("sand_puff_large_back").Transform:SetPosition(x, y - 0.1, z)
+  SpawnPrefab("sand_puff_large_front").Transform:SetPosition(x, y, z)
+  doer.SoundEmitter:PlaySound("dontstarve/common/staff_blink")
+  doer.sg.statemem.onstartblinking()
+  -- 0.25s 后传送到锚点并重现
+  doer:DoTaskInTime(0.25, function(caster)
+    if not caster:IsValid() or (caster.components.health and caster.components.health:IsDead()) then
+      return
+    end
+    if caster.sg and caster.sg.statemem.onstopblinking then
+      caster.sg.statemem.onstopblinking()
+    end
+    if caster.Physics then
+      caster.Physics:Teleport(anchorPos:Get())
+    end
+    SpawnPrefab("sand_puff_large_back").Transform:SetPosition(anchorPos.x, anchorPos.y - 0.1, anchorPos.z)
+    SpawnPrefab("sand_puff_large_front").Transform:SetPosition(anchorPos.x, anchorPos.y, anchorPos.z)
+    caster.SoundEmitter:PlaySound("dontstarve/common/staff_blink")
+  end)
   return true
 end)
 ACTIONS.USE_TACTICAL_ANCHOR.distance = 40
@@ -58,5 +99,5 @@ AddComponentAction('SCENE', 'tactical_anchor', function(inst, doer, actions, rig
   table.insert(actions, ACTIONS.USE_TACTICAL_ANCHOR)
 end)
 
-AddStategraphActionHandler("wilson", ActionHandler(ACTIONS.USE_TACTICAL_ANCHOR, "portal_jumpin_pre"))
-AddStategraphActionHandler("wilson_client", ActionHandler(ACTIONS.USE_TACTICAL_ANCHOR, "portal_jumpin_pre"))
+AddStategraphActionHandler("wilson", ActionHandler(ACTIONS.USE_TACTICAL_ANCHOR, "quicktele"))
+AddStategraphActionHandler("wilson_client", ActionHandler(ACTIONS.USE_TACTICAL_ANCHOR, "quicktele"))

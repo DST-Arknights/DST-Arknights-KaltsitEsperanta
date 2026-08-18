@@ -1,7 +1,5 @@
 table.insert(Assets, Asset("ATLAS", "images/ui_kaltsit_esperanta_skill.xml"))
 
-table.insert(Assets, Asset("ANIM", "anim/wortox_portal.zip"))
-
 local ARK_CONSTANTS = require("ark_constants")
 local common = require("kaltsit_esperanta_common")
 
