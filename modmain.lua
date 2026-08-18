@@ -14,6 +14,8 @@ RegisterPOFile(GetModConfigData("language"), {
   zh = 'languages/kaltsit_esperanta_chinese_s.po',
 })
 
+AddMinimapAtlas("images/map_icons/kaltsit_esperanta.xml") --人物小地图显示
+
 local kaltsit_esperanta_starting_items = {
   "special_treatment_gun",
   "norm_heal_bullet",
