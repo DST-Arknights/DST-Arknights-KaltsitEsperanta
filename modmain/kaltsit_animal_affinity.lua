@@ -87,6 +87,9 @@ end)
 
 for _, name in ipairs({ "merm", "mermguard", "merm_shadow", "mermguard_shadow", "merm_lunar", "mermguard_lunar" }) do
   AddPrefabPostInit(name, function(inst)
+    if not TheWorld.ismastersim then
+      return
+    end
     if inst.components.trader then
       ArkHookFunction(inst.components.trader, "test", function(next, inst, item, giver, count)
         if giver:HasTag("kaltsit_esperanta") then

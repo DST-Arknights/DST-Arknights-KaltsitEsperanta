@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<spriter_data scml_version="1.0" generator="BrashMonkey Spriter" generator_version="r4.1">
+<spriter_data scml_version="1.0" generator="BrashMonkey Spriter" generator_version="b5">
     <folder id="0" name="idle">
         <file id="0" name="idle/idle.png" width="949" height="609" pivot_x="0.485774" pivot_y="0.241379"/>
     </folder>
@@ -7,51 +7,51 @@
         <file id="0" name="swap/swap.png" width="949" height="685" pivot_x="0.485774" pivot_y="0.067153"/>
     </folder>
     <entity id="0" name="life_repairing_units">
-        <animation id="0" name="idle" length="1000" interval="100">
+        <animation id="0" name="idle" length="1000">
             <mainline>
                 <key id="0">
-                    <object_ref id="0" timeline="0" key="0" z_index="0"/>
+                    <object_ref id="0" name="idle" folder="0" file="0" abs_x="16" abs_y="1" abs_pivot_x="0.485774" abs_pivot_y="0.241379" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="0" key="0" z_index="0"/>
                 </key>
             </mainline>
             <timeline id="0" name="idle">
                 <key id="0" spin="0">
-                    <object folder="0" file="0" x="16" y="1"/>
+                    <object folder="0" file="0" x="16" y="1" angle="0"/>
                 </key>
             </timeline>
         </animation>
-        <animation id="1" name="anim_down" length="1000" interval="100">
+        <animation id="1" name="anim_down" length="1000">
             <mainline>
                 <key id="0">
-                    <object_ref id="0" timeline="0" key="0" z_index="0"/>
+                    <object_ref id="0" name="swap" folder="1" file="0" abs_x="0" abs_y="114.142857" abs_pivot_x="0.485774" abs_pivot_y="0.067153" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="0" key="0" z_index="0"/>
                 </key>
             </mainline>
             <timeline id="0" name="swap">
                 <key id="0" spin="0">
-                    <object folder="1" file="0" y="114.142857"/>
+                    <object folder="1" file="0" y="114.142857" angle="0"/>
                 </key>
             </timeline>
         </animation>
-        <animation id="2" name="anim_up" length="1000" interval="100">
+        <animation id="2" name="anim_up" length="1000">
             <mainline>
                 <key id="0">
-                    <object_ref id="0" timeline="0" key="0" z_index="0"/>
+                    <object_ref id="0" name="swap" folder="1" file="0" abs_x="0" abs_y="114.142857" abs_pivot_x="0.485774" abs_pivot_y="0.067153" abs_angle="0" abs_scale_x="-1" abs_scale_y="1" abs_a="1" timeline="0" key="0" z_index="0"/>
                 </key>
             </mainline>
             <timeline id="0" name="swap">
                 <key id="0" spin="0">
-                    <object folder="1" file="0" y="114.142857"/>
+                    <object folder="1" file="0" y="114.142857" angle="0" scale_x="-1"/>
                 </key>
             </timeline>
         </animation>
-        <animation id="3" name="anim_side" length="1000" interval="100">
+        <animation id="3" name="anim_side" length="1000">
             <mainline>
                 <key id="0">
-                    <object_ref id="0" timeline="0" key="0" z_index="0"/>
+                    <object_ref id="0" name="swap" folder="1" file="0" abs_x="0" abs_y="114.142857" abs_pivot_x="0.485774" abs_pivot_y="0.067153" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="0" key="0" z_index="0"/>
                 </key>
             </mainline>
             <timeline id="0" name="swap">
                 <key id="0" spin="0">
-                    <object folder="1" file="0" y="114.142857"/>
+                    <object folder="1" file="0" y="114.142857" angle="0"/>
                 </key>
             </timeline>
         </animation>

@@ -118,6 +118,9 @@ end, {
 
 -- 处理绿宝石项链, 优先使用凯尔希智识的折扣
 AddPrefabPostInit("greenamulet", function(inst)
+  if not TheWorld.ismastersim then
+    return
+  end
   ArkHookFunction(inst.components.equippable, "onequipfn", function(next, inst, owner, from_ground)
     next(inst, owner, from_ground)
     local onitembuild = inst.onitembuild
