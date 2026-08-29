@@ -9,7 +9,7 @@ RegisterInventoryItemAtlas("images/inventoryimages/special_treatment_gun.xml", "
 -- TUNING
 -- ============================================================
 -- TUNING.SPECIAL_TREATMENT_GUN_ATTACK_PERIOD = 1.5 -- 攻速间隔（秒），越大越慢
-TUNING.SPECIAL_TREATMENT_GUN_RANGE_SHOOT   = 5
+TUNING.SPECIAL_TREATMENT_GUN_RANGE_SHOOT   = 10
 TUNING.SPECIAL_TREATMENT_GUN_RANGE_MELEE   = 0
 local SPECIAL_TREATMENT_DESTROY_PROJECTILE = "special_treatment_destroy_proj"
 local gun_assets                           = {

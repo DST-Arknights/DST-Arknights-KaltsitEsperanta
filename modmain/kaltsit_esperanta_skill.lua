@@ -3,6 +3,14 @@ table.insert(Assets, Asset("ATLAS", "images/ui_kaltsit_esperanta_skill.xml"))
 local ARK_CONSTANTS = require("ark_constants")
 local common = require("kaltsit_esperanta_common")
 
+-- 三技能范围选择器（预声明，targetSelector 引用）
+RegisterTargetSelector("kaltsit_esperanta_skill3_aoe", AreaTargetSelector {
+  range          = 20,
+  deployradius   = 1,
+  reticuleprefab = "kaltsit_esperanta_skill3_reticuleaoe",
+  pingprefab     = "kaltsit_esperanta_skill3_reticuleaoeping",
+})
+
 
 local skill1DefaultParams = { range = 20, health = 2, invincible_duration = 10, treatment_duration = 20, health_cost = 40, sanity_cost = 40 }
 
@@ -181,19 +189,7 @@ local skills = { {
   OnActivate = OnSkill3Activate,
   OnRecast = OnSkill3Recast,
   OnDeactivate = OnSkill3Deactivate,
-  targeting = {
-    mode = 'aoe',
-    config = {
-      reticule = {
-        reticuleprefab = "kaltsit_esperanta_skill3_reticuleaoe",
-        pingprefab = "kaltsit_esperanta_skill3_reticuleaoeping",
-      },
-      aoetargeting = {
-        deployradius = 1,
-        range = 20,
-      },
-    }
-  },
+  targetSelector = "kaltsit_esperanta_skill3_aoe",
   levels = { {
     -- activationEnergy = 10 * 60,
     activationEnergy = 10,

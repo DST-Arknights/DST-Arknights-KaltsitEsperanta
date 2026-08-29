@@ -164,7 +164,6 @@ local masterPostInit = function(inst)
   -- Skills
   inst:AddComponent("ark_skill")
   inst:AddComponent("ark_currency")
-  inst:AddComponent("i18n_talker")
   -- prototyper
   -- inst:AddComponent("prototyper")
   -- inst.components.prototyper.trees = TUNING.PROTOTYPER_TREES.KALTSIT_INTELLECT_0
