@@ -39,35 +39,53 @@ AddPrototyperDef("kaltsit_esperanta_prototyper", {
     skip_default_station_focus = true,
 })
 
-local function CanBeOverrideTarget(builder, inst)
-    return inst.components.prototyper ~= nil
+local PROTOTYPER_TAGS = { "prototyper" }
+
+local function CanUseExternalPrototyper(builder, inst)
+    return inst ~= nil
+        and inst:IsValid()
+        and inst:HasTags(PROTOTYPER_TAGS)
+        and not inst:HasOneOfTags(builder.exclude_tags)
         and not inst:HasTag("kaltsit_esperanta_prototyper")
-        and (inst.components.prototyper.restrictedtag == nil or builder.inst:HasTag(inst.components.prototyper.restrictedtag))
+        and inst.components.prototyper ~= nil
+        and (inst.components.prototyper.restrictedtag == nil
+            or builder.inst:HasTag(inst.components.prototyper.restrictedtag))
+        and builder.inst:IsNear(inst, TUNING.RESEARCH_MACHINE_DIST)
 end
 
-local function FindNearestRealPrototyper(builder)
+local function FindExternalPrototyper(builder)
     local x, y, z = builder.inst.Transform:GetWorldPosition()
     local ents = TheSim:FindEntities(x, y, z, TUNING.RESEARCH_MACHINE_DIST, { "prototyper" }, builder.exclude_tags)
 
-    local best = nil
-    local best_dist = nil
-
     for _, ent in ipairs(ents) do
-        if CanBeOverrideTarget(builder, ent) then
-            local dist = builder.inst:GetDistanceSqToInst(ent)
-            if best == nil or dist < best_dist then
-                best = ent
-                best_dist = dist
-            end
+        if CanUseExternalPrototyper(builder, ent) then
+            -- FindEntities is distance ordered; vanilla builder also uses the first valid station.
+            return ent
         end
     end
+end
 
-    return best
+local function SetExternalPrototyper(builder, intellect, external)
+    local old_external = builder._kaltsit_merged_prototyper
+    if old_external ~= external then
+        if old_external ~= nil
+            and old_external:IsValid()
+            and old_external.components.prototyper ~= nil then
+            old_external.components.prototyper:TurnOff(builder.inst)
+        end
+        if external ~= nil then
+            external.components.prototyper:TurnOn(builder.inst)
+        end
+        builder._kaltsit_merged_prototyper = external
+    end
+
+    intellect:SetMergedPrototyper(external)
 end
 
 AddClassPostConstruct("components/builder_replica", function(self)
     ArkHookFunction(self, "OpenCraftingMenu", function(next, ...)
-        if self.inst.components.builder._kaltsit_auto_override_running then
+        local builder = self.inst.components.builder
+        if builder ~= nil and builder._kaltsit_auto_override_running then
             return
         end
         return next(...)
@@ -79,16 +97,35 @@ AddComponentPostInit("builder", function(self)
         return
     end
     ArkHookFunction(self, "EvaluateTechTrees", function(next, self)
-        local auto_target = nil
-
-        if self.override_current_prototyper == nil then
-            auto_target = FindNearestRealPrototyper(self)
-            if auto_target ~= nil then
-                self.override_current_prototyper = auto_target
-            end
+        local enabled = self.inst.player_classified == nil
+            or self.inst.player_classified.iscraftingenabled:value()
+        local intellect = self.inst.prototyper_ent
+        if intellect == nil
+            or not intellect:IsValid()
+            or intellect.components.prototyper == nil then
+            return next(self)
         end
 
-        self._kaltsit_auto_override_running = auto_target ~= nil
+        if not enabled then
+            self._kaltsit_requested_prototyper = nil
+            SetExternalPrototyper(self, intellect, nil)
+            return next(self)
+        end
+
+        local requested = self.override_current_prototyper
+        local requested_external = CanUseExternalPrototyper(self, requested) and requested or nil
+        if requested == nil then
+            self._kaltsit_requested_prototyper = nil
+        elseif requested_external ~= nil then
+            self._kaltsit_requested_prototyper = requested_external
+        elseif not CanUseExternalPrototyper(self, self._kaltsit_requested_prototyper) then
+            self._kaltsit_requested_prototyper = nil
+        end
+
+        local external = self._kaltsit_requested_prototyper or FindExternalPrototyper(self)
+        SetExternalPrototyper(self, intellect, external)
+        self.override_current_prototyper = intellect
+        self._kaltsit_auto_override_running = true
 
         local ok, err = xpcall(function()
             return next(self)
@@ -98,6 +135,10 @@ AddComponentPostInit("builder", function(self)
 
         if not ok then
             error(err)
+        end
+
+        if requested_external ~= nil then
+            self.inst.replica.builder:OpenCraftingMenu()
         end
     end)
 end)
