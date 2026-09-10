@@ -138,6 +138,7 @@ local function gun_fn()
   inst:AddComponent("inventoryitem")
   inst:AddComponent("equippable")
   inst.components.equippable.equipslot = EQUIPSLOTS.HANDS
+  inst.components.equippable.restrictedtag = "kaltsit_esperanta"
   inst.components.equippable:SetOnEquip(OnEquip)
   inst.components.equippable:SetOnUnequip(OnUnequip)
   inst.components.equippable:SetOnEquipToModel(OnEquipToModel)

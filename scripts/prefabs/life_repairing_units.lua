@@ -223,6 +223,7 @@ local function fn()
   inst:AddComponent("equippable")
 
   inst.components.equippable.equipslot = EQUIPSLOTS.BODY
+  inst.components.equippable.restrictedtag = "kaltsit_esperanta"
   inst.components.equippable.walkspeedmult = BASE_WALKSPEED
   inst.components.equippable.dapperness = BASE_DAPPERNESS
   inst.components.equippable:SetOnEquip(OnEquip)
