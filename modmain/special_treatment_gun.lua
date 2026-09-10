@@ -9,6 +9,12 @@ local function CanEnterSpecialTreatmentShootState(inst)
       and common.IsSpecialTreatmentDestroySkillActive(inst)
 end
 
+-- rider: 服务端有 components.rider, 客户端只有 replica.rider, 两边都用 replica 判定
+local function IsRiding(inst)
+  local rider = inst.replica.rider or inst.components.rider
+  return rider ~= nil and rider:IsRiding()
+end
+
 -- scripts/prefabs/special_treatment_gun.lua
 -- 特质治疗枪 + 三种治疗弹 + 各自独立投射物
 -- 弹药机制: 枪上有 1 格物品槽，将治疗弹放入后方可发射
@@ -145,7 +151,7 @@ AddStategraphState("wilson", State {
 
   onenter = function(inst)
     ArkLogger:Debug("Entering kaltsit_shoot state for", inst)
-    if inst.components.rider:IsRiding() then
+    if IsRiding(inst) then
       inst.Transform:SetFourFaced()
     end
     if CanEnterSpecialTreatmentShootState(inst) then
@@ -167,7 +173,7 @@ AddStategraphState("wilson", State {
   end,
 
   onexit = function(inst)
-    if inst.components.rider:IsRiding() then
+    if IsRiding(inst) then
       inst.Transform:SetSixFaced()
     end
   end,
@@ -196,7 +202,7 @@ AddStategraphState("wilson_client", State {
   tags = { "attack", "notalking", "abouttoattack" },
 
   onenter = function(inst)
-    if inst.components.rider:IsRiding() then
+    if IsRiding(inst) then
       inst.Transform:SetFourFaced()
     end
     if CanEnterSpecialTreatmentShootState(inst) then
@@ -211,7 +217,7 @@ AddStategraphState("wilson_client", State {
   end,
 
   onexit = function(inst)
-    if inst.components.rider:IsRiding() then
+    if IsRiding(inst) then
       inst.Transform:SetSixFaced()
     end
   end,
