@@ -240,14 +240,21 @@ local function MakeDestroyProjectileOnHit(def)
       return
     end
     local x, y, z = target.Transform:GetWorldPosition()
+    if target.SoundEmitter then
+      common.PlaySkillSfx(target, "p_imp_khlrftcrd_h")
+    else
+      common.PlaySkillSfx(attacker, "p_imp_khlrftcrd_h")
+    end
     local fx = SpawnPrefab("special_treatment_bullet_fx_enemy")
     if fx then
       fx.Transform:SetPosition(x, y, z)
+      fx.Transform:SetScale(2, 2, 2)
     end
     attacker:DoTaskInTime(0.3, function()
       local fx = SpawnPrefab("special_treatment_bullet_fx_ally")
       if fx then
         fx.Transform:SetPosition(x, y, z)
+        fx.Transform:SetScale(2, 2, 2)
       end
     end)
     local skill = attacker and attacker.components.ark_skill and attacker.components.ark_skill:GetSkill("kaltsit_esperanta_skill2")
@@ -267,10 +274,15 @@ local function MakeDestroyProjectileOnHit(def)
     local friends = common.FindFriendlyEntities(attacker, nil, destroy_range, function(ent)
       return not ent:HasTag("ghost")
     end)
+    local healed = false
     for _, friend in ipairs(friends) do
       if friend.components.health then
         friend.components.health:DoDelta(health)
+        healed = true
       end
+    end
+    if healed then
+      common.PlaySkillSfx(attacker, "p_imp_khlrftcrh_h")
     end
     if skill then
       skill:CutBullet()

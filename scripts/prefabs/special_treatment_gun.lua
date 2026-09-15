@@ -93,6 +93,9 @@ local function OnProjectileLaunched(inst, attacker, target, proj)
   local skill_activating = skill and skill:IsActivating()
   -- 只有特殊弹药（技能2 + 生命修复单元）不消耗枪内弹药；普通弹药一律消耗
   local destroy_ready = skill_activating and common.HasEquippedLifeRepairingUnits(owner)
+  if destroy_ready then
+    common.PlaySkillSfx(inst, "p_atk_khlrftcrdfr_h")
+  end
   if not destroy_ready then
     -- 如果是普通弹药，则消耗弹药
     local ammo_stack = inst.components.container:GetItemInSlot(1)

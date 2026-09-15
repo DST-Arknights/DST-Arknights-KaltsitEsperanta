@@ -132,6 +132,20 @@ local function ActiveDoctorsMonumentsBuff(doer, pos, levelParams)
   end
 end
 
+-- 凯尔希·思衡托技能音效
+-- soundSource/kaltsit_esperanta/*.mp3 手动编译为 sound/kaltsit_esperanta.fev/.fsb。
+-- FEV 事件组固定为 sfx，事件名与 mp3 文件名一致。
+local SKILL_SFX_ROOT = "kaltsit_esperanta/sfx/"
+local function PlaySkillSfx(inst, event, volume)
+  if inst == nil or inst.SoundEmitter == nil then
+    return
+  end
+  if volume == nil then
+    volume = 0.35
+  end
+  inst.SoundEmitter:PlaySound(SKILL_SFX_ROOT .. event, nil, volume)
+end
+
 return {
   CanHitSpecialTreatmentHealTarget = CanHitSpecialTreatmentHealTarget,
   CanHitSpecialTreatmentDestroyTarget = CanHitSpecialTreatmentDestroyTarget,
@@ -147,4 +161,5 @@ return {
   destroyableTags = destroyableTags,
   FindFriendlyEntities = FindFriendlyEntities,
   ActiveDoctorsMonumentsBuff = ActiveDoctorsMonumentsBuff,
+  PlaySkillSfx = PlaySkillSfx,
 }

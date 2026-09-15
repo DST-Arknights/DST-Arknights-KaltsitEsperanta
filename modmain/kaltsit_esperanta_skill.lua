@@ -37,10 +37,14 @@ local function OnSkill1Activate(skill, data)
     skill.inst.components.sanity:DoDelta(-levelParams.sanity_cost)
   end
   common.ActiveDoctorsMonumentsBuff(skill.inst, nil, levelParams)
+  common.PlaySkillSfx(skill.inst, "b_char_healboost")
 end
 
 local function OnSkill2ActivateTest(skill)
   local inst = skill.inst
+  if not common.HasEquippedLifeRepairingUnits(inst) then
+    return false, 'KALTSIT_ESPERANTA_NEED_LIFE_REPAIRING_UNITS'
+  end
   -- 扣san
   local levelParams = skill:GetLevelParams()
   if inst.components.sanity and inst.components.sanity.current < levelParams.sanity_cost then
@@ -55,6 +59,7 @@ local function OnSkill2Activate(skill, data)
   if inst.components.sanity then
     inst.components.sanity:DoDelta(-levelParams.sanity_cost)
   end
+  common.PlaySkillSfx(inst, "p_skill_khlrftcr_h")
 end
 
 local function Skill2LevelDesc(skill)
@@ -71,12 +76,17 @@ local function OnSkill3Activate(skill, data)
   end
   local anchor = SpawnPrefab("tactical_anchor")
   anchor.Transform:SetPosition(pos:Get())
+  common.PlaySkillSfx(inst, "p_imp_khlrftcrmk")
   -- 领域 buff 强度：每秒回最大生命 2% + 攻击力提升 20%（health_percent / damage_multiplier）
   anchor.components.tactical_anchor:SetFieldParams(skill:GetLevelParams())
   skill:SetState("anchor", anchor)
   local skill1 = inst.components.ark_skill:GetSkill("kaltsit_esperanta_skill1")
   local skill1Params = skill1 and skill1:GetLevelParams() or skill1DefaultParams
   common.ActiveDoctorsMonumentsBuff(inst, pos, skill1Params)
+  common.PlaySkillSfx(inst, "p_skill_khlrftcr_s")
+  inst:DoTaskInTime(0.7, function()
+    common.PlaySkillSfx(inst, "p_skill_khlrftcrfd")
+  end)
   inst.SoundEmitter:PlaySound("dontstarve/wilson/attack_whoosh", nil, nil, true)
   inst.sg:GoToState("quickcastspell")
   return true
@@ -151,28 +161,28 @@ local skills = { {
       activationEnergy = 15,
       bulletCount = 10,
       desc = Skill2LevelDesc,
-      params = { sanity_cost = 200, damage = 2000, aoeRange = 3, health = 80 },
+      params = { sanity_cost = 200, damage = 2000, aoeRange = 6, health = 80 },
     },
     {
       -- activationEnergy = 3 * 60,
       activationEnergy = 15,
       bulletCount = 10,
       desc = Skill2LevelDesc,
-      params = { sanity_cost = 200, damage = 3000, aoeRange = 3, health = 80 },
+      params = { sanity_cost = 200, damage = 3000, aoeRange = 6, health = 80 },
     },
     {
       -- activationEnergy = 3 * 60,
       activationEnergy = 15,
       bulletCount = 10,
       desc = Skill2LevelDesc,
-      params = { sanity_cost = 200, damage = 4000, aoeRange = 3, health = 80 },
+      params = { sanity_cost = 200, damage = 4000, aoeRange = 6, health = 80 },
     },
     {
       -- activationEnergy = 3 * 60,
       activationEnergy = 15,
       bulletCount = 10,
       desc = Skill2LevelDesc,
-      params = { sanity_cost = 200, damage = 5000, aoeRange = 3, health = 80 },
+      params = { sanity_cost = 200, damage = 10000, aoeRange = 6, health = 80 },
     },
   }
 }, {

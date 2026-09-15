@@ -5,6 +5,12 @@ PrefabFiles = { "kaltsit_esperanta", "kaltsit_esperanta_none", "kaltsit_esperant
   "mon3tr_signboard", "kaltsit_calcite", "kaltsit_esperanta_mon3tr", "kaltsit_esperanta_fx", "kaltsit_esperanta_buff", "tactical_anchor", "tactical_anchor_range", "kaltsit_esperanta_reticule", "mon3tr_handheld_doll" }
 Assets = {}
 
+-- 凯尔希·思衡托技能音效：
+-- 源文件在 soundSource/kaltsit_esperanta/*.mp3，手动编译为 sound/kaltsit_esperanta.fev + .fsb。
+-- FEV 事件组使用 sfx，事件名与源文件名一致，播放路径为 kaltsit_esperanta/sfx/<事件名>。
+table.insert(Assets, Asset("SOUNDPACKAGE", "sound/kaltsit_esperanta.fev"))
+table.insert(Assets, Asset("SOUND", "sound/kaltsit_esperanta.fsb"))
+
 assert(ARK_ITEM_PACKAGE_LOADED, "请安装前置模组: ark_item_package\n please install the required mod: ark_item_package\n[https://steamcommunity.com/sharedfiles/filedetails/?id=3677284770]")
 
 ArkLogger:DeclareLogger("INFO", "K2CEsperanta")

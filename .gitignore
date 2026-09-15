@@ -41,6 +41,8 @@ luac.out
 /soundSource/**/*.fev
 /soundSource/**/*.fsb
 /soundSource/**/*.fdp.bak
+/soundSource/**/fmod_designer.log
+/soundSource/**/undo-log.txt
 .fsbcache/
 /temp/
 /.VSCodeCounter
