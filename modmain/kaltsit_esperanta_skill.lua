@@ -17,12 +17,15 @@ local skill1DefaultParams = { range = 20, health = 2, invincible_duration = 10, 
 local function OnSkill1ActivateTest(skill)
   local inst = skill.inst
   local levelParams = skill:GetLevelParams()
-  -- 有生命值组件满足40生命值, 有精神力组件满足20点精神力
-  if inst.components.health and inst.components.health.currenthealth < levelParams.health_cost then
-    return false, 'SKILL_CANNOT_ACTIVATE'
+  -- 生命值不足
+  if inst.components.health ~= nil and
+      inst.components.health.currenthealth < (levelParams.health_cost or 0) then
+    return false, 'KALTSIT_ESPERANTA_NOT_ENOUGH_HEALTH'
   end
-  if inst.components.sanity and inst.components.sanity.current < levelParams.sanity_cost then
-    return false, 'SKILL_CANNOT_ACTIVATE'
+  -- 精神值不足
+  if inst.components.sanity ~= nil and
+      inst.components.sanity.current < (levelParams.sanity_cost or 0) then
+    return false, 'KALTSIT_ESPERANTA_NOT_ENOUGH_SANITY'
   end
   return true
 end
@@ -42,13 +45,18 @@ end
 
 local function OnSkill2ActivateTest(skill)
   local inst = skill.inst
+  -- 启动前置：必须同时装备特质治疗枪与生命修复单元
+  if not common.HasEquippedSpecialTreatmentGun(inst) then
+    return false, 'KALTSIT_ESPERANTA_NEED_SPECIAL_TREATMENT_GUN'
+  end
   if not common.HasEquippedLifeRepairingUnits(inst) then
     return false, 'KALTSIT_ESPERANTA_NEED_LIFE_REPAIRING_UNITS'
   end
-  -- 扣san
+  -- 精神值不足（启动时扣除 levelParams.sanity_cost）
   local levelParams = skill:GetLevelParams()
-  if inst.components.sanity and inst.components.sanity.current < levelParams.sanity_cost then
-    return false, 'SKILL_CANNOT_ACTIVATE'
+  if inst.components.sanity ~= nil and
+      inst.components.sanity.current < (levelParams.sanity_cost or 0) then
+    return false, 'KALTSIT_ESPERANTA_NOT_ENOUGH_SANITY'
   end
   return true
 end
@@ -121,6 +129,14 @@ local function OnSkill3Deactivate(skill)
     anchor:Remove()
     skill:SetState("anchor", nil)
   end
+end
+
+local function OnSkill3ActivateTest(skill, data)
+  -- 三技能需要在指定位置部署锚点；没有有效落点时不要进入激活态（Activate 不检查回调返回值）
+  if data == nil or data.targetPos == nil then
+    return false, 'KALTSIT_ESPERANTA_NEED_VALID_TARGET'
+  end
+  return true
 end
 
 local skills = { {
@@ -196,6 +212,7 @@ local skills = { {
   image = "skill3.tex",
   recipe_atlas = "images/ui_kaltsit_esperanta_skill.xml",
   recipe_image = "skill3_recipe.tex",
+  ActivateTest = OnSkill3ActivateTest,
   OnActivate = OnSkill3Activate,
   OnRecast = OnSkill3Recast,
   OnDeactivate = OnSkill3Deactivate,
