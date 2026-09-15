@@ -52,6 +52,43 @@ AddCharacterRecipe("special_treatment_gun",
     builder_tag = "kaltsit_esperanta",
   })
 
+-- ============================================================
+-- 射击到达判定（customarrivecheck）
+-- 联机版约定: customarrivecheck(doer, dest)，dest 是 locomotor 的 Dest（locomotor.dest），
+-- 字段为 inst / pt / buffered_action，它有两种形态:
+--   1) 客户端自己走向实体目标: LocoMotor:GoToEntity -> Dest(target)，dest.inst = 目标实体
+--   2) 预测客户端把动作交回服务端: PlayerController:OnRemoteLeftClick 对 canforce 动作做
+--      lmb:SetActionPoint(客户端预测位置) + lmb.forced = true，于是 LocoMotor:PushAction 走
+--      forced 分支 -> GoToPoint(nil, ...)，Dest 只有 buffered_action，dest.inst == nil
+-- 形态 2 只在“预测客户端”发生：非预测客户端的 non_preview_cb 会带 noforce = action.canforce，
+-- 服务端因此不会改写动作点（playercontroller.lua OnLeftClick 两处 SendRPCToServer）。
+-- 旧写法对形态 2 返回 (false, true)，而 invalid == true 会让 LocoMotor:OnUpdate 直接
+-- Stop() + Clear() 丢掉整个动作（locomotor.lua OnUpdate 的 `if invalid then` 分支），
+-- 表现就是“客户端播了射击动画，服务端没开火、没子弹、没伤害”。
+-- 拿不到实体目标时按已到位处理，最终距离校验交给 combat:DoAttack / Combat:CanHitTarget。
+local function ShootArriveCheck(doer, dest)
+  if dest == nil or not dest:IsValid() then
+    return false, true
+  end
+
+  -- 优先用实体目标判定；只有坐标时退回当前动作携带的目标实体
+  local target = dest.inst
+  if target == nil then
+    local bufferedaction = doer.GetBufferedAction ~= nil and doer:GetBufferedAction() or nil
+    target = bufferedaction ~= nil and bufferedaction.target or nil
+  end
+  if target == nil or not target:IsValid() then
+    -- 坐标目标: 服务端只拿到客户端预测位置，判定为已到位，让动作正常派发
+    return true, false
+  end
+
+  local combat = doer.replica.combat
+  local range = (combat ~= nil and combat:GetAttackRangeWithWeapon())
+      or TUNING.SPECIAL_TREATMENT_GUN_RANGE_SHOOT
+      or 2
+  return doer:GetDistanceSqToInst(target) <= range * range, false
+end
+
 AddAction('SPECIAL_GUN_HEAL', STRINGS.ACTIONS.HEAL.GENERIC, function(act)
   local doer   = act.doer
   local target = act.target
@@ -63,18 +100,12 @@ AddAction('SPECIAL_GUN_HEAL', STRINGS.ACTIONS.HEAL.GENERIC, function(act)
   return true
 end)
 
+-- canforce: 目标在枪的射程内时允许直接开枪，不必先走到目标跟前（同原版 ATTACK）。
+-- 与 ShootArriveCheck 配合工作：客户端负责走近到射程内，服务端拿坐标目标时不再二次判定。
 ACTIONS.SPECIAL_GUN_HEAL.canforce = true
 ACTIONS.SPECIAL_GUN_HEAL.mount_valid = true
 ACTIONS.SPECIAL_GUN_HEAL.invalid_hold_action = true
-ACTIONS.SPECIAL_GUN_HEAL.customarrivecheck = function(inst, dest)
-  if not dest or not dest.inst then return false, true end
-  local range = inst.replica.combat and inst.replica.combat:GetAttackRangeWithWeapon()
-  local reached_dest = inst:GetDistanceSqToInst(dest.inst)
-  if range then
-    return reached_dest <= range * range, false
-  end
-  return reached_dest <= 2, false
-end
+ACTIONS.SPECIAL_GUN_HEAL.customarrivecheck = ShootArriveCheck
 
 AddAction("SPECIAL_GUN_DESTROY", STRINGS.ACTIONS.DESTROY.GENERIC, function(act)
   local doer   = act.doer
@@ -89,19 +120,11 @@ AddAction("SPECIAL_GUN_DESTROY", STRINGS.ACTIONS.DESTROY.GENERIC, function(act)
   return true
 end)
 
-ACTIONS.SPECIAL_GUN_DESTROY.canforce = true
 ACTIONS.SPECIAL_GUN_DESTROY.mount_valid = true
 ACTIONS.SPECIAL_GUN_DESTROY.invalid_hold_action = true
 ACTIONS.SPECIAL_GUN_DESTROY.priority = 10
-ACTIONS.SPECIAL_GUN_DESTROY.customarrivecheck = function(inst, dest)
-  if not dest or not dest.inst then return false, true end
-  local range = inst.replica.combat and inst.replica.combat:GetAttackRangeWithWeapon()
-  local reached_dest = inst:GetDistanceSqToInst(dest.inst)
-  if range then
-    return reached_dest <= range * range, false
-  end
-  return reached_dest <= 2, false
-end
+ACTIONS.SPECIAL_GUN_DESTROY.canforce = true
+ACTIONS.SPECIAL_GUN_DESTROY.customarrivecheck = ShootArriveCheck
 
 -- 注册组件动作：点击玩家或玩家的宠物时显示"治疗"选项
 AddComponentAction("EQUIPPED", "weapon", function(inst, doer, target, actions, right)
@@ -126,24 +149,47 @@ AddPlayerPostInit(function(inst)
   inst.AnimState:AddOverrideBuild("special_treatment_gun_shoot")
 end)
 
-AddStategraphPostInit("wilson", function(sg)
-  ArkHookFunction(sg.states["attack"], "onenter", function(next, inst, ...)
-    if CanEnterSpecialTreatmentShootState(inst) then
-      inst.sg:GoToState("kaltsit_shoot")
+-- 联机版标准做法: 攻击进入哪个状态由 ATTACK 的 ActionHandler.deststate 决定
+-- （SGwilson / SGwilson_client 里 slingshot -> "slingshot_shoot" 就是这一套）。
+-- 旧写法 hook 了 attack 状态的 onenter 再 GoToState，等于“先进入 attack 再链式跳转”，
+-- 服务端会白进一次 attack，预测客户端还会多一次状态切换（newstate 反向触发）。
+-- 这里改成包一层 deststate: 装备可开火的治疗枪时直接返回 "kaltsit_shoot"，其余情况原样交还原实现。
+local function RedirectAttackToShootState(sgname)
+  AddStategraphPostInit(sgname, function(sg)
+    local handler = sg.actionhandlers ~= nil and sg.actionhandlers[ACTIONS.ATTACK] or nil
+    local original = handler ~= nil and handler.deststate or nil
+    if type(original) ~= "function" then
       return
     end
-    return next(inst, ...)
-  end)
-end)
-AddStategraphPostInit("wilson_client", function(sg)
-  ArkHookFunction(sg.states["attack"], "onenter", function(next, inst, ...)
-    if CanEnterSpecialTreatmentShootState(inst) then
-      inst.sg:GoToState("kaltsit_shoot")
-      return
+    handler.deststate = function(inst, action)
+      -- 与原版 ATTACK handler 一致: 已经在攻击同一个目标、或已死亡时不再进入新状态
+      -- （SGwilson.lua 的 ATTACK ActionHandler / SGwilson_client.lua 的同名 handler）
+      local playercontroller = inst.components.playercontroller
+      local attack_tag =
+          playercontroller ~= nil and
+          playercontroller.remote_authority and
+          playercontroller.remote_predicting and
+          "abouttoattack" or
+          "attack"
+      local health = inst.replica.health or inst.components.health
+      if inst.sg == nil
+          or (inst.sg:HasStateTag(attack_tag) and action.target == inst.sg.statemem.attacktarget)
+          or (health ~= nil and health:IsDead()) then
+        return
+      end
+      if CanEnterSpecialTreatmentShootState(inst) then
+        -- 与 SGwilson 的 ATTACK handler 保持一致，避免影响连击判定
+        if inst.sg ~= nil then
+          inst.sg.mem.localchainattack = not action.forced or nil
+        end
+        return "kaltsit_shoot"
+      end
+      return original(inst, action)
     end
-    return next(inst, ...)
   end)
-end)
+end
+RedirectAttackToShootState("wilson")
+RedirectAttackToShootState("wilson_client")
 
 AddStategraphState("wilson", State {
   name = "kaltsit_shoot",
@@ -154,20 +200,27 @@ AddStategraphState("wilson", State {
     if IsRiding(inst) then
       inst.Transform:SetFourFaced()
     end
-    if CanEnterSpecialTreatmentShootState(inst) then
-      inst.AnimState:PlayAnimation("special_treatment_gun_shoot")
-    else
+    if not CanEnterSpecialTreatmentShootState(inst) then
+      inst:ClearBufferedAction()
       inst.sg:GoToState("idle")
       return
     end
+    inst.AnimState:PlayAnimation("special_treatment_gun_shoot")
 
-    if inst.components.combat.target then
+    -- 目标以当前动作为准（ATTACK / HEAL / DESTROY 都由动作携带目标），同原版 attack / slingshot_shoot。
+    -- 朝向决定投射物出膛方向（weapon:SetProjectileOffset + projectile launchoffset 都按角色朝向算）。
+    local buffaction = inst:GetBufferedAction()
+    local target = (buffaction ~= nil and buffaction.target) or inst.components.combat.target
+    if inst.components.combat.target ~= nil then
       inst.components.combat:BattleCry()
-      if inst.components.combat.target and inst.components.combat.target:IsValid() then
-        inst:FacePoint(Point(inst.components.combat.target.Transform:GetWorldPosition()))
-      end
     end
-    inst.sg.statemem.target = inst.components.combat.target
+    if target ~= nil and target:IsValid() then
+      inst:FacePoint(Point(target.Transform:GetWorldPosition()))
+    end
+    inst.sg.statemem.target = target
+    inst.sg.statemem.attacktarget = target
+    inst.sg.statemem.retarget = target
+
     inst.components.combat:StartAttack()
     inst.components.locomotor:Stop()
   end,
@@ -175,6 +228,14 @@ AddStategraphState("wilson", State {
   onexit = function(inst)
     if IsRiding(inst) then
       inst.Transform:SetSixFaced()
+    end
+    inst.sg.statemem.target = nil
+    inst.sg.statemem.attacktarget = nil
+    inst.sg.statemem.retarget = nil
+    inst:ClearBufferedAction()
+    -- 出手帧之前被打断: 取消这次攻击，同原版 SGwilson 的 attack 状态
+    if inst.sg:HasStateTag("abouttoattack") and inst.components.combat ~= nil then
+      inst.components.combat:CancelAttack()
     end
   end,
 
@@ -191,41 +252,88 @@ AddStategraphState("wilson", State {
 
   events =
   {
-    EventHandler("animover", function(inst)
-      inst.sg:GoToState("idle")
+    EventHandler("equip", function(inst) inst.sg:GoToState("idle") end),
+    EventHandler("unequip", function(inst) inst.sg:GoToState("idle") end),
+    EventHandler("animqueueover", function(inst)
+      if inst.AnimState:AnimDone() then
+        inst.sg:GoToState("idle")
+      end
     end),
   },
 })
+
+-- 预测状态的自结束兜底(秒)。动画本身结束时会先走 animqueueover，这里只在异常情况下兜底，
+-- 取值与 SGwilson_client 的 TIMEOUT 一致，避免截断较长的动画。
+local KALTSIT_SHOOT_TIMEOUT = 2
 
 AddStategraphState("wilson_client", State {
   name = "kaltsit_shoot",
   tags = { "attack", "notalking", "abouttoattack" },
 
   onenter = function(inst)
-    if IsRiding(inst) then
-      inst.Transform:SetFourFaced()
+    -- 与 SGwilson_client.attack 一致: 客户端自己也走攻击冷却，避免重复预测开火
+    local combat = inst.replica.combat
+    if combat == nil or combat:InCooldown() then
+      inst.sg:RemoveStateTag("abouttoattack")
+      inst:ClearBufferedAction()
+      inst.sg:GoToState("idle", true)
+      return
     end
-    if CanEnterSpecialTreatmentShootState(inst) then
-      inst.AnimState:PlayAnimation("special_treatment_gun_shoot")
-    else
+    if not CanEnterSpecialTreatmentShootState(inst) then
+      inst:ClearBufferedAction()
       inst.sg:GoToState("idle")
       return
     end
+    if IsRiding(inst) then
+      inst.Transform:SetFourFaced()
+    end
 
-    -- 客户端仅播放动画，战斗逻辑由服务端处理
+    combat:StartAttack()
     inst.components.locomotor:Stop()
+    inst.AnimState:PlayAnimation("special_treatment_gun_shoot")
+
+    -- 联机版标准: 预测状态在 onenter 就把动作交给服务端
+    -- （PerformPreviewBufferedAction -> PlayerController:RemoteBufferedAction -> preview_cb -> RPC）。
+    -- 拖到出手帧才发，服务端开火会晚于客户端动画；动作中途被打断时还会整发丢失。
+    local buffaction = inst:GetBufferedAction()
+    if buffaction ~= nil then
+      if buffaction.preview_cb ~= nil then
+        inst:PerformPreviewBufferedAction()
+      else
+        -- 正常点击路径（PlayerController:OnLeftClick / 手柄）一定会带 preview_cb；
+        -- 这里只是兜底，避免异常路径把动作直接抛进 RemoteBufferedAction 报错
+        ArkLogger:Debug("kaltsit_shoot: buffered action has no preview_cb, skip RPC", buffaction.action)
+      end
+      if buffaction.target ~= nil and buffaction.target:IsValid() then
+        inst:FacePoint(buffaction.target:GetPosition())
+        inst.sg.statemem.attacktarget = buffaction.target
+        inst.sg.statemem.retarget = buffaction.target
+      end
+    end
+
+    inst.sg:SetTimeout(KALTSIT_SHOOT_TIMEOUT)
+  end,
+
+  ontimeout = function(inst)
+    inst:ClearBufferedAction()
+    inst.sg:GoToState("idle")
   end,
 
   onexit = function(inst)
     if IsRiding(inst) then
       inst.Transform:SetSixFaced()
     end
+    -- 出手前就被打断: 取消这次攻击冷却（与 SGwilson_client.attack 的 onexit 一致）
+    if inst.sg:HasStateTag("abouttoattack") and inst.replica.combat ~= nil then
+      inst.replica.combat:CancelAttack()
+    end
   end,
 
   timeline =
   {
     TimeEvent(17 * FRAMES, function(inst)
-      inst:PerformPreviewBufferedAction()
+      -- 出手帧: 动作已在 onenter 上报给服务端，客户端只清理本地预测状态
+      inst:ClearBufferedAction()
       inst.sg:RemoveStateTag("abouttoattack")
     end),
     TimeEvent(20 * FRAMES, function(inst)
@@ -235,8 +343,10 @@ AddStategraphState("wilson_client", State {
 
   events =
   {
-    EventHandler("animover", function(inst)
-      inst.sg:GoToState("idle")
+    EventHandler("animqueueover", function(inst)
+      if inst.AnimState:AnimDone() then
+        inst.sg:GoToState("idle")
+      end
     end),
   },
 })
