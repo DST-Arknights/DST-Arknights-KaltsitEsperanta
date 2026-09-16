@@ -11,14 +11,15 @@ Assets = {}
 table.insert(Assets, Asset("SOUNDPACKAGE", "sound/kaltsit_esperanta.fev"))
 table.insert(Assets, Asset("SOUND", "sound/kaltsit_esperanta.fsb"))
 
+-- 凯尔希·思衡托中文/日文配音包；语音事件组均为 kaltsit_esperanta。
+table.insert(Assets, Asset("SOUNDPACKAGE", "sound/kaltsit_esperanta_voice_zh.fev"))
+table.insert(Assets, Asset("SOUND", "sound/kaltsit_esperanta_voice_zh.fsb"))
+table.insert(Assets, Asset("SOUNDPACKAGE", "sound/kaltsit_esperanta_voice_jp.fev"))
+table.insert(Assets, Asset("SOUND", "sound/kaltsit_esperanta_voice_jp.fsb"))
+
 assert(ARK_ITEM_PACKAGE_LOADED, "请安装前置模组: ark_item_package\n please install the required mod: ark_item_package\n[https://steamcommunity.com/sharedfiles/filedetails/?id=3677284770]")
 
 ArkLogger:DeclareLogger("INFO", "K2CEsperanta")
-
--- 加载语言包 (auto 跟随游戏语言, 无英文包时非中文自动回退 en 失败 → 返回 nil 不加载)
-RegisterPOFile(GetModConfigData("language"), {
-  zh = 'languages/kaltsit_esperanta_chinese_s.po',
-})
 
 AddMinimapAtlas("images/map_icons/kaltsit_esperanta.xml") --人物小地图显示
 
@@ -52,6 +53,28 @@ TUNING.KALTSIT_ESPERANTA_SKILL2_DAMAGE_MODE = skill2_damage_mode
 
 local craft_hunger_cost = tonumber(GetModConfigData("craft_hunger_cost")) or 5
 TUNING.KALTSIT_ESPERANTA_CRAFT_HUNGER_COST = math.max(0, craft_hunger_cost)
+
+local voice_language = GetModConfigData("voice_language")
+if voice_language ~= "zh" and voice_language ~= "jp" then
+  voice_language = "jp"
+end
+TUNING.KALTSIT_ESPERANTA_VOICE_LANG = voice_language
+RegisterVoice("kaltsit_esperanta", "languages/kaltsit_esperanta_voice", {
+  voice_lang = voice_language,
+  volume = 1,
+})
+
+-- UI 文本与配音语言独立；技能台词文字统一来自当前 UI 语言对应的 PO。
+local text_language = GetModConfigData("language")
+if text_language ~= "auto" and text_language ~= "zh" then
+  -- 兼容之前误存的 jp 等旧配置；本项目没有日文 PO。
+  text_language = "zh"
+end
+RegisterPOFile(text_language, {
+  zh = "languages/kaltsit_esperanta_chinese_s.po",
+  -- 没有其他 UI 翻译时，自动语言统一回退中文，保证基础 STRINGS 完整。
+  en = "languages/kaltsit_esperanta_chinese_s.po",
+})
 
 AddReplicableComponent("kaltsit_intellect")
 AddReplicableComponent("kaltsit_mon3tr_master")

@@ -373,3 +373,23 @@ msgstr "摸摸头。真正的 Mon3tr 可绝不会容忍这种事。"
 msgctxt "STRINGS.RECIPE_DESC.MON3TR_HANDHELD_DOLL"
 msgid "Holding it steadies the mind. Feed it a Walking Cane and it'll drag you along faster."
 msgstr "握着它，心神便稳。喂它一根步行手杖，它便拖着你跑得更快。"
+
+#. 凯尔希·思衡托技能语音：技能1
+msgctxt "STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_SKILL_1"
+msgid "Ark Life Protocol, activate."
+msgstr "方舟生物协议启动。"
+
+#. 凯尔希·思衡托技能语音：技能2
+msgctxt "STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_SKILL_2"
+msgid "Command: repair."
+msgstr "指令：修复。"
+
+#. 凯尔希·思衡托技能语音：技能3语音A
+msgctxt "STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_SKILL_3_A"
+msgid "Mon3tr, I need you to protect the wounded."
+msgstr "Mon3tr，我需要你保护伤员。"
+
+#. 凯尔希·思衡托技能语音：技能3语音B
+msgctxt "STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_SKILL_3_B"
+msgid "Do not be afraid. This power will only be used for healing."
+msgstr "不要害怕，这种力量只会用于治愈。"

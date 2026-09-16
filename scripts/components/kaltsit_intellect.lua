@@ -21,7 +21,11 @@ end
 
 local function on_builditem(inst, data)
     if data and data.item then
-        inst.components.kaltsit_intellect:AddKnowledge(data.item.prefab)
+        local intellect = inst.components.kaltsit_intellect
+        intellect:AddKnowledge(data.item.prefab)
+        if data.recipe ~= nil then
+            intellect:OnBuildRecipe(data.recipe)
+        end
     end
 end
 
@@ -48,6 +52,7 @@ local KaltsitIntellect = Class(function(self, inst)
     self.current = 1
     self.max = 1
     self.next_build_discounted = false
+    self.crafted_hunger_recipes = {}
 
     -- 已解锁图鉴: { [prefab_name] = true }
     self.unlocked_prefabs = {}
@@ -75,7 +80,7 @@ function KaltsitIntellect:_RegisterEvents()
     inst:ListenForEvent("killed", on_killed)       -- 击杀新生物: +1 current, +1 max
     inst:ListenForEvent("builditem", on_builditem) -- 制作新物品: +1 current, +1 max
     inst:ListenForEvent("buildstructure", on_builditem) -- 建造新结构: +1 current, +1 max
-    inst:ListenForEvent("consumeingredients", on_consumeingredients) -- 制作完成后额外消耗饥饿值
+    inst:ListenForEvent("consumeingredients", on_consumeingredients) -- 处理制作折扣
     inst:ListenForEvent("death", on_death)         -- 死亡: -10 current
     inst:WatchWorldState("cycles", on_cycles)      -- 每天: +1 current
     inst:ListenForEvent("char_cooked_item", on_builditem) -- 烹饪新菜肴: +1 current, +1 max
@@ -186,13 +191,24 @@ function KaltsitIntellect:UseNextBuildDiscount()
     end
 end
 
--- 消耗材料事件回调: 完成一次折扣使用后移除修改器
-function KaltsitIntellect:OnConsumeIngredients(data)
+--- 配方首次成功生成物品时额外消耗饥饿值
+function KaltsitIntellect:OnBuildRecipe(recipe)
+    local recipe_name = recipe ~= nil and recipe.name or nil
+    if recipe_name == nil or self.crafted_hunger_recipes[recipe_name] then
+        return
+    end
+
+    self.crafted_hunger_recipes[recipe_name] = true
+
     local hunger_cost = TUNING.KALTSIT_ESPERANTA_CRAFT_HUNGER_COST or 0
     if hunger_cost > 0 and self.inst.components.hunger ~= nil then
-        -- builder 已经完成材料消耗；DoDelta 自带 0 下限，不在制作前阻塞。
+        -- builditem 在材料消耗和成品生成后触发；饥饿值不足时由 DoDelta 扣至0。
         self.inst.components.hunger:DoDelta(-hunger_cost, nil, true)
     end
+end
+
+-- 消耗材料事件回调: 处理一次性折扣
+function KaltsitIntellect:OnConsumeIngredients(data)
     if self.next_build_discounted then
         if not (data ~= nil and data.discounted == false) then
             if self.inst.components.builder then
@@ -216,6 +232,7 @@ function KaltsitIntellect:OnSave()
         max = self.max,
         unlocked_prefabs = self.unlocked_prefabs,
         next_build_discounted = self.next_build_discounted or nil,
+        crafted_hunger_recipes = self.crafted_hunger_recipes,
     }
 end
 
@@ -232,6 +249,9 @@ function KaltsitIntellect:OnLoad(data)
     end
     if data.next_build_discounted then
         self:_ActivateDiscount()
+    end
+    if data.crafted_hunger_recipes ~= nil then
+        self.crafted_hunger_recipes = data.crafted_hunger_recipes
     end
     self:TryApplyElite(0, self.max) -- 加载时根据 max 尝试应用精英效果
 end

@@ -3,6 +3,26 @@ table.insert(Assets, Asset("ATLAS", "images/ui_kaltsit_esperanta_skill.xml"))
 local ARK_CONSTANTS = require("ark_constants")
 local common = require("kaltsit_esperanta_common")
 
+local SKILL_VOICE_KEYS = {
+  kaltsit_esperanta_skill1 = "KALTSIT_ESPERANTA_SKILL_1",
+  kaltsit_esperanta_skill2 = "KALTSIT_ESPERANTA_SKILL_2",
+  -- 思衡托作战中3/4：随机选择独立 key，使文字与语音严格对应。
+  kaltsit_esperanta_skill3 = {
+    "KALTSIT_ESPERANTA_SKILL_3_A",
+    "KALTSIT_ESPERANTA_SKILL_3_B",
+  },
+}
+
+local SKILL_VOICE_CHANNEL = "kaltsit_esperanta_skill_voice"
+
+local function SaySkillVoice(inst, skill_id)
+  local key = SKILL_VOICE_KEYS[skill_id]
+  if type(key) == "table" then
+    key = key[math.random(1, #key)]
+  end
+  SayAndVoice(inst, key, { voice_channel = SKILL_VOICE_CHANNEL })
+end
+
 -- 三技能范围选择器（预声明，targetSelector 引用）
 RegisterTargetSelector("kaltsit_esperanta_skill3_aoe", AreaTargetSelector {
   range          = 20,
@@ -31,6 +51,7 @@ local function OnSkill1ActivateTest(skill)
 end
 
 local function OnSkill1Activate(skill, data)
+  SaySkillVoice(skill.inst, "kaltsit_esperanta_skill1")
   -- 扫描附近玩家, 给予buff
   local levelParams = skill:GetLevelParams()
   if skill.inst.components.health then
@@ -63,6 +84,7 @@ end
 
 local function OnSkill2Activate(skill, data)
   local inst = skill.inst
+  SaySkillVoice(inst, "kaltsit_esperanta_skill2")
   local levelParams = skill:GetLevelParams()
   if inst.components.sanity then
     inst.components.sanity:DoDelta(-levelParams.sanity_cost)
@@ -113,6 +135,7 @@ local function OnSkill3Activate(skill, data)
   if not pos then
     return false, 'SKILL_CANNOT_ACTIVATE'
   end
+  SaySkillVoice(inst, "kaltsit_esperanta_skill3")
   local anchor = SpawnPrefab("tactical_anchor")
   anchor.Transform:SetPosition(pos:Get())
   common.PlaySkillSfx(inst, "p_imp_khlrftcrmk")

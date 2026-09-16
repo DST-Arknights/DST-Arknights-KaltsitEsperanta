@@ -44,8 +44,8 @@ configuration_options = {
             zh = "界面文本语言"
         }),
         hover = T({
-            en = "Choose the mod's UI text language (Auto follows game language)",
-            zh = "选择模组界面文本的语言 (Auto 跟随游戏语言)"
+            en = "Choose the mod's UI text language",
+            zh = "选择模组界面文本的语言"
         }),
         options = {{
             description = T({
@@ -61,6 +61,31 @@ configuration_options = {
             data = "zh"
         }},
         default = "auto"
+    },
+    {
+        name = "voice_language",
+        label = T({
+            en = "Voice Language",
+            zh = "配音语言"
+        }),
+        hover = T({
+            en = "Choose Kal'tsit Esperanta's voice language",
+            zh = "选择凯尔希·思衡托的配音语言"
+        }),
+        options = {{
+            description = T({
+                en = "Chinese",
+                zh = "中文"
+            }),
+            data = "zh"
+        }, {
+            description = T({
+                en = "Japanese",
+                zh = "日文"
+            }),
+            data = "jp"
+        }},
+        default = "jp"
     },
     {
         name = "skill2_damage_mode",
@@ -99,8 +124,8 @@ configuration_options = {
             zh = "制作时额外消耗饥饿值"
         }),
         hover = T({
-            en = "Hunger is deducted after ingredients are consumed; insufficient hunger is clamped to zero and does not block crafting.",
-            zh = "材料实际消耗后扣除饥饿值；饥饿值不足时扣至0，不阻止制作。"
+            en = "Hunger is deducted the first time each recipe successfully produces an item; insufficient hunger does not block crafting.",
+            zh = "每个配方首次成功生成物品时扣除饥饿值；饥饿值不足时不阻止制作。"
         }),
         options = {{
             description = "0",

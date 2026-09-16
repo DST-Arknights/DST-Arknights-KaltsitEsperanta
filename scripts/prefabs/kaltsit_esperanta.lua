@@ -108,6 +108,8 @@ end
 local CommonPostInit = function(inst)
   -- Minimap icon
   inst.MiniMapEntity:SetIcon("kaltsit_esperanta.tex")
+  -- DoTalkSound 会拼接 path + soundsname + /talk_LP；这里必须使用思衡托专属资源。
+  inst.talker_path_override = "kaltsit_esperanta_voice_" .. (TUNING.KALTSIT_ESPERANTA_VOICE_LANG or "jp") .. "/"
   inst:AddTag("ark_character")
   inst:AddTag("kaltsit_esperanta")
   inst:AddTag("kaltsit_prototyper_no_priority")
@@ -122,11 +124,8 @@ end
 
 -- This initializes for the server only. Components are added here.
 local masterPostInit = function(inst)
-  -- choose which sounds this character will play
-  inst.talksoundoverride = "kaltsit_esperanta/jp/talk_LP"
-
-  -- Uncomment if "wathgrithr"(Wigfrid) or "webber" voice is used
-  -- inst.talker_path_override = "dontstarve_DLC001/characters/"
+  -- 技能语音通过 ItemPackage 的 sayAndVoice 机制绑定。
+  BindVoice(inst, "kaltsit_esperanta")
 
   -- Stats	
   inst.components.health:SetMaxHealth(TUNING.KALTSIT_ESPERANTA_HEALTH)
