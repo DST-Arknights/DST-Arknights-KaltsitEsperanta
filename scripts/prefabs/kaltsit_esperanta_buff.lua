@@ -1,3 +1,65 @@
+local SKILL2_PAUSE_SPEED_MULTIPLIER = 0.2
+local SKILL2_PAUSE_SPEED_KEY = "kaltsit_esperanta_skill2_pause"
+
+local function SpawnSkill2PauseShadowFx(target)
+  if target == nil or not target:IsValid() then
+    return
+  end
+  local fx = SpawnPrefab("slingshot_shadow_aoe_fx")
+  if fx ~= nil then
+    local x, _, z = target.Transform:GetWorldPosition()
+    fx.Transform:SetPosition(x, 0, z)
+  end
+end
+
+local function EnsureSkill2PauseSlowFx(inst, target)
+  if inst._skill2_pause_fx ~= nil and inst._skill2_pause_fx:IsValid() then
+    return
+  end
+  local fx = SpawnPrefab("slingshotammo_slow_debuff_fx")
+  if fx ~= nil then
+    fx.entity:SetParent(target.entity)
+    if fx.StartFX ~= nil then
+      fx:StartFX(target)
+    end
+    inst._skill2_pause_fx = fx
+  end
+end
+
+local function OnSkill2PauseAttached(inst, target)
+  if target.components.locomotor ~= nil then
+    target.components.locomotor:SetExternalSpeedMultiplier(
+      inst, SKILL2_PAUSE_SPEED_KEY, SKILL2_PAUSE_SPEED_MULTIPLIER)
+  end
+  EnsureSkill2PauseSlowFx(inst, target)
+  SpawnSkill2PauseShadowFx(target)
+end
+
+local function OnSkill2PauseExtended(inst, target)
+  if target.components.locomotor ~= nil then
+    target.components.locomotor:SetExternalSpeedMultiplier(
+      inst, SKILL2_PAUSE_SPEED_KEY, SKILL2_PAUSE_SPEED_MULTIPLIER)
+  end
+  EnsureSkill2PauseSlowFx(inst, target)
+  SpawnSkill2PauseShadowFx(target)
+end
+
+local function OnSkill2PauseDetached(inst, target)
+  if target.components.locomotor ~= nil then
+    target.components.locomotor:RemoveExternalSpeedMultiplier(inst, SKILL2_PAUSE_SPEED_KEY)
+  end
+  if inst._skill2_pause_fx ~= nil then
+    if inst._skill2_pause_fx:IsValid() then
+      if inst._skill2_pause_fx.KillFX ~= nil then
+        inst._skill2_pause_fx:KillFX()
+      else
+        inst._skill2_pause_fx:Remove()
+      end
+    end
+    inst._skill2_pause_fx = nil
+  end
+end
+
 local buffers = { {
   name = "doctors_monuments_invincible_buff",
   duration = 10,
@@ -100,6 +162,15 @@ local buffers = { {
       inst._field_task = nil
     end
   end,
+}, {
+  name = "kaltsit_esperanta_skill2_pause_buff",
+  duration = 5,
+  prefabs = { "slingshotammo_slow_debuff_fx", "slingshot_shadow_aoe_fx" },
+  title = "停顿",
+  description = "移动速度降低80%，持续5秒",
+  OnAttached = OnSkill2PauseAttached,
+  OnExtended = OnSkill2PauseExtended,
+  OnDetached = OnSkill2PauseDetached,
 } }
 
 local results = {}

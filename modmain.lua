@@ -42,6 +42,17 @@ TUNING.KALTSIT_ESPERANTA_MON3TR_SANITY = 800
 
 TUNING.KALTSIT_ESPERANTA_SKILL3_RANGE = 20
 
+local skill2_damage_mode = GetModConfigData("skill2_damage_mode")
+if skill2_damage_mode ~= "fixed_1000"
+    and skill2_damage_mode ~= "fixed_2000"
+    and skill2_damage_mode ~= "percentage" then
+  skill2_damage_mode = "percentage"
+end
+TUNING.KALTSIT_ESPERANTA_SKILL2_DAMAGE_MODE = skill2_damage_mode
+
+local craft_hunger_cost = tonumber(GetModConfigData("craft_hunger_cost")) or 5
+TUNING.KALTSIT_ESPERANTA_CRAFT_HUNGER_COST = math.max(0, craft_hunger_cost)
+
 AddReplicableComponent("kaltsit_intellect")
 AddReplicableComponent("kaltsit_mon3tr_master")
 AddReplicableComponent("tactical_anchor")

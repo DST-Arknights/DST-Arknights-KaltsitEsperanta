@@ -62,6 +62,61 @@ configuration_options = {
         }},
         default = "auto"
     },
+    {
+        name = "skill2_damage_mode",
+        label = T({
+            en = "Skill 2 Damage Scheme",
+            zh = "二技能伤害方案"
+        }),
+        hover = T({
+            en = "Choose Skill 2's base damage. Each Skill 2 level adds 500 base damage.",
+            zh = "选择二技能基础伤害方案；二技能每提升一段等级，基础伤害增加500点。"
+        }),
+        options = {{
+            description = T({
+                en = "1,000 fixed true damage",
+                zh = "固定1000点真实伤害"
+            }),
+            data = "fixed_1000"
+        }, {
+            description = T({
+                en = "2,000 fixed true damage",
+                zh = "固定2000点真实伤害"
+            }),
+            data = "fixed_2000"
+        }, {
+            description = T({
+                en = "500 + 3% target max health (default)",
+                zh = "500点 + 敌人最大生命值3%（默认）"
+            }),
+            data = "percentage"
+        }},
+        default = "percentage"
+    }, {
+        name = "craft_hunger_cost",
+        label = T({
+            en = "Extra Hunger Cost When Crafting",
+            zh = "制作时额外消耗饥饿值"
+        }),
+        hover = T({
+            en = "Hunger is deducted after ingredients are consumed; insufficient hunger is clamped to zero and does not block crafting.",
+            zh = "材料实际消耗后扣除饥饿值；饥饿值不足时扣至0，不阻止制作。"
+        }),
+        options = {{
+            description = "0",
+            data = 0
+        }, {
+            description = "1",
+            data = 1
+        }, {
+            description = "5 (default)",
+            data = 5
+        }, {
+            description = "10",
+            data = 10
+        }},
+        default = 5
+    },
 }
 
 

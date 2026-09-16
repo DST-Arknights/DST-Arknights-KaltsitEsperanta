@@ -256,7 +256,12 @@ msgstr "-消耗40生命值与40精神值\n-自身与半径20单位圆内友方�
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2"
 msgid ""
-msgstr "-消耗200点精神值\n-特质治疗枪的弹药为特殊弹药，命中时:\n   对附近范围造成%d真实伤害\n   对附近友方单位回复%d点生命值\n   摧毁附近范围内的可砍伐/挖掘对象\n-需要装备特质治疗枪与生命修复单元"
+msgstr "-消耗200点精神值\n-特质治疗枪的弹药为特殊弹药，命中时:\n   对附近范围造成%d真实伤害\n   对附近友方单位回复%d点生命值\n   摧毁附近范围内的可砍伐/挖掘对象\n   命中敌人后使其停顿5秒（移动速度降低80%%）\n-需要装备特质治疗枪与生命修复单元"
+
+#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2_PERCENT
+msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2_PERCENT"
+msgid ""
+msgstr "-消耗200点精神值\n-特质治疗枪的弹药为特殊弹药，命中时:\n   对附近范围造成%d基础真实伤害，并额外造成敌人最大生命值的%d%%真实伤害\n   对附近友方单位回复%d点生命值\n   摧毁附近范围内的可砍伐/挖掘对象\n   命中敌人后使其停顿5秒（移动速度降低80%%）\n-需要装备特质治疗枪与生命修复单元"
 
 #. STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_NEED_LIFE_REPAIRING_UNITS
 msgctxt "STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_NEED_LIFE_REPAIRING_UNITS"

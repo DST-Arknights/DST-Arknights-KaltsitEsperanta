@@ -75,6 +75,7 @@ function KaltsitIntellect:_RegisterEvents()
     inst:ListenForEvent("killed", on_killed)       -- 击杀新生物: +1 current, +1 max
     inst:ListenForEvent("builditem", on_builditem) -- 制作新物品: +1 current, +1 max
     inst:ListenForEvent("buildstructure", on_builditem) -- 建造新结构: +1 current, +1 max
+    inst:ListenForEvent("consumeingredients", on_consumeingredients) -- 制作完成后额外消耗饥饿值
     inst:ListenForEvent("death", on_death)         -- 死亡: -10 current
     inst:WatchWorldState("cycles", on_cycles)      -- 每天: +1 current
     inst:ListenForEvent("char_cooked_item", on_builditem) -- 烹饪新菜肴: +1 current, +1 max
@@ -171,7 +172,6 @@ function KaltsitIntellect:_ActivateDiscount()
     self.next_build_discounted = true
     if self.inst.components.builder then
         self.inst.components.builder.ingredientmodminmodifiers:SetModifier(self.inst, TUNING.GREENAMULET_INGREDIENTMOD, self.inst)
-        self.inst:ListenForEvent("consumeingredients", on_consumeingredients)
     end
 end
 
@@ -188,11 +188,15 @@ end
 
 -- 消耗材料事件回调: 完成一次折扣使用后移除修改器
 function KaltsitIntellect:OnConsumeIngredients(data)
+    local hunger_cost = TUNING.KALTSIT_ESPERANTA_CRAFT_HUNGER_COST or 0
+    if hunger_cost > 0 and self.inst.components.hunger ~= nil then
+        -- builder 已经完成材料消耗；DoDelta 自带 0 下限，不在制作前阻塞。
+        self.inst.components.hunger:DoDelta(-hunger_cost, nil, true)
+    end
     if self.next_build_discounted then
         if not (data ~= nil and data.discounted == false) then
             if self.inst.components.builder then
                 self.inst.components.builder.ingredientmodminmodifiers:RemoveModifier(self.inst)
-                self.inst:RemoveEventCallback("consumeingredients", on_consumeingredients)
             end
             if data ~= nil then
                 data.kaltsit_intellect_discount_used = true -- 标记已使用折扣（供其他系统检查）

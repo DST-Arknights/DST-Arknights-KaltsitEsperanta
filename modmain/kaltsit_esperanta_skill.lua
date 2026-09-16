@@ -70,8 +70,39 @@ local function OnSkill2Activate(skill, data)
   common.PlaySkillSfx(inst, "p_skill_khlrftcr_h")
 end
 
-local function Skill2LevelDesc(skill)
+local SKILL2_DAMAGE_PERCENT = 0.03
+local SKILL2_DAMAGE_LEVEL_INCREMENT = 500
+local SKILL2_DAMAGE_MODE_BASE = {
+  fixed_1000 = 1000,
+  fixed_2000 = 2000,
+  percentage = 500,
+}
+local Skill2LevelDesc
+
+local function MakeSkill2Level(level)
+  local mode = TUNING.KALTSIT_ESPERANTA_SKILL2_DAMAGE_MODE or "percentage"
+  local baseDamage = SKILL2_DAMAGE_MODE_BASE[mode] or SKILL2_DAMAGE_MODE_BASE.percentage
+  return {
+    activationEnergy = 15,
+    bulletCount = 10,
+    desc = Skill2LevelDesc,
+    params = {
+      sanity_cost = 200,
+      damage = baseDamage + (level - 1) * SKILL2_DAMAGE_LEVEL_INCREMENT,
+      damage_percent = mode == "percentage" and SKILL2_DAMAGE_PERCENT or 0,
+      aoeRange = 6,
+      health = 80,
+    },
+  }
+end
+
+Skill2LevelDesc = function(skill)
   local params = skill:GetLevelParams()
+  local damagePercent = params.damage_percent or 0
+  local percentDesc = STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC["2_PERCENT"]
+  if damagePercent > 0 and percentDesc ~= nil then
+    return string.format(percentDesc, params.damage, damagePercent * 100, params.health)
+  end
   return string.format(STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC[2], params.damage, params.health)
 end
 
@@ -172,34 +203,10 @@ local skills = { {
   ActivateTest = OnSkill2ActivateTest,
   OnActivate = OnSkill2Activate,
   levels = {
-    {
-      -- activationEnergy = 3 * 60,
-      activationEnergy = 15,
-      bulletCount = 10,
-      desc = Skill2LevelDesc,
-      params = { sanity_cost = 200, damage = 2000, aoeRange = 6, health = 80 },
-    },
-    {
-      -- activationEnergy = 3 * 60,
-      activationEnergy = 15,
-      bulletCount = 10,
-      desc = Skill2LevelDesc,
-      params = { sanity_cost = 200, damage = 3000, aoeRange = 6, health = 80 },
-    },
-    {
-      -- activationEnergy = 3 * 60,
-      activationEnergy = 15,
-      bulletCount = 10,
-      desc = Skill2LevelDesc,
-      params = { sanity_cost = 200, damage = 4000, aoeRange = 6, health = 80 },
-    },
-    {
-      -- activationEnergy = 3 * 60,
-      activationEnergy = 15,
-      bulletCount = 10,
-      desc = Skill2LevelDesc,
-      params = { sanity_cost = 200, damage = 10000, aoeRange = 6, health = 80 },
-    },
+    MakeSkill2Level(1),
+    MakeSkill2Level(2),
+    MakeSkill2Level(3),
+    MakeSkill2Level(4),
   }
 }, {
   id = "kaltsit_esperanta_skill3",

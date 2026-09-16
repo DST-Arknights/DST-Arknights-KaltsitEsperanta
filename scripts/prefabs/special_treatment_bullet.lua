@@ -193,13 +193,28 @@ local ammo_defs = {
   },
 }
 
-local function DestroyOnPreHit(inst, attacker, target)
+local SKILL2_PAUSE_BUFF = "kaltsit_esperanta_skill2_pause_buff"
+
+local function GetSkill2TrueDamage(attacker, target)
   local true_damage = 2000
-  local skill = attacker and attacker.replica.ark_skill and attacker.replica.ark_skill:GetSkill("kaltsit_esperanta_skill2")
+  local skill = attacker and attacker.components.ark_skill
+      and attacker.components.ark_skill:GetSkill("kaltsit_esperanta_skill2")
   if skill then
     local levelParams = skill:GetLevelParams()
     true_damage = levelParams.damage or true_damage
+    local damage_percent = levelParams.damage_percent or 0
+    if damage_percent > 0 and target ~= nil
+        and target.components.health ~= nil
+        and target.components.combat ~= nil then
+      local max_health = target.components.health.maxhealth or 0
+      true_damage = true_damage + math.ceil(max_health * damage_percent)
+    end
   end
+  return true_damage
+end
+
+local function DestroyOnPreHit(inst, attacker, target)
+  local true_damage = GetSkill2TrueDamage(attacker, target)
   inst.components.weapon.true_damage = true_damage
 end
 
@@ -289,6 +304,10 @@ local function MakeDestroyProjectileOnHit(def)
     end
     if target.components.combat then
       target.components.combat:RemoveShouldAvoidAggro(attacker)
+    end
+    if target.components.combat ~= nil
+        and not common.CanHitSpecialTreatmentHealTarget(attacker, target) then
+      target:AddDebuff(SKILL2_PAUSE_BUFF, SKILL2_PAUSE_BUFF)
     end
     inst:Remove()
   end
