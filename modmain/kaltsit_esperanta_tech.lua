@@ -241,6 +241,7 @@ AddCharacterRecipe("life_repairing_units", {
     Ingredient("thulecite", 100),
 }, TECH.NONE, {
     builder_tag = "kaltsit_esperanta",
+    no_deconstruction = true,
 })
 
 -- Mon3tr 手持玩偶: 2月球环形山地皮 + 2牛毛 + 2蜘蛛丝

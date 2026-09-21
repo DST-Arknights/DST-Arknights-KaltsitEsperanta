@@ -128,6 +128,11 @@ msgctxt "STRINGS.NAMES.LIFE_REPAIRING_UNITS"
 msgid "Life Repairing Units"
 msgstr "生命修复单元"
 
+#. STRINGS.RECIPE_DESC.LIFE_REPAIRING_UNITS
+msgctxt "STRINGS.RECIPE_DESC.LIFE_REPAIRING_UNITS"
+msgid "Seems to make the healing gun fire something a little different."
+msgstr "似乎能让治疗枪打出些不太一样的东西。"
+
 #. STRINGS.NAMES.KALTSIT_NEURO_GEL
 msgctxt "STRINGS.NAMES.KALTSIT_NEURO_GEL"
 msgid "Neurotransmitter Regulating Gel"

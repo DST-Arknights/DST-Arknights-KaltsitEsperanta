@@ -218,6 +218,35 @@ local function DestroyOnPreHit(inst, attacker, target)
   inst.components.weapon.true_damage = true_damage
 end
 
+local SKILL2_AOE_MUST_TAGS = { "_combat", "_health" }
+local SKILL2_AOE_CANT_TAGS = { "INLIMBO", "notarget", "noattack", "flight", "invisible", "playerghost" }
+
+local function DoSkill2AreaDamage(inst, attacker, target, x, y, z, range)
+  local combat = attacker and attacker.components.combat
+  if combat == nil then return end
+
+  local primary_damage = inst.components.weapon.true_damage
+  local stimuli = inst.components.projectile.stimuli
+  local ents = TheSim:FindEntities(x, y, z, range, SKILL2_AOE_MUST_TAGS, SKILL2_AOE_CANT_TAGS)
+  for _, ent in ipairs(ents) do
+    -- 主目标已由 projectile:Hit 结算；范围与物品破坏共用命中点和半径。
+    if ent ~= target and ent ~= attacker and ent:IsValid()
+        and combat:CanTarget(ent) and ent.components.combat:CanBeAttacked(attacker)
+        and not common.CanHitSpecialTreatmentHealTarget(attacker, ent)
+        and not combat:IsAlly(ent) then
+      attacker:PushEvent("onareaattackother", { target = ent, weapon = inst, stimuli = stimuli })
+      -- 百分比伤害逐个取目标最大生命，沿用直击的伤害计算管线。
+      DestroyOnPreHit(inst, attacker, ent)
+      local damage, spdamage = combat:CalcDamage(ent, inst)
+      ent.components.combat:GetAttacked(attacker, damage, inst, stimuli, spdamage)
+      if ent:IsValid() and not ent.components.health:IsDead() then
+        ent:AddDebuff(SKILL2_PAUSE_BUFF, SKILL2_PAUSE_BUFF)
+      end
+    end
+  end
+  inst.components.weapon.true_damage = primary_damage
+end
+
 local destroy_projectile_def = {
   name = "special_treatment_destroy_proj",
   fly_anim = "norm_fly_loop",
@@ -263,19 +292,20 @@ local function MakeDestroyProjectileOnHit(def)
     local fx = SpawnPrefab("special_treatment_bullet_fx_enemy")
     if fx then
       fx.Transform:SetPosition(x, y, z)
-      fx.Transform:SetScale(2, 2, 2)
+      fx.Transform:SetScale(1.5, 1.5, 1.5)
     end
     attacker:DoTaskInTime(0.3, function()
       local fx = SpawnPrefab("special_treatment_bullet_fx_ally")
       if fx then
         fx.Transform:SetPosition(x, y, z)
-        fx.Transform:SetScale(2, 2, 2)
+        fx.Transform:SetScale(1.5, 1.5, 1.5)
       end
     end)
     local skill = attacker and attacker.components.ark_skill and attacker.components.ark_skill:GetSkill("kaltsit_esperanta_skill2")
     local levelParams = skill and skill:GetLevelParams() or {}
     local destroy_range = levelParams.aoeRange or 3
     local health = levelParams.health or 80
+    DoSkill2AreaDamage(inst, attacker, target, x, y, z, destroy_range)
     local ents = TheSim:FindEntities(x, y, z, destroy_range, nil,
       { "insect", "INLIMBO" }, common.destroyableTags)
     for _, ent in ipairs(ents) do
@@ -286,7 +316,7 @@ local function MakeDestroyProjectileOnHit(def)
         until not (ent:IsValid() and ent.components.workable and ent.components.workable:CanBeWorked())
       end
     end
-    local friends = common.FindFriendlyEntities(attacker, nil, destroy_range, function(ent)
+    local friends = common.FindFriendlyEntities(attacker, Vector3(x, y, z), destroy_range, function(ent)
       return not ent:HasTag("ghost")
     end)
     local healed = false
