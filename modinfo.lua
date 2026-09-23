@@ -111,8 +111,8 @@ configuration_options = {
             data = "fixed_2000"
         }, {
             description = T({
-                en = "500 + 3% target max health (default)",
-                zh = "500点 + 敌人最大生命值3%（默认）"
+                en = "500+3% target max health",
+                zh = "500+敌人最大生命值3%"
             }),
             data = "percentage"
         }},
@@ -134,7 +134,7 @@ configuration_options = {
             description = "1",
             data = 1
         }, {
-            description = "5 (default)",
+            description = "5",
             data = 5
         }, {
             description = "10",
