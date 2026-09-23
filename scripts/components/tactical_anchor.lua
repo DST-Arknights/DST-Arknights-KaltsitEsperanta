@@ -29,15 +29,33 @@
 
 local REVIVE_RADIUS = 20
 local REVIVE_SCAN_INTERVAL = 0.5
+local common = require "kaltsit_esperanta_common"
 
 -- 模块级共享锁：Lua 组件文件仅 require 一次，所有锚点实例共享此表。
 -- key = 玩家 userid；锁定的玩家不会被其它锚点重复复活。
 local AnchorReviveLock = {}
 
+local function ApplyDoctorsMonumentsAfterRevive(player, skillOwner)
+  if player == nil or not player:IsValid() or player:HasTag("playerghost")
+      or skillOwner == nil or not skillOwner:IsValid() then
+    return
+  end
+
+  local skills = skillOwner.components.ark_skill
+  local skill = skills ~= nil and skills:GetSkill("kaltsit_esperanta_skill1")
+      or nil
+  local params = skill ~= nil and skill:GetLevelParams() or nil
+  if params ~= nil then
+    -- 参数取锚点施术者的技能等级；效果以复活者为中心施加。
+    common.ActiveDoctorsMonumentsBuff(player, nil, params)
+  end
+end
+
 local TacticalAnchor = Class(function(self, inst)
   self.inst = inst
   self._revivedSet = {}  -- 本锚点已复活过的玩家 userid 集合（每锚点对每位玩家仅一次）
   self._scanTask = nil
+  self._owner = nil
   self._fieldParams = { health_percent = 0.02, damage_multiplier = 0.2 } -- 领域 buff 强度，技能放置时覆盖
 
   if TheWorld.ismastersim then
@@ -46,6 +64,11 @@ local TacticalAnchor = Class(function(self, inst)
     end)
   end
 end)
+
+-- 技能放置锚点时记录施术者，用于复活时读取其一技能参数。
+function TacticalAnchor:SetOwner(owner)
+  self._owner = owner
+end
 
 -- 技能放置锚点时设置领域 buff 强度（health_percent / damage_multiplier）
 function TacticalAnchor:SetFieldParams(params)
@@ -80,15 +103,24 @@ function TacticalAnchor:_Scan()
 
       -- 解锁挂在玩家实体上：复活完成或玩家下线即释放锁，允许另一锚点接手。
       -- 释放逻辑不引用锚点，锚点销毁（技能收回）后锁仍能正确清理。
+      local skillOwner = self._owner
+      local onrespawned
+      local onremove
       local function Unlock()
         AnchorReviveLock[uid] = nil
         if ghost:IsValid() then
-          ghost:RemoveEventCallback("ms_respawnedfromghost", Unlock)
-          ghost:RemoveEventCallback("onremove", Unlock)
+          ghost:RemoveEventCallback("ms_respawnedfromghost", onrespawned)
+          ghost:RemoveEventCallback("onremove", onremove)
         end
       end
-      ghost:ListenForEvent("ms_respawnedfromghost", Unlock)
-      ghost:ListenForEvent("onremove", Unlock) -- 玩家下线等兜底，避免锁残留
+      onrespawned = function()
+        Unlock()
+        -- 原版事件在移除 playerghost 标记后触发；复活者无消耗获得锚点施术者等级的一技能效果。
+        ApplyDoctorsMonumentsAfterRevive(ghost, skillOwner)
+      end
+      onremove = Unlock
+      ghost:ListenForEvent("ms_respawnedfromghost", onrespawned)
+      ghost:ListenForEvent("onremove", onremove) -- 玩家下线等兜底，避免锁残留
 
       ghost:PushEvent("respawnfromghost", { source = self.inst })
       return

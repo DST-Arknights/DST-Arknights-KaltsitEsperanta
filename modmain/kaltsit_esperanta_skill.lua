@@ -33,6 +33,10 @@ RegisterTargetSelector("kaltsit_esperanta_skill3_aoe", AreaTargetSelector {
 
 
 local skill1DefaultParams = { range = 20, health = 2, invincible_duration = 10, treatment_duration = 20, health_cost = 40, sanity_cost = 40 }
+local SKILL1_COOLDOWN = 2 * 60
+local SKILL2_COOLDOWN = 2 * 60
+local SKILL3_COOLDOWN = 10 * 60
+local SKILL3_DURATION = 2 * 60
 
 local function OnSkill1ActivateTest(skill)
   local inst = skill.inst
@@ -105,7 +109,7 @@ local function MakeSkill2Level(level)
   local mode = TUNING.KALTSIT_ESPERANTA_SKILL2_DAMAGE_MODE or "percentage"
   local baseDamage = SKILL2_DAMAGE_MODE_BASE[mode] or SKILL2_DAMAGE_MODE_BASE.percentage
   return {
-    activationEnergy = 15,
+    activationEnergy = SKILL2_COOLDOWN,
     bulletCount = 10,
     desc = Skill2LevelDesc,
     params = {
@@ -139,6 +143,7 @@ local function OnSkill3Activate(skill, data)
   local anchor = SpawnPrefab("tactical_anchor")
   anchor.Transform:SetPosition(pos:Get())
   common.PlaySkillSfx(inst, "p_imp_khlrftcrmk")
+  anchor.components.tactical_anchor:SetOwner(inst)
   -- 领域 buff 强度：每秒回最大生命 2% + 攻击力提升 20%（health_percent / damage_multiplier）
   anchor.components.tactical_anchor:SetFieldParams(skill:GetLevelParams())
   skill:SetState("anchor", anchor)
@@ -207,8 +212,7 @@ local skills = { {
   ActivateTest = OnSkill1ActivateTest,
   OnActivate = OnSkill1Activate,
   levels = { {
-    -- activationEnergy = 2 * 60,
-    activationEnergy = 10,
+    activationEnergy = SKILL1_COOLDOWN,
     desc = STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC[1][1],
     params = skill1DefaultParams,
   } }
@@ -248,10 +252,8 @@ local skills = { {
   OnDeactivate = OnSkill3Deactivate,
   targetSelector = "kaltsit_esperanta_skill3_aoe",
   levels = { {
-    -- activationEnergy = 10 * 60,
-    activationEnergy = 10,
-    -- buffDuration = 120,
-    buffDuration = 20,
+    activationEnergy = SKILL3_COOLDOWN,
+    buffDuration = SKILL3_DURATION,
     desc = STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC[3][1],
     params = { range = 20, health_percent = 0.02, damage_multiplier = 0.2 }
   } }

@@ -30,7 +30,7 @@ local start_inv = {
 local prefabs = FlattenTree(start_inv, true)
 
 local function CustomFoodStatsMod(inst, health_delta, hunger_delta, sanity_delta, food, feeder)
-  if food.prefab == "seafoodgumbo" then
+  if food.prefab == "surfnturf" then
     sanity_delta = sanity_delta + 15
   end
   return health_delta, hunger_delta, sanity_delta
