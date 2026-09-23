@@ -7,6 +7,14 @@
 $ErrorActionPreference = 'Stop'
 
 $projectConfig = @{
+    GitFiles = @(
+        'modinfo.lua',
+        'CHANGELOG.md',
+        'docs/steam-description.md',
+        'docs/steam-description-steam.txt'
+    )
+    SteamDescriptionMarkdown = 'docs/steam-description.md'
+    SteamDescriptionOutput  = 'docs/steam-description-steam.txt'
     WorkshopDeps = @{
         'DST-ArknightsItemPackage' = 'workshop-3677284770'
     }

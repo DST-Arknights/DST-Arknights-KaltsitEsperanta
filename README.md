@@ -1,9 +1,3 @@
-## 当前缺失资源
-* 角色名称 names_kaltsit_esperanta
-* 角色名称 names_gold_kaltsit_esperanta
-* 幽灵动画 ghost_kaltsit_esperanta_build
-* 选人立绘 kaltsit_esperant
-
 ## 语音
 
 语音对象为凯尔希·思衡托 `char_1052_kalts2`，不是普通凯尔希。资料与台词见 [PRTS 思衡托语音记录](https://prts.wiki/w/%E5%87%AF%E5%B0%94%E5%B8%8C%C2%B7%E6%80%9D%E8%A1%A1%E6%89%98/%E8%AF%AD%E9%9F%B3%E8%AE%B0%E5%BD%95)。

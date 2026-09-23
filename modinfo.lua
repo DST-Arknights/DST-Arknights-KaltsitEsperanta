@@ -14,14 +14,14 @@ local UPDATE_EN = [[]]
 local UPDATE_ZH = [[]]
 
 description = T({
-    en = [[TODO:
+    en = [[An Arknights character mod for Don't Starve Together, featuring Kal'tsit Esperanta, Intellect progression, advanced medical skills, exclusive equipment, and Mon3tr. Design: 塔rua; Code: 望月心灵. Requires DST-ArknightsItemPackage. Feedback and discussion: QQ group 696891347.
 ]] .. UPDATE_EN,
-    zh = [[TODO:
+    zh = [[饥荒联机版明日方舟角色模组：凯尔希·思衡托。通过「智识」培养解锁进阶技能，使用专属医疗装备，与 Mon3tr 并肩作战。策划：塔rua；代码：望月心灵。需要前置模组 DST-ArknightsItemPackage。交流与反馈：QQ群 696891347。
 ]] .. UPDATE_ZH,
 })
-author = ""
+author = "望月心灵"
 version = "0.0.1"
-forumthread = "https://github.com/TohsakaKuro/DST-Arknights-KaltsitEsperanta/issues"
+forumthread = "https://github.com/DST-Arknights/DST-Arknights-KaltsitEsperanta/issues"
 
 api_version = 10
 
