@@ -20,7 +20,7 @@ description = T({
 ]] .. UPDATE_ZH,
 })
 author = "望月心灵"
-version = "0.0.1"
+version = "1.0.0"
 forumthread = "https://github.com/DST-Arknights/DST-Arknights-KaltsitEsperanta/issues"
 
 api_version = 10
