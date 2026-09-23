@@ -65,9 +65,8 @@ local buffers = { {
   duration = 10,
   keepondespawn = true,
   prefabs = { "forcefieldfx" },
-  -- TODO: 修正图片与描述
-  title = "医者丰碑被动一标题",
-  description = "医者丰碑被动一描述",
+  title = STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.DOCTORS_MONUMENTS_INVINCIBLE_TITLE,
+  description = STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.DOCTORS_MONUMENTS_INVINCIBLE_DESCRIPTION,
   icon_atlas = "images/ui_kaltsit_esperanta_skill.xml",
   icon_image = "skill1.tex",
   OnAttached = function(inst, target)
@@ -96,9 +95,8 @@ local buffers = { {
 }, {
   name = "doctors_monuments_treatment_buff",
   duration = 20,
-  -- TODO: 修正图片与描述
-  title = "医者丰碑被动二标题",
-  description = "医者丰碑被动二描述",
+  title = STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.DOCTORS_MONUMENTS_TREATMENT_TITLE,
+  description = STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.DOCTORS_MONUMENTS_TREATMENT_DESCRIPTION,
   icon_atlas = "images/ui_kaltsit_esperanta_skill.xml",
   icon_image = "skill1.tex",
   OnAttached = function(inst, target, followsymbol, followoffset, data, buffer)
@@ -122,9 +120,8 @@ local buffers = { {
   -- 或玩家死亡/锚点消失移除。设时长会在玩家停留领域内时到期被清掉，而 onnear 只触发一次。
   -- 不设 keepondespawn：buff 由锚点（他人）触发，不进玩家存档；玩家 despawn 后
   -- 由锚点 playerprox 重新施加。锚点移除时不触发 onfar，靠回血循环检查锚点源自动清理。
-  -- TODO: 修正图片与描述
-  title = "战术锚点领域标题",
-  description = "战术锚点领域描述",
+  title = STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.ANCHOR_FIELD_TITLE,
+  description = STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.ANCHOR_FIELD_DESCRIPTION,
   icon_atlas = "images/ui_kaltsit_esperanta_skill.xml",
   icon_image = "skill3.tex",
   OnAttached = function(inst, target, followsymbol, followoffset, data, buffer)
@@ -166,8 +163,8 @@ local buffers = { {
   name = "kaltsit_esperanta_skill2_pause_buff",
   duration = 5,
   prefabs = { "slingshotammo_slow_debuff_fx", "slingshot_shadow_aoe_fx" },
-  title = "停顿",
-  description = "移动速度降低80%，持续5秒",
+  title = STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.SKILL2_PAUSE_TITLE,
+  description = STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.SKILL2_PAUSE_DESCRIPTION,
   OnAttached = OnSkill2PauseAttached,
   OnExtended = OnSkill2PauseExtended,
   OnDetached = OnSkill2PauseDetached,

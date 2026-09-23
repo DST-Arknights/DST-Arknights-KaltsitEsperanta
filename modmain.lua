@@ -72,8 +72,7 @@ if text_language ~= "auto" and text_language ~= "zh" then
 end
 RegisterPOFile(text_language, {
   zh = "languages/kaltsit_esperanta_chinese_s.po",
-  -- 没有其他 UI 翻译时，自动语言统一回退中文，保证基础 STRINGS 完整。
-  en = "languages/kaltsit_esperanta_chinese_s.po",
+  en = "languages/kaltsit_esperanta_english.po",
 })
 
 AddReplicableComponent("kaltsit_intellect")

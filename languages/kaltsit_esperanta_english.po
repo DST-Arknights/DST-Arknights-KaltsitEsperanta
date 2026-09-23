@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Language: zh\n"
+"Language: en\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT Version: 2.0"
@@ -8,190 +8,190 @@ msgstr ""
 #. STRINGS.CHARACTER_TITLES.kaltsit_esperanta
 msgctxt "STRINGS.CHARACTER_TITLES.kaltsit_esperanta"
 msgid "Kaltsit Esperanta"
-msgstr "凯尔希思衡托"
+msgstr "Kaltsit Esperanta"
 
 #. STRINGS.CHARACTER_NAMES.kaltsit_esperanta
 msgctxt "STRINGS.CHARACTER_NAMES.kaltsit_esperanta"
 msgid "Kaltsit Esperanta"
-msgstr "凯尔希思衡托"
+msgstr "Kaltsit Esperanta"
 
 #. STRINGS.CHARACTER_DESCRIPTIONS.kaltsit_esperanta
 msgctxt "STRINGS.CHARACTER_DESCRIPTIONS.kaltsit_esperanta"
 msgid "A character from Arknights."
-msgstr "*行走在这片大地之上\n*在众多领域皆拥有渊博智识"
+msgstr "A character from Arknights."
 
 #. STRINGS.CHARACTER_QUOTES.kaltsit_esperanta
 msgctxt "STRINGS.CHARACTER_QUOTES.kaltsit_esperanta"
 msgid "The head of Rhodes Island's medical department."
-msgstr "罗德岛医疗部门负责人"
+msgstr "The head of Rhodes Island's medical department."
 
 #. STRINGS.CHARACTER_SURVIVABILITY.kaltsit_esperanta
 msgctxt "STRINGS.CHARACTER_SURVIVABILITY.kaltsit_esperanta"
 msgid "Unknown"
-msgstr "未知"
+msgstr "Unknown"
 
 #. STRINGS.NAMES.KALTSIT_ESPERANTA
 msgctxt "STRINGS.NAMES.KALTSIT_ESPERANTA"
 msgid "Kaltsit Esperanta"
-msgstr "凯尔希思衡托"
+msgstr "Kaltsit Esperanta"
 
 #. STRINGS.NAMES.KALTSIT_INTELLECT
 msgctxt "STRINGS.NAMES.KALTSIT_INTELLECT"
 msgid "Kaltsit Intellect"
-msgstr "凯尔希智识"
+msgstr "Kaltsit Intellect"
 
 #. STRINGS.NAMES.SPECIAL_TREATMENT_GUN
 msgctxt "STRINGS.NAMES.SPECIAL_TREATMENT_GUN"
 msgid "Special Treatment Gun"
-msgstr "特制治疗枪"
+msgstr "Special Treatment Gun"
 
 #. STRINGS.CHARACTERS.GENERIC.DESCRIBE.SPECIAL_TREATMENT_GUN
 msgctxt "STRINGS.CHARACTERS.GENERIC.DESCRIBE.SPECIAL_TREATMENT_GUN"
 msgid "Healing ready"
-msgstr "治疗已就绪"
+msgstr "Healing ready"
 
 
 #. STRINGS.RECIPE_DESC.SPECIAL_TREATMENT_GUN
 msgctxt "STRINGS.RECIPE_DESC.SPECIAL_TREATMENT_GUN"
 msgid "Healing ready"
-msgstr "治疗已就绪"
+msgstr "Healing ready"
 
 #. STRINGS.UI.CRAFTING_FILTERS.KALTSIT_INTELLECT
 msgctxt "STRINGS.UI.CRAFTING_FILTERS.KALTSIT_INTELLECT"
 msgid "Kaltsit Intellect"
-msgstr "凯尔希智识"
+msgstr "Kaltsit Intellect"
 
 
 #. STRINGS.NAMES.NORM_HEAL_BULLET
 msgctxt "STRINGS.NAMES.NORM_HEAL_BULLET"
 msgid "Normal Heal Bullet"
-msgstr "普通治疗弹"
+msgstr "Normal Heal Bullet"
 
 #. STRINGS.CHARACTERS.GENERIC.DESCRIBE.NORM_HEAL_BULLET
 msgctxt "STRINGS.CHARACTERS.GENERIC.DESCRIBE.NORM_HEAL_BULLET"
 msgid "Being shot never felt so... pleasant?"
-msgstr "被它击中的感觉意外地还不错"
+msgstr "Being shot never felt so... pleasant?"
 
   
 #. STRINGS.RECIPE_DESC.NORM_HEAL_BULLET
 msgctxt "STRINGS.RECIPE_DESC.NORM_HEAL_BULLET"
 msgid "Being shot never felt so... pleasant?"
-msgstr "被它击中的感觉意外地还不错"
+msgstr "Being shot never felt so... pleasant?"
 
 #. STRINGS.NAMES.TRAIT_HEAL_BULLET
 msgctxt "STRINGS.NAMES.TRAIT_HEAL_BULLET"
 msgid "Trait Heal Bullet"
-msgstr "特制治疗弹"
+msgstr "Trait Heal Bullet"
 
 #. STRINGS.CHARACTERS.GENERIC.DESCRIBE.TRAIT_HEAL_BULLET
 msgctxt "STRINGS.CHARACTERS.GENERIC.DESCRIBE.TRAIT_HEAL_BULLET"
 msgid "Leaves a strangely cool sensation at the impact point."
-msgstr "落点会散发出一股说不清的凉意"
+msgstr "Leaves a strangely cool sensation at the impact point."
 
 #. STRINGS.RECIPE_DESC.TRAIT_HEAL_BULLET
 msgctxt "STRINGS.RECIPE_DESC.TRAIT_HEAL_BULLET"
 msgid "Leaves a strangely cool sensation at the impact point."
-msgstr "落点会散发出一股说不清的凉意"
+msgstr "Leaves a strangely cool sensation at the impact point."
 
 #. STRINGS.NAMES.REGEN_HEAL_BULLET
 msgctxt "STRINGS.NAMES.REGEN_HEAL_BULLET"
 msgid "Regen Heal Bullet"
-msgstr "缓回治疗弹"
+msgstr "Regen Heal Bullet"
 
 #. STRINGS.CHARACTERS.GENERIC.DESCRIBE.REGEN_HEAL_BULLET
 msgctxt "STRINGS.CHARACTERS.GENERIC.DESCRIBE.REGEN_HEAL_BULLET"
 msgid "A drowsiness that doesn't quite arrive. The body simply mends."
-msgstr "不会让人沉睡，只是身体会静静地自行修复"
+msgstr "A drowsiness that doesn't quite arrive. The body simply mends."
 
 #. STRINGS.RECIPE_DESC.REGEN_HEAL_BULLET
 msgctxt "STRINGS.RECIPE_DESC.REGEN_HEAL_BULLET"
 msgid "A drowsiness that doesn't quite arrive. The body simply mends."
-msgstr "不会让人沉睡，只是身体会静静地自行修复"
+msgstr "A drowsiness that doesn't quite arrive. The body simply mends."
 
 #. STRINGS.NAMES.POTENT_HEAL_BULLET
 msgctxt "STRINGS.NAMES.POTENT_HEAL_BULLET"
 msgid "Potent Heal Bullet"
-msgstr "强效治疗弹"
+msgstr "Potent Heal Bullet"
 
 #. STRINGS.CHARACTERS.GENERIC.DESCRIBE.POTENT_HEAL_BULLET
 msgctxt "STRINGS.CHARACTERS.GENERIC.DESCRIBE.POTENT_HEAL_BULLET"
 msgid "Old wounds close at the impact site. Even older ones, too."
-msgstr "击中之处，连陈旧的伤口也开始愈合"
+msgstr "Old wounds close at the impact site. Even older ones, too."
 
 #. STRINGS.RECIPE_DESC.POTENT_HEAL_BULLET
 msgctxt "STRINGS.RECIPE_DESC.POTENT_HEAL_BULLET"
 msgid "Old wounds close at the impact site. Even older ones, too."
-msgstr "击中之处，连陈旧的伤口也开始愈合"
+msgstr "Old wounds close at the impact site. Even older ones, too."
 
 #. STRINGS.NAMES.LIFE_REPAIRING_UNITS
 msgctxt "STRINGS.NAMES.LIFE_REPAIRING_UNITS"
 msgid "Life Repairing Units"
-msgstr "生命修复单元"
+msgstr "Life Repairing Units"
 
 #. STRINGS.RECIPE_DESC.LIFE_REPAIRING_UNITS
 msgctxt "STRINGS.RECIPE_DESC.LIFE_REPAIRING_UNITS"
 msgid "Seems to make the healing gun fire something a little different."
-msgstr "似乎能让治疗枪打出些不太一样的东西。"
+msgstr "Seems to make the healing gun fire something a little different."
 
 #. STRINGS.NAMES.KALTSIT_NEURO_GEL
 msgctxt "STRINGS.NAMES.KALTSIT_NEURO_GEL"
 msgid "Neurotransmitter Regulating Gel"
-msgstr "神经递质调节凝剂"
+msgstr "Neurotransmitter Regulating Gel"
 
 #. STRINGS.CHARACTERS.GENERIC.DESCRIBE.KALTSIT_NEURO_GEL
 msgctxt "STRINGS.CHARACTERS.GENERIC.DESCRIBE.KALTSIT_NEURO_GEL"
 msgid "A targeted mental stabilizer."
-msgstr "能稳定她的精神波动，也能顺带校准 Mon3tr 的战斗节奏。"
+msgstr "A targeted mental stabilizer."
 
 #. STRINGS.RECIPE_DESC.KALTSIT_NEURO_GEL
 msgctxt "STRINGS.RECIPE_DESC.KALTSIT_NEURO_GEL"
 msgid "Stabilizes the mind and reinforces Mon3tr's combat rhythm."
-msgstr "恢复理智，并强化 Mon3tr 的战斗节奏。"
+msgstr "Stabilizes the mind and reinforces Mon3tr's combat rhythm."
 
 #. STRINGS.NAMES.KALTSIT_TISSUE_REPAIR_SOLVENT
 msgctxt "STRINGS.NAMES.KALTSIT_TISSUE_REPAIR_SOLVENT"
 msgid "Tissue Repair Solvent"
-msgstr "组织修复型溶剂"
+msgstr "Tissue Repair Solvent"
 
 #. STRINGS.CHARACTERS.GENERIC.DESCRIBE.KALTSIT_TISSUE_REPAIR_SOLVENT
 msgctxt "STRINGS.CHARACTERS.GENERIC.DESCRIBE.KALTSIT_TISSUE_REPAIR_SOLVENT"
 msgid "Fast repair, then sustained recovery."
-msgstr "先快速修复，再维持一段稳定恢复。"
+msgstr "Fast repair, then sustained recovery."
 
 #. STRINGS.RECIPE_DESC.KALTSIT_TISSUE_REPAIR_SOLVENT
 msgctxt "STRINGS.RECIPE_DESC.KALTSIT_TISSUE_REPAIR_SOLVENT"
 msgid "Accelerates tissue recovery for Kaltsit and Mon3tr."
-msgstr "同时加速凯尔希与 Mon3tr 的组织修复。"
+msgstr "Accelerates tissue recovery for Kaltsit and Mon3tr."
 
 #. STRINGS.NAMES.MON3TR_SIGNBOARD
 msgctxt "STRINGS.NAMES.MON3TR_SIGNBOARD"
 msgid "Mon3tr Signboard"
-msgstr "告示牌牌"
+msgstr "Mon3tr Signboard"
 
 #. STRINGS.CHARACTERS.GENERIC.DESCRIBE.MON3TR_SIGNBOARD
 msgctxt "STRINGS.CHARACTERS.GENERIC.DESCRIBE.MON3TR_SIGNBOARD"
 msgid "Fierce beasts inside, do not disturb."
-msgstr "内有凶兽，请勿打扰" 
+msgstr "Fierce beasts inside, do not disturb."
 
 #. STRINGS.RECIPE_DESC.MON3TR_SIGNBOARD
 msgctxt "STRINGS.RECIPE_DESC.MON3TR_SIGNBOARD"
 msgid "Fierce beasts inside, do not disturb."
-msgstr "内有凶兽，请勿打扰"
+msgstr "Fierce beasts inside, do not disturb."
 
 #. STRINGS.NAMES.KALTSIT_CALCITE
 msgctxt "STRINGS.NAMES.KALTSIT_CALCITE"
 msgid "Kaltsit Calcite"
-msgstr "共生源石结晶"
+msgstr "Kaltsit Calcite"
 
 #. STRINGS.CHARACTERS.GENERIC.DESCRIBE.KALTSIT_CALCITE
 msgctxt "STRINGS.CHARACTERS.GENERIC.DESCRIBE.KALTSIT_CALCITE"
 msgid "A crystalline formation of symbiotic origin."
-msgstr "共生源石的结晶体"
+msgstr "A crystalline formation of symbiotic origin."
 
 #. STRINGS.RECIPE_DESC.KALTSIT_CALCITE
 msgctxt "STRINGS.RECIPE_DESC.KALTSIT_CALCITE"
 msgid "A crystalline formation of symbiotic origin."
-msgstr "共生源石的结晶体"
+msgstr "A crystalline formation of symbiotic origin."
 
 #. STRINGS.NAMES.KALTSIT_ESPERANTA_MON3TR
 msgctxt "STRINGS.NAMES.KALTSIT_ESPERANTA_MON3TR"
@@ -201,240 +201,240 @@ msgstr "Mon3tr"
 #. STRINGS.NAMES.TACTICAL_ANCHOR
 msgctxt "STRINGS.NAMES.TACTICAL_ANCHOR"
 msgid "Tactical Anchor"
-msgstr "战术锚点"
+msgstr "Tactical Anchor"
 
 #. STRINGS.CHARACTERS.GENERIC.DESCRIBE.TACTICAL_ANCHOR
 msgctxt "STRINGS.CHARACTERS.GENERIC.DESCRIBE.TACTICAL_ANCHOR"
 msgid "Tactical Anchor"
-msgstr "战术迁跃锚点"
+msgstr "Tactical Anchor"
 
 #. STRINGS.CHARACTERS.GENERIC.DESCRIBE.KALTSIT_ESPERANTA_MON3TR
 msgctxt "STRINGS.CHARACTERS.GENERIC.DESCRIBE.KALTSIT_ESPERANTA_MON3TR"
 msgid "A calcite vertebrae???"
-msgstr "方解石脊椎???"
+msgstr "A calcite vertebrae???"
 
 #. STRINGS.ACTIONS.CASTSUMMON_MON3TR.GENERIC
 msgctxt "STRINGS.ACTIONS.CASTSUMMON_MON3TR.GENERIC"
 msgid "Summon"
-msgstr "召唤"
+msgstr "Summon"
 
 #. STRINGS.ACTIONS.COMMAND_MON3TR.GENERIC
 msgctxt "STRINGS.ACTIONS.COMMAND_MON3TR.GENERIC"
 msgid "Command:"
-msgstr "指令:"
+msgstr "Command:"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.1
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.1"
 msgid "Stratagem: Hyperpressurized Link"
-msgstr "医者丰碑"
+msgstr "Stratagem: Hyperpressurized Link"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.2
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.2"
 msgid "Stratagem: Overload"
-msgstr "保护性拒止"
+msgstr "Stratagem: Overload"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.3
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.3"
 msgid "Stratagem: Meltdown"
-msgstr "破梏重生"
+msgstr "Stratagem: Meltdown"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.1
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.1"
 msgid "Locked"
-msgstr "许多事物我都要重新熟悉"
+msgstr "There is still much I must relearn."
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.2
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.2"
 msgid "Locked"
-msgstr "许多事物我都要重新熟悉"
+msgstr "There is still much I must relearn."
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.3
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.3"
 msgid "Locked"
-msgstr "许多事物我都要重新熟悉"
+msgstr "There is still much I must relearn."
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.1
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.1"
 msgid ""
-msgstr "-消耗40生命值与40精神值\n-自身与半径20单位圆内友方获得增益:\n   获得1层护盾，抵挡一次伤害\n   每秒回复2生命值，持续20秒"
+msgstr "-Costs 40 health and 40 sanity\n-You and nearby allies gain:\n   A shield that blocks one hit\n   2 health restored per second for 20 seconds"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2"
 msgid ""
-msgstr "-消耗200点精神值\n-特质治疗枪的弹药为特殊弹药，命中时:\n   对附近范围造成%d真实伤害\n   对附近友方单位回复%d点生命值\n   摧毁附近范围内的可砍伐/挖掘对象\n   命中敌人后使其停顿5秒（移动速度降低80%%）\n-需要装备特质治疗枪与生命修复单元"
+msgstr "-Costs 200 sanity\n-The Special Treatment Gun fires special ammunition. On hit:\n   Deals %d true damage in the area\n   Restores %d health to nearby allies\n   Destroys nearby chop- and mine-able objects\n   Staggers enemies for 5 seconds (movement speed reduced by 80%%)\n-Requires the Special Treatment Gun and Life Repairing Units"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2_PERCENT
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.2_PERCENT"
 msgid ""
-msgstr "-消耗200点精神值\n-特质治疗枪的弹药为特殊弹药，命中时:\n   对附近范围造成%d基础真实伤害，并额外造成敌人最大生命值的%d%%真实伤害\n   对附近友方单位回复%d点生命值\n   摧毁附近范围内的可砍伐/挖掘对象\n   命中敌人后使其停顿5秒（移动速度降低80%%）\n-需要装备特质治疗枪与生命修复单元"
+msgstr "-Costs 200 sanity\n-The Special Treatment Gun fires special ammunition. On hit:\n   Deals %d base true damage plus true damage equal to %d%% of the target's maximum health in the area\n   Restores %d health to nearby allies\n   Destroys nearby chop- and mine-able objects\n   Staggers enemies for 5 seconds (movement speed reduced by 80%%)\n-Requires the Special Treatment Gun and Life Repairing Units"
 
 #. STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_NEED_LIFE_REPAIRING_UNITS
 msgctxt "STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_NEED_LIFE_REPAIRING_UNITS"
 msgid ""
-msgstr "需要装备生命修复单元"
+msgstr "Equip Life Repairing Units first."
 
 #. STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_NEED_SPECIAL_TREATMENT_GUN
 msgctxt "STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_NEED_SPECIAL_TREATMENT_GUN"
 msgid ""
-msgstr "需要装备特质治疗枪"
+msgstr "Equip the Special Treatment Gun first."
 
 #. STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_NOT_ENOUGH_HEALTH
 msgctxt "STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_NOT_ENOUGH_HEALTH"
 msgid ""
-msgstr "生命值不足"
+msgstr "Not enough health."
 
 #. STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_NOT_ENOUGH_SANITY
 msgctxt "STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_NOT_ENOUGH_SANITY"
 msgid ""
-msgstr "精神值不足"
+msgstr "Not enough sanity."
 
 #. STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_NEED_VALID_TARGET
 msgctxt "STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_NEED_VALID_TARGET"
 msgid ""
-msgstr "需要有效的位置"
+msgstr "Choose a valid target location."
 
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.3.1
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.3.1"
 msgid ""
-msgstr "-指定位置部署一个锚点并释放一次无消耗的[医者丰碑]，并生成一个持续120秒的领域，领域内：\n   友方单位每秒恢复2%生命值\n   友方单位攻击力提升20%"
+msgstr "-Deploy an anchor at the selected location and cast Doctor's Monument once at no cost. It creates a field for 120 seconds:\n   Allies restore 2% of their maximum health per second\n   Allies deal 20% more damage"
 
 #. STRINGS.MON3TR_COMMAND.STANDBY
 msgctxt "STRINGS.MON3TR_COMMAND.STANDBY"
 msgid "Standby"
-msgstr "待命"
+msgstr "Standby"
 
 #. STRINGS.MON3TR_COMMAND.ATTACK
 msgctxt "STRINGS.MON3TR_COMMAND.ATTACK"
 msgid "Emergency Sanction"
-msgstr "应急肃正防线"
+msgstr "Emergency Sanction"
 
 #. STRINGS.MON3TR_COMMAND.WORK
 msgctxt "STRINGS.MON3TR_COMMAND.WORK"
 msgid "Tactical Cooperation"
-msgstr "战术协同"
+msgstr "Tactical Cooperation"
 
 #. STRINGS.MON3TR_COMMAND.UNSUMMON
 msgctxt "STRINGS.MON3TR_COMMAND.UNSUMMON"
 msgid "Unsummon"
-msgstr "解除召唤"
+msgstr "Unsummon"
 
 #. STRINGS.MON3TR_COMMAND.INTIMIDATE
 msgctxt "STRINGS.MON3TR_COMMAND.INTIMIDATE"
 msgid "Dual Intimidation"
-msgstr "双重恐吓"
+msgstr "Dual Intimidation"
 
 #. STRINGS.MON3TR_COMMAND.ASSAULT
 msgctxt "STRINGS.MON3TR_COMMAND.ASSAULT"
 msgid "Assault"
-msgstr "突袭"
+msgstr "Assault"
 
 #. STRINGS.MON3TR_COMMAND.REINFORCE
 msgctxt "STRINGS.MON3TR_COMMAND.REINFORCE"
 msgid "Structural Reinforcement"
-msgstr "结构加固"
+msgstr "Structural Reinforcement"
 
 #. STRINGS.MON3TR_COMMAND.CASTLING
 msgctxt "STRINGS.MON3TR_COMMAND.CASTLING"
 msgid "Castling"
-msgstr "王车易位"
+msgstr "Castling"
 
 #. STRINGS.MON3TR_COMMAND.MELTDOWN
 msgctxt "STRINGS.MON3TR_COMMAND.MELTDOWN"
 msgid "Meltdown"
-msgstr "熔毁"
+msgstr "Meltdown"
 
 #. STRINGS.ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN.GENERIC
 msgctxt "STRINGS.ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN.GENERIC"
 msgid "Reload"
-msgstr "装填"
+msgstr "Reload"
 
 #. STRINGS.ACTIONS.UNLOAD_SPECIAL_TREATMENT_GUN.GENERIC
 msgctxt "STRINGS.ACTIONS.UNLOAD_SPECIAL_TREATMENT_GUN.GENERIC"
 msgid "Unload"
-msgstr "卸下"
+msgstr "Unload"
 
 #. STRINGS.ACTIONS.DESTROY.GENERIC
 msgctxt "STRINGS.ACTIONS.DESTROY.GENERIC"
 msgid "Destroy"
-msgstr "摧毁"
+msgstr "Destroy"
 
 #. STRINGS.ACTIONS.USE_TACTICAL_ANCHOR.GENERIC
 msgctxt "STRINGS.ACTIONS.USE_TACTICAL_ANCHOR.GENERIC"
 msgid "Teleport"
-msgstr "折跃"
+msgstr "Teleport"
 
 #. STRINGS.NAMES.MON3TR_HANDHELD_DOLL
 msgctxt "STRINGS.NAMES.MON3TR_HANDHELD_DOLL"
 msgid "Mon3tr Handheld Doll"
-msgstr "耄嘶塔"
+msgstr "Mon3tr Handheld Doll"
 
 #. STRINGS.CHARACTERS.GENERIC.DESCRIBE.MON3TR_HANDHELD_DOLL
 msgctxt "STRINGS.CHARACTERS.GENERIC.DESCRIBE.MON3TR_HANDHELD_DOLL"
 msgid "Pat pat. The real Mon3tr would never stand for this."
-msgstr "摸摸头。真正的 Mon3tr 可绝不会容忍这种事。"
+msgstr "Pat pat. The real Mon3tr would never stand for this."
 
 #. STRINGS.RECIPE_DESC.MON3TR_HANDHELD_DOLL
 msgctxt "STRINGS.RECIPE_DESC.MON3TR_HANDHELD_DOLL"
 msgid "Holding it steadies the mind. Feed it a Walking Cane and it'll drag you along faster."
-msgstr "握着它，心神便稳。喂它一根步行手杖，它便拖着你跑得更快。"
+msgstr "Holding it steadies the mind. Feed it a Walking Cane and it'll drag you along faster."
 
 #. 凯尔希·思衡托技能语音：技能1
 msgctxt "STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_SKILL_1"
 msgid "Ark Life Protocol, activate."
-msgstr "方舟生物协议启动。"
+msgstr "Ark Life Protocol, activate."
 
 #. 凯尔希·思衡托技能语音：技能2
 msgctxt "STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_SKILL_2"
 msgid "Command: repair."
-msgstr "指令：修复。"
+msgstr "Command: repair."
 
 #. 凯尔希·思衡托技能语音：技能3语音A
 msgctxt "STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_SKILL_3_A"
 msgid "Mon3tr, I need you to protect the wounded."
-msgstr "Mon3tr，我需要你保护伤员。"
+msgstr "Mon3tr, I need you to protect the wounded."
 
 #. 凯尔希·思衡托技能语音：技能3语音B
 msgctxt "STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_SKILL_3_B"
 msgid "Do not be afraid. This power will only be used for healing."
-msgstr "不要害怕，这种力量只会用于治愈。"
+msgstr "Do not be afraid. This power will only be used for healing."
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.DOCTORS_MONUMENTS_INVINCIBLE_TITLE
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.DOCTORS_MONUMENTS_INVINCIBLE_TITLE"
 msgid "Doctor's Monument Shield"
-msgstr "医者丰碑护盾"
+msgstr "Doctor's Monument Shield"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.DOCTORS_MONUMENTS_INVINCIBLE_DESCRIPTION
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.DOCTORS_MONUMENTS_INVINCIBLE_DESCRIPTION"
 msgid "Blocks one hit."
-msgstr "抵挡一次伤害。"
+msgstr "Blocks one hit."
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.DOCTORS_MONUMENTS_TREATMENT_TITLE
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.DOCTORS_MONUMENTS_TREATMENT_TITLE"
 msgid "Doctor's Monument Healing"
-msgstr "医者丰碑治疗"
+msgstr "Doctor's Monument Healing"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.DOCTORS_MONUMENTS_TREATMENT_DESCRIPTION
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.DOCTORS_MONUMENTS_TREATMENT_DESCRIPTION"
 msgid "Restores 2 health per second for 20 seconds."
-msgstr "每秒回复2点生命值，持续20秒。"
+msgstr "Restores 2 health per second for 20 seconds."
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.ANCHOR_FIELD_TITLE
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.ANCHOR_FIELD_TITLE"
 msgid "Tactical Anchor Field"
-msgstr "战术锚点领域"
+msgstr "Tactical Anchor Field"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.ANCHOR_FIELD_DESCRIPTION
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.ANCHOR_FIELD_DESCRIPTION"
 msgid "Restores 2% of maximum health per second and increases damage by 20%."
-msgstr "每秒回复最大生命值的2%，攻击力提升20%。"
+msgstr "Restores 2% of maximum health per second and increases damage by 20%."
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.SKILL2_PAUSE_TITLE
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.SKILL2_PAUSE_TITLE"
 msgid "Stagger"
-msgstr "停顿"
+msgstr "Stagger"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.SKILL2_PAUSE_DESCRIPTION
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.SKILL2_PAUSE_DESCRIPTION"
 msgid "Reduces movement speed by 80% for 5 seconds."
-msgstr "移动速度降低80%，持续5秒。"
+msgstr "Reduces movement speed by 80% for 5 seconds."
