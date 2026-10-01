@@ -178,21 +178,6 @@ msgctxt "STRINGS.RECIPE_DESC.MON3TR_SIGNBOARD"
 msgid "Fierce beasts inside, do not disturb."
 msgstr "Fierce beasts inside, do not disturb."
 
-#. STRINGS.NAMES.KALTSIT_CALCITE
-msgctxt "STRINGS.NAMES.KALTSIT_CALCITE"
-msgid "Kaltsit Calcite"
-msgstr "Kaltsit Calcite"
-
-#. STRINGS.CHARACTERS.GENERIC.DESCRIBE.KALTSIT_CALCITE
-msgctxt "STRINGS.CHARACTERS.GENERIC.DESCRIBE.KALTSIT_CALCITE"
-msgid "A crystalline formation of symbiotic origin."
-msgstr "A crystalline formation of symbiotic origin."
-
-#. STRINGS.RECIPE_DESC.KALTSIT_CALCITE
-msgctxt "STRINGS.RECIPE_DESC.KALTSIT_CALCITE"
-msgid "A crystalline formation of symbiotic origin."
-msgstr "A crystalline formation of symbiotic origin."
-
 #. STRINGS.NAMES.KALTSIT_ESPERANTA_MON3TR
 msgctxt "STRINGS.NAMES.KALTSIT_ESPERANTA_MON3TR"
 msgid "Mon3tr"
@@ -212,16 +197,6 @@ msgstr "Tactical Anchor"
 msgctxt "STRINGS.CHARACTERS.GENERIC.DESCRIBE.KALTSIT_ESPERANTA_MON3TR"
 msgid "A calcite vertebrae???"
 msgstr "A calcite vertebrae???"
-
-#. STRINGS.ACTIONS.CASTSUMMON_MON3TR.GENERIC
-msgctxt "STRINGS.ACTIONS.CASTSUMMON_MON3TR.GENERIC"
-msgid "Summon"
-msgstr "Summon"
-
-#. STRINGS.ACTIONS.COMMAND_MON3TR.GENERIC
-msgctxt "STRINGS.ACTIONS.COMMAND_MON3TR.GENERIC"
-msgid "Command:"
-msgstr "Command:"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.1
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.1"
@@ -298,51 +273,6 @@ msgstr "Choose a valid target location."
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.3.1"
 msgid ""
 msgstr "-Deploy an anchor at the selected location and cast Doctor's Monument once at no cost. It creates a field for 120 seconds:\n   Allies restore 2% of their maximum health per second\n   Allies deal 20% more damage"
-
-#. STRINGS.MON3TR_COMMAND.STANDBY
-msgctxt "STRINGS.MON3TR_COMMAND.STANDBY"
-msgid "Standby"
-msgstr "Standby"
-
-#. STRINGS.MON3TR_COMMAND.ATTACK
-msgctxt "STRINGS.MON3TR_COMMAND.ATTACK"
-msgid "Emergency Sanction"
-msgstr "Emergency Sanction"
-
-#. STRINGS.MON3TR_COMMAND.WORK
-msgctxt "STRINGS.MON3TR_COMMAND.WORK"
-msgid "Tactical Cooperation"
-msgstr "Tactical Cooperation"
-
-#. STRINGS.MON3TR_COMMAND.UNSUMMON
-msgctxt "STRINGS.MON3TR_COMMAND.UNSUMMON"
-msgid "Unsummon"
-msgstr "Unsummon"
-
-#. STRINGS.MON3TR_COMMAND.INTIMIDATE
-msgctxt "STRINGS.MON3TR_COMMAND.INTIMIDATE"
-msgid "Dual Intimidation"
-msgstr "Dual Intimidation"
-
-#. STRINGS.MON3TR_COMMAND.ASSAULT
-msgctxt "STRINGS.MON3TR_COMMAND.ASSAULT"
-msgid "Assault"
-msgstr "Assault"
-
-#. STRINGS.MON3TR_COMMAND.REINFORCE
-msgctxt "STRINGS.MON3TR_COMMAND.REINFORCE"
-msgid "Structural Reinforcement"
-msgstr "Structural Reinforcement"
-
-#. STRINGS.MON3TR_COMMAND.CASTLING
-msgctxt "STRINGS.MON3TR_COMMAND.CASTLING"
-msgid "Castling"
-msgstr "Castling"
-
-#. STRINGS.MON3TR_COMMAND.MELTDOWN
-msgctxt "STRINGS.MON3TR_COMMAND.MELTDOWN"
-msgid "Meltdown"
-msgstr "Meltdown"
 
 #. STRINGS.ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN.GENERIC
 msgctxt "STRINGS.ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN.GENERIC"

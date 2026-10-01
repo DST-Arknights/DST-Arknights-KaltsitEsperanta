@@ -9,7 +9,7 @@ local assets = {
 local start_inv = {}
 
 local function onbecameghost(inst)
-  if not IsPlayerControlling(inst) then
+  if inst.userid == nil then
     inst:Remove()
   end
 end
@@ -29,10 +29,6 @@ local function MasterPostInit(inst)
   inst.components.hunger.burnratemodifiers:SetModifier("kaltsit_esperanta_mon3tr", -200)
   inst.components.sanity:SetMax(TUNING.KALTSIT_ESPERANTA_MON3TR_SANITY)
   inst.components.sanity.externalmodifiers:SetModifier("kaltsit_esperanta_mon3tr", 200)
-
-  -- Mon3tr 技能指令管理
-  inst:AddComponent("kaltsit_mon3tr_skills")
-  inst:AddComponent("spellbookcooldowns")
 
   -- 灵魂状态变化
   inst:ListenForEvent("becameghost", onbecameghost)

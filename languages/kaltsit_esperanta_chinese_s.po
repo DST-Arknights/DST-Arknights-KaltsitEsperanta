@@ -178,21 +178,6 @@ msgctxt "STRINGS.RECIPE_DESC.MON3TR_SIGNBOARD"
 msgid "Fierce beasts inside, do not disturb."
 msgstr "内有凶兽，请勿打扰"
 
-#. STRINGS.NAMES.KALTSIT_CALCITE
-msgctxt "STRINGS.NAMES.KALTSIT_CALCITE"
-msgid "Kaltsit Calcite"
-msgstr "共生源石结晶"
-
-#. STRINGS.CHARACTERS.GENERIC.DESCRIBE.KALTSIT_CALCITE
-msgctxt "STRINGS.CHARACTERS.GENERIC.DESCRIBE.KALTSIT_CALCITE"
-msgid "A crystalline formation of symbiotic origin."
-msgstr "共生源石的结晶体"
-
-#. STRINGS.RECIPE_DESC.KALTSIT_CALCITE
-msgctxt "STRINGS.RECIPE_DESC.KALTSIT_CALCITE"
-msgid "A crystalline formation of symbiotic origin."
-msgstr "共生源石的结晶体"
-
 #. STRINGS.NAMES.KALTSIT_ESPERANTA_MON3TR
 msgctxt "STRINGS.NAMES.KALTSIT_ESPERANTA_MON3TR"
 msgid "Mon3tr"
@@ -212,16 +197,6 @@ msgstr "战术迁跃锚点"
 msgctxt "STRINGS.CHARACTERS.GENERIC.DESCRIBE.KALTSIT_ESPERANTA_MON3TR"
 msgid "A calcite vertebrae???"
 msgstr "方解石脊椎???"
-
-#. STRINGS.ACTIONS.CASTSUMMON_MON3TR.GENERIC
-msgctxt "STRINGS.ACTIONS.CASTSUMMON_MON3TR.GENERIC"
-msgid "Summon"
-msgstr "召唤"
-
-#. STRINGS.ACTIONS.COMMAND_MON3TR.GENERIC
-msgctxt "STRINGS.ACTIONS.COMMAND_MON3TR.GENERIC"
-msgid "Command:"
-msgstr "指令:"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.1
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.1"
@@ -298,51 +273,6 @@ msgstr "需要有效的位置"
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.3.1"
 msgid ""
 msgstr "-指定位置部署一个锚点并释放一次无消耗的[医者丰碑]，并生成一个持续120秒的领域，领域内：\n   友方单位每秒恢复2%生命值\n   友方单位攻击力提升20%"
-
-#. STRINGS.MON3TR_COMMAND.STANDBY
-msgctxt "STRINGS.MON3TR_COMMAND.STANDBY"
-msgid "Standby"
-msgstr "待命"
-
-#. STRINGS.MON3TR_COMMAND.ATTACK
-msgctxt "STRINGS.MON3TR_COMMAND.ATTACK"
-msgid "Emergency Sanction"
-msgstr "应急肃正防线"
-
-#. STRINGS.MON3TR_COMMAND.WORK
-msgctxt "STRINGS.MON3TR_COMMAND.WORK"
-msgid "Tactical Cooperation"
-msgstr "战术协同"
-
-#. STRINGS.MON3TR_COMMAND.UNSUMMON
-msgctxt "STRINGS.MON3TR_COMMAND.UNSUMMON"
-msgid "Unsummon"
-msgstr "解除召唤"
-
-#. STRINGS.MON3TR_COMMAND.INTIMIDATE
-msgctxt "STRINGS.MON3TR_COMMAND.INTIMIDATE"
-msgid "Dual Intimidation"
-msgstr "双重恐吓"
-
-#. STRINGS.MON3TR_COMMAND.ASSAULT
-msgctxt "STRINGS.MON3TR_COMMAND.ASSAULT"
-msgid "Assault"
-msgstr "突袭"
-
-#. STRINGS.MON3TR_COMMAND.REINFORCE
-msgctxt "STRINGS.MON3TR_COMMAND.REINFORCE"
-msgid "Structural Reinforcement"
-msgstr "结构加固"
-
-#. STRINGS.MON3TR_COMMAND.CASTLING
-msgctxt "STRINGS.MON3TR_COMMAND.CASTLING"
-msgid "Castling"
-msgstr "王车易位"
-
-#. STRINGS.MON3TR_COMMAND.MELTDOWN
-msgctxt "STRINGS.MON3TR_COMMAND.MELTDOWN"
-msgid "Meltdown"
-msgstr "熔毁"
 
 #. STRINGS.ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN.GENERIC
 msgctxt "STRINGS.ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN.GENERIC"

@@ -64,14 +64,6 @@ local function OnApplyElite(inst, elite_level)
       skill3:Unlock()
     end
   end
-  -- Mon3tr 精英加成（通知 Mon3tr 身上的技能组件）
-  local master = inst.components.kaltsit_mon3tr_master
-  if master and master.mon3tr and master.mon3tr:IsValid() then
-    local skills = master.mon3tr.components.kaltsit_mon3tr_skills
-    if skills then
-      skills:ApplyEliteBonuses()
-    end
-  end
 end
 
 -- When the character is revived from human
@@ -119,7 +111,6 @@ local CommonPostInit = function(inst)
   inst:AddTag("kelshi_spotlight_builder")
   inst:AddTag("kelshi_spotlight_heated")
   inst:AddTag("kelshi_spotlight_ranged")
-  inst:AddTag("kaltsit_esperanta_mon3tr_master")
 end
 
 -- This initializes for the server only. Components are added here.
@@ -175,8 +166,6 @@ local masterPostInit = function(inst)
   inst:AddComponent("kaltsit_intellect")
   inst.components.kaltsit_intellect:SetOnApplyElite(OnApplyElite)
 
-  -- mon3tr 管理
-  inst:AddComponent("kaltsit_mon3tr_master")
   -- 读书
   inst:AddComponent("reader")
 
