@@ -213,6 +213,11 @@ msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.3"
 msgid "Stratagem: Meltdown"
 msgstr "破梏重生"
 
+#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.4
+msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.4"
+msgid "Summon Mon3tr"
+msgstr "召唤 Mon3tr"
+
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.1
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.1"
 msgid "Locked"
@@ -273,6 +278,21 @@ msgstr "需要有效的位置"
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.3.1"
 msgid ""
 msgstr "-指定位置部署一个锚点并释放一次无消耗的[医者丰碑]，并生成一个持续120秒的领域，领域内：\n   友方单位每秒恢复2%生命值\n   友方单位攻击力提升20%"
+
+#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.4.1
+msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.4.1"
+msgid "Summon Mon3tr on safe ground nearby. Mon3tr follows you until the skill ends. Press V again to dismiss it. One bullet; automatically recharges over 180 minutes after the summon ends."
+msgstr "-在附近安全地块召唤 Mon3tr，持续跟随主人\n-再次使用技能解除召唤；Mon3tr 死亡或消失时技能结束\n-弹药1，召唤结束后自动充能，冷却180分钟"
+
+#. STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_NEED_SAFE_GROUND
+msgctxt "STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_NEED_SAFE_GROUND"
+msgid "There is no safe ground nearby to summon Mon3tr."
+msgstr "附近没有可召唤 Mon3tr 的安全地块。"
+
+#. STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_MON3TR_ALREADY_SUMMONED
+msgctxt "STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_MON3TR_ALREADY_SUMMONED"
+msgid "Mon3tr is already here."
+msgstr "Mon3tr 已在身边。"
 
 #. STRINGS.ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN.GENERIC
 msgctxt "STRINGS.ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN.GENERIC"

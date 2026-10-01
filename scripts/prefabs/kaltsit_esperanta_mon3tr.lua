@@ -1,8 +1,10 @@
 local MakePlayerCharacter = require "prefabs/player_common"
 local brain = require "brains/kaltsit_esperanta_mon3trbrain"
+local PET_LIGHT_RADIUS = 0.5
 
 local prefabs = {
   "spawn_fx_medium_static",
+  "yellowamuletlight",
 }
 local assets = {
   -- Asset("ATLAS", "images/map_icons/kaltsit_esperanta_mon3tr.xml"),
@@ -21,6 +23,28 @@ local function UpdateBrain(inst)
   if inst.brainfn ~= brainfn then
     inst:SetBrain(brainfn)
   end
+end
+
+local function SetupPetEnvironment(inst)
+  if IsPlayerControlled(inst) then
+    return
+  end
+
+  -- 独立子光源，避免 SGwilson 的电击状态关闭角色自带的 Light。
+  local light = SpawnPrefab("yellowamuletlight")
+  light.Light:SetRadius(PET_LIGHT_RADIUS)
+  light.Light:SetIntensity(0.5)
+  light.Light:SetFalloff(0.7)
+  light.Light:SetColour(1, 1, 1)
+  light.Light:Enable(true)
+  inst:AddChild(light)
+  light.Transform:SetPosition(0, 0, 0)
+
+  local temperature = inst.components.temperature
+  -- SetTemp 阻止环境升降温；上下限也锁定，阻止攻击等直接改温造成过冷过热。
+  temperature.mintemp = TUNING.STARTING_TEMP
+  temperature.maxtemp = TUNING.STARTING_TEMP
+  temperature:SetTemp(TUNING.STARTING_TEMP)
 end
 
 local function onbecameghost(inst)
@@ -60,6 +84,8 @@ local function MasterPostInit(inst)
   -- Network 的 owner 已更新时，userid 字段的 setowner 回调可能尚未执行。
   inst:ListenForEvent("setowner", UpdateBrain)
   UpdateBrain(inst)
+  -- 等 setowner 与读档组件恢复完成后，再区分玩家和 AI 宠物。
+  inst:DoTaskInTime(0, SetupPetEnvironment)
 
   -- 灵魂状态变化
   inst:ListenForEvent("ms_becameghost", onbecameghost)

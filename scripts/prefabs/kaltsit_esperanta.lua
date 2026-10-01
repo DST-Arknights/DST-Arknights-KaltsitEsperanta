@@ -28,6 +28,7 @@ local start_inv = {
   "norm_heal_bullet",
   "norm_heal_bullet", }
 local prefabs = FlattenTree(start_inv, true)
+table.insert(prefabs, "kaltsit_esperanta_mon3tr")
 
 local function CustomFoodStatsMod(inst, health_delta, hunger_delta, sanity_delta, food, feeder)
   if food.prefab == "surfnturf" then
@@ -78,6 +79,10 @@ end
 
 -- When loading or spawning the character
 local function OnLoad(inst)
+  -- 同时补装旧存档；技能 OnInstall 负责立即解锁。
+  if inst.components.ark_skill:GetSkill("kaltsit_esperanta_skill4") == nil then
+    inst.components.ark_skill:AddSkill("kaltsit_esperanta_skill4")
+  end
   inst:ListenForEvent("ms_respawnedfromghost", onbecamehuman)
   inst:ListenForEvent("ms_becameghost", onbecameghost)
 
@@ -153,6 +158,8 @@ local masterPostInit = function(inst)
   inst.components.sanity.rate_modifier = 0.5
   -- Skills
   inst:AddComponent("ark_skill")
+  -- 在 petleash:OnLoad 前声明专属名额，不占普通宠物的容量。
+  inst.components.petleash:SetMaxPetsForPrefab("kaltsit_esperanta_mon3tr", 1)
   inst:AddComponent("ark_currency")
   -- prototyper
   -- inst:AddComponent("prototyper")

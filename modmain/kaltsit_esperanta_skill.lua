@@ -37,6 +37,104 @@ local SKILL1_COOLDOWN = 2 * 60
 local SKILL2_COOLDOWN = 2 * 60
 local SKILL3_COOLDOWN = 10 * 60
 local SKILL3_DURATION = 2 * 60
+local SKILL4_COOLDOWN = 1 * 60 * 0.1
+local MON3TR_PREFAB = "kaltsit_esperanta_mon3tr"
+
+local function FindMon3tr(inst)
+  for follower in pairs(inst.components.leader.followers) do
+    if follower.prefab == MON3TR_PREFAB and follower:IsValid() then
+      return follower
+    end
+  end
+end
+
+local function IsSafeSummonPoint(pos)
+  local map = TheWorld.Map
+  return map:IsPassableAtPoint(pos.x, 0, pos.z, false)
+    and not map:IsGroundTargetBlocked(pos)
+    and not map:IsPointNearHole(pos)
+end
+
+local function FindMon3trSummonPoint(inst)
+  local pos = inst:GetPosition()
+  local angle = inst.Transform:GetRotation() * DEGREES
+  -- 沿用阿比盖尔的落点检查，额外避开海水和洞口；允许落在船的平台上。
+  local offset = FindWalkableOffset(pos, angle, 2, 12, true, false, IsSafeSummonPoint, false, true)
+  if offset ~= nil then
+    return pos + offset
+  end
+  return IsSafeSummonPoint(pos) and pos or nil
+end
+
+local function OnSkill4Install(skill)
+  -- owner 的删除先发 onremove，再清理组件；上下线交给 petleash。
+  skill:ListenForEvent("onremove", function()
+    skill._ownerRemoving = true
+  end)
+  skill:Unlock()
+end
+
+local function OnSkill4ActivateTest(skill)
+  if FindMon3tr(skill.inst) ~= nil then
+    return false, "KALTSIT_ESPERANTA_MON3TR_ALREADY_SUMMONED"
+  end
+  skill._summonPoint = FindMon3trSummonPoint(skill.inst)
+  if skill._summonPoint == nil then
+    return false, "KALTSIT_ESPERANTA_NEED_SAFE_GROUND"
+  end
+  return true
+end
+
+local function OnSkill4Activate(skill)
+  skill:ClearState()
+  local pos = skill._summonPoint or FindMon3trSummonPoint(skill.inst)
+  skill._summonPoint = nil
+  if pos ~= nil then
+    skill._mon3tr = skill.inst.components.petleash:SpawnPetAt(pos.x, 0, pos.z, MON3TR_PREFAB)
+  end
+  if skill._mon3tr == nil then
+    skill:CutBullet()
+    skill:AddEnergyProgress(SKILL4_COOLDOWN)
+  end
+end
+
+local function OnSkill4ActivateEffect(skill)
+  if not skill:IsActivating() then
+    return
+  end
+  -- petleash 已同步恢复宠物并 AddFollower；只从 leader 找回，绝不重复生成。
+  local pet = FindMon3tr(skill.inst)
+  if pet == nil then
+    skill:CutBullet()
+    return
+  end
+  if skill._mon3tr == pet and skill._mon3trRemoveListener ~= nil then
+    return
+  end
+  skill:RemoveEventCallback(skill._mon3trRemoveListener)
+  skill._mon3tr = pet
+  pet.components.follower.neverexpire = true
+  pet.components.follower.keepleaderduringminigame = true
+  pet.components.follower:CancelLoyaltyTask()
+  skill._mon3trRemoveListener = skill:ListenForEvent("onremove", function()
+    -- 此时实体尚未 Retire，先清引用，避免结束技能再次 DespawnPet 造成重入。
+    skill._mon3tr = nil
+    skill._mon3trRemoveListener = nil
+    if not skill._ownerRemoving and not skill._removing and skill:IsActivating() then
+      skill:CutBullet()
+    end
+  end, pet)
+end
+
+local function OnSkill4Deactivate(skill)
+  skill:RemoveEventCallback(skill._mon3trRemoveListener)
+  skill._mon3trRemoveListener = nil
+  local pet = skill._mon3tr
+  skill._mon3tr = nil
+  if not skill._ownerRemoving and pet ~= nil and pet:IsValid() then
+    skill.inst.components.petleash:DespawnPet(pet)
+  end
+end
 
 local function OnSkill1ActivateTest(skill)
   local inst = skill.inst
@@ -256,6 +354,26 @@ local skills = { {
     buffDuration = SKILL3_DURATION,
     desc = STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC[3][1],
     params = { range = 20, health_percent = 0.02, damage_multiplier = 0.2 }
+  } }
+}, {
+  id = "kaltsit_esperanta_skill4",
+  name = STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME[4],
+  energyRecoveryMode = ARK_CONSTANTS.ENERGY_RECOVERY_MODE.AUTO,
+  activationMode = ARK_CONSTANTS.ACTIVATION_MODE.MANUAL,
+  hotkey = KEY_V,
+  atlas = "images/ui_kaltsit_esperanta_skill.xml",
+  image = "skill4.tex",
+  recipe_atlas = "images/ui_kaltsit_esperanta_skill.xml",
+  recipe_image = "skill4.tex",
+  OnInstall = OnSkill4Install,
+  ActivateTest = OnSkill4ActivateTest,
+  OnActivate = OnSkill4Activate,
+  OnActivateEffect = OnSkill4ActivateEffect,
+  OnDeactivate = OnSkill4Deactivate,
+  levels = { {
+    activationEnergy = SKILL4_COOLDOWN,
+    bulletCount = 1,
+    desc = STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC[4][1],
   } }
 } }
 

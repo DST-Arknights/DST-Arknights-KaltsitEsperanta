@@ -137,6 +137,22 @@ local function HasInfiniteStack(stage)
   return false
 end
 
+local function ApplyContainerEnhancements(inst, stage)
+  -- 容器格子升级(饥饿腰带→2×7, 弹性制造器→2×8) + 无限堆叠(照抄 upgradeable chest)
+  if inst.components.lru_upgrade ~= nil then
+    local lv_y = 6
+    if stage["chestupgrade_stacksize"] ~= nil and stage["chestupgrade_stacksize"] >= 1 then
+      lv_y = 8
+    elseif stage["armorslurper"] ~= nil and stage["armorslurper"] >= 1 then
+      lv_y = 7
+    end
+    inst.components.lru_upgrade:SetChestLv(2, lv_y)
+  end
+  if inst.components.container ~= nil then
+    inst.components.container:EnableInfiniteStackSize(HasInfiniteStack(stage))
+  end
+end
+
 -- 从 stage 全量重算装备自身数值(幂等, 喂材料与读档结果一致)
 local function OnEnhanceStageApply(inst, stage, old)
   local absorb_bonus, planar, walkspeed_bonus, enhance_count = 0, 0, 0, 0
@@ -167,21 +183,22 @@ local function OnEnhanceStageApply(inst, stage, old)
     or (stage["beargervest"] ~= nil and stage["beargervest"] >= 1)) and INSULATION_AMOUNT or 0
   inst._insulation.summer = (stage["hawaiianshirt"] ~= nil and stage["hawaiianshirt"] >= 1) and INSULATION_AMOUNT or 0
 
-  -- 容器格子升级(饥饿腰带→2×7, 弹性制造器→2×8) + 无限堆叠(照抄 upgradeable chest)
-  if inst.components.lru_upgrade ~= nil then
-    local lv_y = 6
-    if stage["chestupgrade_stacksize"] ~= nil and stage["chestupgrade_stacksize"] >= 1 then
-      lv_y = 8
-    elseif stage["armorslurper"] ~= nil and stage["armorslurper"] >= 1 then
-      lv_y = 7
-    end
-    inst.components.lru_upgrade:SetChestLv(2, lv_y)
-  end
-  if inst.components.container ~= nil then
-    inst.components.container:EnableInfiniteStackSize(HasInfiniteStack(stage))
+  ApplyContainerEnhancements(inst, stage)
+  SyncWearerBuffs(inst)
+end
+
+local function OnPreLoad(inst, data)
+  if data == nil then
+    return
   end
 
-  SyncWearerBuffs(inst)
+  -- 组件 OnLoad 顺序不固定，必须先恢复容量，避免扩展格子的物品被当作放不下而掉落。
+  if data.lru_upgrade ~= nil then
+    inst.components.lru_upgrade:OnLoad(data.lru_upgrade)
+  end
+  if data.enhanceable ~= nil and data.enhanceable.stage ~= nil then
+    ApplyContainerEnhancements(inst, data.enhanceable.stage)
+  end
 end
 
 local function CanEnhance(inst, item, doer, stage)
@@ -259,15 +276,15 @@ local function fn()
     return inst._insulation.summer, SEASONS.SUMMER
   end
 
+  inst.OnPreLoad = OnPreLoad
+
+  -- 跨世界迁移会先保存容器内容，再移除旧实体；此处不能掉落包内物品。
   inst:ListenForEvent("onremove", function()
     if inst._followfx ~= nil then
       if inst._followfx:IsValid() then
         inst._followfx:Remove()
       end
       inst._followfx = nil
-    end
-    if inst.components.container ~= nil then
-      inst.components.container:DropEverything()
     end
     ClearWearerBuffs(inst)
   end)

@@ -213,6 +213,11 @@ msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.3"
 msgid "Stratagem: Meltdown"
 msgstr "Stratagem: Meltdown"
 
+#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.4
+msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.4"
+msgid "Summon Mon3tr"
+msgstr "Summon Mon3tr"
+
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.1
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.1"
 msgid "Locked"
@@ -273,6 +278,21 @@ msgstr "Choose a valid target location."
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.3.1"
 msgid ""
 msgstr "-Deploy an anchor at the selected location and cast Doctor's Monument once at no cost. It creates a field for 120 seconds:\n   Allies restore 2% of their maximum health per second\n   Allies deal 20% more damage"
+
+#. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.4.1
+msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.4.1"
+msgid "Summon Mon3tr on safe ground nearby. Mon3tr follows you until the skill ends. Press V again to dismiss it. One bullet; automatically recharges over 180 minutes after the summon ends."
+msgstr "-Summon Mon3tr on safe ground nearby; it keeps following its owner\n-Use the skill again to dismiss it; the skill ends when Mon3tr dies or disappears\n-One bullet; automatically recharges over 180 minutes after the summon ends"
+
+#. STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_NEED_SAFE_GROUND
+msgctxt "STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_NEED_SAFE_GROUND"
+msgid "There is no safe ground nearby to summon Mon3tr."
+msgstr "There is no safe ground nearby to summon Mon3tr."
+
+#. STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_MON3TR_ALREADY_SUMMONED
+msgctxt "STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_MON3TR_ALREADY_SUMMONED"
+msgid "Mon3tr is already here."
+msgstr "Mon3tr is already here."
 
 #. STRINGS.ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN.GENERIC
 msgctxt "STRINGS.ACTIONS.RELOAD_SPECIAL_TREATMENT_GUN.GENERIC"
