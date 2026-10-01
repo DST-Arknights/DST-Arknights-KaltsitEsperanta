@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Atlas>
+    <Texture filename="ui_kaltsit_experanta_mon3tr_skill.tex"/>
+    <Elements>
+        <Element name="assault.tex" u1="0.000488281" u2="0.124512" v1="0.483398" v2="0.731445"/>
+        <Element name="attack.tex" u1="0.000488281" u2="0.124512" v1="0.231445" v2="0.479492"/>
+        <Element name="bg.tex" u1="0.000488281" u2="0.95166" v1="0.735352" v2="0.999023"/>
+        <Element name="castling.tex" u1="0.126465" u2="0.250488" v1="0.483398" v2="0.731445"/>
+        <Element name="intimidate.tex" u1="0.126465" u2="0.250488" v1="0.231445" v2="0.479492"/>
+        <Element name="meltdown.tex" u1="0.252441" u2="0.376465" v1="0.483398" v2="0.731445"/>
+        <Element name="reinforce.tex" u1="0.252441" u2="0.376465" v1="0.231445" v2="0.479492"/>
+        <Element name="standby.tex" u1="0.378418" u2="0.502441" v1="0.483398" v2="0.731445"/>
+        <Element name="work.tex" u1="0.378418" u2="0.502441" v1="0.231445" v2="0.479492"/>
+    </Elements>
+    <StraightAlpha>false</StraightAlpha>
+</Atlas>
+
