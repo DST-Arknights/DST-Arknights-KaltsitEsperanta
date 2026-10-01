@@ -79,6 +79,8 @@ AddReplicableComponent("kaltsit_intellect")
 AddReplicableComponent("tactical_anchor")
 AddReplicableComponent("lru_upgrade")
 
+modimport "modmain/kaltsit_mon3tr_commands.lua"
+modimport "modmain/kaltsit_mon3tr_ui.lua"
 modimport "modmain/kaltsit_intellect.lua"
 modimport "modmain/kaltsit_esperanta_tech.lua"
 modimport "modmain/special_treatment_gun.lua"
