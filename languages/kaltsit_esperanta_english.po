@@ -389,6 +389,36 @@ msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.SKILL2_PAUSE_DESCRIPTION"
 msgid "Reduces movement speed by 80% for 5 seconds."
 msgstr "Reduces movement speed by 80% for 5 seconds."
 
+#. STRINGS.UI.KALTSIT_MON3TR_MODE.NAME.STANDBY
+msgctxt "STRINGS.UI.KALTSIT_MON3TR_MODE.NAME.STANDBY"
+msgid "Standby"
+msgstr "Standby"
+
+#. STRINGS.UI.KALTSIT_MON3TR_MODE.NAME.ATTACK
+msgctxt "STRINGS.UI.KALTSIT_MON3TR_MODE.NAME.ATTACK"
+msgid "Attack"
+msgstr "Attack"
+
+#. STRINGS.UI.KALTSIT_MON3TR_MODE.NAME.WORK
+msgctxt "STRINGS.UI.KALTSIT_MON3TR_MODE.NAME.WORK"
+msgid "Work"
+msgstr "Work"
+
+#. STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.STANDBY
+msgctxt "STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.STANDBY"
+msgid "Follows the master and defends against nearby threats."
+msgstr "Follows the master and defends against nearby threats."
+
+#. STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.ATTACK
+msgctxt "STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.ATTACK"
+msgid "Actively seeks and attacks nearby valid targets."
+msgstr "Actively seeks and attacks nearby valid targets."
+
+#. STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.WORK
+msgctxt "STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.WORK"
+msgid "Seeks nearby targets for chopping, mining, and digging. Does not attack in work mode."
+msgstr "Seeks nearby targets for chopping, mining, and digging. Does not attack in work mode."
+
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.NAME.1
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.NAME.1"
 msgid "Double Intimidation"
@@ -446,20 +476,25 @@ msgstr "The master and Mon3tr intimidate nearby panicable creatures within 10 un
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.2
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.2"
-msgid "Charges for 10 seconds."
-msgstr "Charges for 10 seconds."
+msgid "Mon3tr leaps to a chosen location, dealing area damage at 200% attack and targeting the nearest creature there. Charges for 10 seconds."
+msgstr "Mon3tr leaps to a chosen location, dealing area damage at 200% attack and targeting the nearest creature there. Charges for 10 seconds."
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.3
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.3"
-msgid "Lasts 30 seconds, then charges for 60 seconds."
-msgstr "Lasts 30 seconds, then charges for 60 seconds."
+msgid "Caps each hit taken by the master and Mon3tr at 15% of their maximum health. Overhealing becomes temporary shields; the master's healing increases by 100%. Lasts 30 seconds, then charges for 60 seconds."
+msgstr "Caps each hit taken by the master and Mon3tr at 15% of their maximum health. Overhealing becomes temporary shields; the master's healing increases by 100%. Lasts 30 seconds, then charges for 60 seconds."
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.4
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.4"
-msgid "Charges for 60 seconds."
-msgstr "Charges for 60 seconds."
+msgid "The master and Mon3tr immediately swap positions and each gain one Bone Armor effect. Charges for 60 seconds."
+msgstr "The master and Mon3tr immediately swap positions and each gain one Bone Armor effect. Charges for 60 seconds."
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.5
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.5"
-msgid "Lasts 20 seconds, then charges for 200 seconds."
-msgstr "Lasts 20 seconds, then charges for 200 seconds."
+msgid "Mon3tr enters attack mode and deals true damage for 20 seconds. Each second, its stackable damage reduction falls from +50% to 0%, and attack bonus from +200% to 0%. With no kills, it loses 50% of maximum health on expiry. Then charges for 200 seconds."
+msgstr "Mon3tr enters attack mode and deals true damage for 20 seconds. Each second, its stackable damage reduction falls from +50% to 0%, and attack bonus from +200% to 0%. With no kills, it loses 50% of maximum health on expiry. Then charges for 200 seconds."
+
+#. STRINGS.UI.KALTSIT_MON3TR_SKILL.NOT_IMPLEMENTED
+msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.NOT_IMPLEMENTED"
+msgid "This skill is not implemented yet."
+msgstr "This skill is not implemented yet."

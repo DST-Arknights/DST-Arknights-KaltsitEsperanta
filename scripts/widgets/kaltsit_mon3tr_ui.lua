@@ -3,6 +3,7 @@ local Image = require "widgets/image"
 local ImageButton = require "widgets/imagebutton"
 local UIAnim = require "widgets/uianim"
 local SkillSlot = require "widgets/kaltsit_mon3tr_skill_slot"
+local CommandDesc = require "widgets/kaltsit_mon3tr_command_desc"
 local layout = require "kaltsit_mon3tr_ui_config"
 local skillConfig = require "kaltsit_mon3tr_skill_config"
 
@@ -51,6 +52,11 @@ local Mon3trUI = Class(Widget, function(self, owner, controls)
         master:RequestMode(mode)
       end
     end)
+    self:SetCommandDescription(button, function()
+      local strings = STRINGS.UI.KALTSIT_MON3TR_MODE
+      local key = string.upper(mode)
+      return strings.NAME[key], strings.DESC[key]
+    end)
     self.modeButtons[mode] = button
   end
 
@@ -62,6 +68,17 @@ local Mon3trUI = Class(Widget, function(self, owner, controls)
       if master ~= nil and self.hasMon3tr and not self.sliding and self:IsVisible() then
         master:RequestSkill(skill.key)
       end
+    end)
+    self:SetCommandDescription(slot.icon, function()
+      local strings = STRINGS.UI.KALTSIT_MON3TR_SKILL
+      local desc = strings.LEVEL_DESC[index]
+      if skill.implemented ~= true then
+        desc = desc .. "\n\n" .. strings.NOT_IMPLEMENTED
+      end
+      if slot.state == "locked" then
+        desc = desc .. "\n\n" .. strings.LOCKED_DESC[index]
+      end
+      return strings.NAME[index], desc
     end)
     self.skillSlots[skill.key] = slot
   end
@@ -97,6 +114,25 @@ local Mon3trUI = Class(Widget, function(self, owner, controls)
   self:RefreshMaster()
   self:RefreshSkills()
 end)
+
+function Mon3trUI:SetCommandDescription(button, getDescription)
+  button:SetHoverWidget(function()
+    if not self.hasMon3tr or self.sliding or not self:IsVisible() then
+      return
+    end
+    local title, description = getDescription()
+    local card = CommandDesc(title, description)
+    -- 文字沿用技能提示的尺寸，仅抵消本栏自身的缩小比例。
+    card:SetScale(1 / layout.scale)
+    card:SetPosition(card:GetWidth() / (2 * layout.scale) - layout.icon_size / 2, 0, 0)
+    return card
+  end, {
+    attach_to_parent = self, -- 不放入 clip，避免提示框被裁剪。
+    offset_y = layout.bg_height / 2 - layout.row_y + 12,
+    show_delay = 0.08,
+    hide_delay = 0,
+  })
+end
 
 function Mon3trUI:HookLayout(object, method)
   local hook = function(next, ...)
@@ -196,6 +232,8 @@ function Mon3trUI:RefreshMaster()
     layout.slide_time, function()
       self.sliding = false
       if self.hasMon3tr then
+        -- 滑入期间禁用图标也可能获得鼠标焦点，完成后重新触发悬停。
+        self:ClearFocus()
         self:SetCommandsEnabled(self:IsVisible())
       else
         self:Hide()
@@ -210,7 +248,12 @@ function Mon3trUI:RefreshSkills(index)
   for i, skill in ipairs(SKILLS) do
     if index == nil or index == i then
       local state = master ~= nil and master:HasMon3tr() and master:GetSkillState(i) or nil
-      self.skillSlots[skill.key]:SyncSkillStatus(state, GetArkSkillConfigById(skill.id))
+      local slot = self.skillSlots[skill.key]
+      local wasLocked = slot.state == "locked"
+      slot:SyncSkillStatus(state, GetArkSkillConfigById(skill.id))
+      if slot.icon.focus and wasLocked ~= (slot.state == "locked") then
+        slot.icon:ClearFocus()
+      end
     end
   end
 end
@@ -221,6 +264,13 @@ function Mon3trUI:SetSkillState(skill, state, current, total)
 end
 
 function Mon3trUI:Kill()
+  -- 提示根节点与 clip 同级，先由所属按钮释放，避免父树无序销毁时重复 Kill。
+  for _, button in pairs(self.modeButtons) do
+    button:ClearHoverWidget()
+  end
+  for _, slot in pairs(self.skillSlots) do
+    slot.icon:ClearHoverWidget()
+  end
   self.content:CancelMoveTo()
   self.activeFrame:CancelMoveTo()
   self.inst:RemoveEventCallback("kaltsit_mon3tr_masterdirty", self.onMasterDirty, self.owner)

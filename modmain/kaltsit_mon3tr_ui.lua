@@ -7,5 +7,6 @@ if not TheNet:IsDedicated() then
   AddClassPostConstruct("widgets/controls", function(self)
     -- 主人 replica 决定是否显示；不依赖主人角色或客机宠物实体。
     self.kaltsitMon3trUi = self.inv.root:AddChild(Mon3trUI(self.owner, self))
+    self.kaltsitMon3trUi:MoveToBack()
   end)
 end
