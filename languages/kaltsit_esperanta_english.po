@@ -416,8 +416,8 @@ msgstr "Actively seeks and attacks nearby valid targets."
 
 #. STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.WORK
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.WORK"
-msgid "Seeks nearby targets for chopping, mining, and digging. Does not attack in work mode."
-msgstr "Seeks nearby targets for chopping, mining, and digging. Does not attack in work mode."
+msgid "Prioritizes defending against nearby threats as in standby mode. Collects nearby items before chopping, mining, or digging; delivers them when near the owner or when work is done, and keeps anything the owner cannot carry."
+msgstr "Prioritizes defending against nearby threats as in standby mode. Collects nearby items before chopping, mining, or digging; delivers them when near the owner or when work is done, and keeps anything the owner cannot carry."
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.NAME.1
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.NAME.1"

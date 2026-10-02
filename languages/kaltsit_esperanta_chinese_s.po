@@ -416,8 +416,8 @@ msgstr "主动寻找并攻击附近可攻击的目标。"
 
 #. STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.WORK
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.WORK"
-msgid "Seeks nearby targets for chopping, mining, and digging. Does not attack in work mode."
-msgstr "寻找附近可砍树、采矿、挖掘的目标。工作模式不发动攻击。"
+msgid "Prioritizes defending against nearby threats as in standby mode. Collects nearby items before chopping, mining, or digging; delivers them when near the owner or when work is done, and keeps anything the owner cannot carry."
+msgstr "优先按待命策略防御附近威胁。拾取附近物品后再砍树、采矿或挖掘；靠近主人或收工后交付，主人装不下的物品自行保留。"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.NAME.1
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.NAME.1"
