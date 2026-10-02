@@ -388,3 +388,78 @@ msgstr "停顿"
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.SKILL2_PAUSE_DESCRIPTION"
 msgid "Reduces movement speed by 80% for 5 seconds."
 msgstr "移动速度降低80%，持续5秒。"
+
+#. STRINGS.UI.KALTSIT_MON3TR_SKILL.NAME.1
+msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.NAME.1"
+msgid "Double Intimidation"
+msgstr "双重恐吓"
+
+#. STRINGS.UI.KALTSIT_MON3TR_SKILL.NAME.2
+msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.NAME.2"
+msgid "Assault"
+msgstr "突袭"
+
+#. STRINGS.UI.KALTSIT_MON3TR_SKILL.NAME.3
+msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.NAME.3"
+msgid "Structural Reinforcement"
+msgstr "结构加固"
+
+#. STRINGS.UI.KALTSIT_MON3TR_SKILL.NAME.4
+msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.NAME.4"
+msgid "Castling"
+msgstr "王车易位"
+
+#. STRINGS.UI.KALTSIT_MON3TR_SKILL.NAME.5
+msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.NAME.5"
+msgid "Meltdown"
+msgstr "熔毁"
+
+#. STRINGS.UI.KALTSIT_MON3TR_SKILL.LOCKED_DESC.1
+msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LOCKED_DESC.1"
+msgid "Unlocks when you acquire Mon3tr."
+msgstr "获得Mon3tr后解锁。"
+
+#. STRINGS.UI.KALTSIT_MON3TR_SKILL.LOCKED_DESC.2
+msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LOCKED_DESC.2"
+msgid "Unlocks when the master's maximum Intellect reaches 50."
+msgstr "主人智识上限达到50时解锁。"
+
+#. STRINGS.UI.KALTSIT_MON3TR_SKILL.LOCKED_DESC.3
+msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LOCKED_DESC.3"
+msgid "Unlocks when the master's maximum Intellect reaches 100."
+msgstr "主人智识上限达到100时解锁。"
+
+#. STRINGS.UI.KALTSIT_MON3TR_SKILL.LOCKED_DESC.4
+msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LOCKED_DESC.4"
+msgid "Unlocks when the master's maximum Intellect reaches 150."
+msgstr "主人智识上限达到150时解锁。"
+
+#. STRINGS.UI.KALTSIT_MON3TR_SKILL.LOCKED_DESC.5
+msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LOCKED_DESC.5"
+msgid "Unlocks when the master's maximum Intellect reaches 200."
+msgstr "主人智识上限达到200时解锁。"
+
+#. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.1
+msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.1"
+msgid "The master and Mon3tr intimidate nearby panicable creatures within 10 units for 10 seconds. Charges for 30 seconds."
+msgstr "主人与Mon3tr同时恐吓各自10距离单位内可恐慌的生物，恐慌持续10秒。充能30秒。"
+
+#. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.2
+msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.2"
+msgid "Charges for 10 seconds."
+msgstr "充能10秒。"
+
+#. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.3
+msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.3"
+msgid "Lasts 30 seconds, then charges for 60 seconds."
+msgstr "持续30秒；结束后充能60秒。"
+
+#. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.4
+msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.4"
+msgid "Charges for 60 seconds."
+msgstr "充能60秒。"
+
+#. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.5
+msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.5"
+msgid "Lasts 20 seconds, then charges for 200 seconds."
+msgstr "持续20秒；结束后充能200秒。"

@@ -163,6 +163,11 @@ local function OnSkill1Activate(skill, data)
     skill.inst.components.sanity:DoDelta(-levelParams.sanity_cost)
   end
   common.ActiveDoctorsMonumentsBuff(skill.inst, nil, levelParams)
+  local fx = SpawnPrefab("kaltsit_esperanta_skill1_range_fx")
+  fx.Transform:SetPosition(skill.inst.Transform:GetWorldPosition())
+  -- 原版 idle_16d6 范围为 16.6；补偿网络 proxy 的重复 Transform 缩放。
+  local scale = math.sqrt(levelParams.range / 16.6)
+  fx.Transform:SetScale(scale, scale, scale)
   common.PlaySkillSfx(skill.inst, "b_char_healboost")
 end
 

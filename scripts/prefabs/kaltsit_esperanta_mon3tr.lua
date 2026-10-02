@@ -1,10 +1,13 @@
 local MakePlayerCharacter = require "prefabs/player_common"
 local brain = require "brains/kaltsit_esperanta_mon3trbrain"
+local skillconfig = require "kaltsit_mon3tr_skill_config"
 local PET_LIGHT_RADIUS = 0.5
 
 local prefabs = {
   "spawn_fx_medium_static",
   "yellowamuletlight",
+  "battlesong_instant_panic_fx",
+  "kaltsit_mon3tr_intimidate_fx",
 }
 local assets = {
   -- Asset("ATLAS", "images/map_icons/kaltsit_esperanta_mon3tr.xml"),
@@ -75,6 +78,11 @@ local function MasterPostInit(inst)
   inst.components.hunger.burnratemodifiers:SetModifier("kaltsit_esperanta_mon3tr", -200)
   inst.components.sanity:SetMax(TUNING.KALTSIT_ESPERANTA_MON3TR_SANITY)
   inst.components.sanity.externalmodifiers:SetModifier("kaltsit_esperanta_mon3tr", 200)
+
+  inst:AddComponent("ark_skill")
+  for _, skill in ipairs(skillconfig.skills) do
+    inst.components.ark_skill:AddSkill(skill.id)
+  end
 
   inst:AddComponent("follower")
   inst.components.follower:KeepLeaderOnAttacked()

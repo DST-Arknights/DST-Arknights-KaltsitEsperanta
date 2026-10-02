@@ -4,9 +4,10 @@ local ImageButton = require "widgets/imagebutton"
 local UIAnim = require "widgets/uianim"
 local SkillSlot = require "widgets/kaltsit_mon3tr_skill_slot"
 local layout = require "kaltsit_mon3tr_ui_config"
+local skillConfig = require "kaltsit_mon3tr_skill_config"
 
 local MODES = { "standby", "attack", "work" }
-local SKILLS = { "intimidate", "assault", "reinforce", "castling", "meltdown" }
+local SKILLS = skillConfig.skills
 
 local Mon3trUI = Class(Widget, function(self, owner, controls)
   Widget._ctor(self, "KaltsitMon3trUI")
@@ -54,9 +55,15 @@ local Mon3trUI = Class(Widget, function(self, owner, controls)
   end
 
   for index, skill in ipairs(SKILLS) do
-    local slot = self.skillGroup:AddChild(SkillSlot(layout.atlas, skill .. ".tex", size))
+    local slot = self.skillGroup:AddChild(SkillSlot(layout.atlas, skill.key .. ".tex", size))
     slot:SetPosition((index - 1) * (size + layout.skill_gap), 0, 0)
-    self.skillSlots[skill] = slot
+    slot:SetOnClick(function()
+      local master = self.owner.replica.kaltsit_mon3tr_master
+      if master ~= nil and self.hasMon3tr and not self.sliding and self:IsVisible() then
+        master:RequestSkill(skill.key)
+      end
+    end)
+    self.skillSlots[skill.key] = slot
   end
 
   self.activeFrame = self.modeGroup:AddChild(UIAnim())
@@ -67,11 +74,13 @@ local Mon3trUI = Class(Widget, function(self, owner, controls)
   anim:SetBuild("m3_ui_active_overlay")
   anim:PlayAnimation("loop", true)
   self.activeFrame:Hide()
-  self:SetModeButtonsEnabled(false)
+  self:SetCommandsEnabled(false)
   self:Hide()
 
   self.onMasterDirty = function() self:RefreshMaster() end
   self.inst:ListenForEvent("kaltsit_mon3tr_masterdirty", self.onMasterDirty, owner)
+  self.onMasterSkillDirty = function(_, data) self:RefreshSkills(data ~= nil and data.index or nil) end
+  self.inst:ListenForEvent("kaltsit_mon3tr_masterskilldirty", self.onMasterSkillDirty, owner)
   self:HookLayout(controls.inv, "Rebuild")
   local extend = controls.arkExtendUi
   if extend ~= nil then
@@ -86,19 +95,20 @@ local Mon3trUI = Class(Widget, function(self, owner, controls)
   self:HookLayout(controls, "HideCraftingAndInventory")
   self:UpdatePosition()
   self:RefreshMaster()
+  self:RefreshSkills()
 end)
 
 function Mon3trUI:HookLayout(object, method)
   local hook = function(next, ...)
     next(...)
     self:UpdatePosition()
-    self:SetModeButtonsEnabled(self.hasMon3tr and not self.sliding and self:IsVisible())
+    self:SetCommandsEnabled(self.hasMon3tr and not self.sliding and self:IsVisible())
   end
   ArkHookFunction(object, method, hook)
   table.insert(self.hooks, { object = object, method = method, fn = hook })
 end
 
-function Mon3trUI:SetModeButtonsEnabled(enabled)
+function Mon3trUI:SetCommandsEnabled(enabled)
   if not enabled then
     self:ClearFocus()
   end
@@ -108,6 +118,9 @@ function Mon3trUI:SetModeButtonsEnabled(enabled)
     else
       button:Disable()
     end
+  end
+  for _, skill in ipairs(SKILLS) do
+    self.skillSlots[skill.key]:SetCommandEnabled(enabled and skill.implemented == true)
   end
 end
 
@@ -173,7 +186,8 @@ function Mon3trUI:RefreshMaster()
     return
   end
   self.hasMon3tr = visible
-  self:SetModeButtonsEnabled(false)
+  self:RefreshSkills()
+  self:SetCommandsEnabled(false)
   self.sliding = true
   self.content:CancelMoveTo()
   self:Show()
@@ -182,13 +196,23 @@ function Mon3trUI:RefreshMaster()
     layout.slide_time, function()
       self.sliding = false
       if self.hasMon3tr then
-        self:SetModeButtonsEnabled(self:IsVisible())
+        self:SetCommandsEnabled(self:IsVisible())
       else
         self:Hide()
         self.activeFrame:Hide()
         self.mode = nil
       end
     end)
+end
+
+function Mon3trUI:RefreshSkills(index)
+  local master = self.owner.replica.kaltsit_mon3tr_master
+  for i, skill in ipairs(SKILLS) do
+    if index == nil or index == i then
+      local state = master ~= nil and master:HasMon3tr() and master:GetSkillState(i) or nil
+      self.skillSlots[skill.key]:SyncSkillStatus(state, GetArkSkillConfigById(skill.id))
+    end
+  end
 end
 
 function Mon3trUI:SetSkillState(skill, state, current, total)
@@ -200,6 +224,7 @@ function Mon3trUI:Kill()
   self.content:CancelMoveTo()
   self.activeFrame:CancelMoveTo()
   self.inst:RemoveEventCallback("kaltsit_mon3tr_masterdirty", self.onMasterDirty, self.owner)
+  self.inst:RemoveEventCallback("kaltsit_mon3tr_masterskilldirty", self.onMasterSkillDirty, self.owner)
   for _, hook in ipairs(self.hooks) do
     ArkUnhookFunction(hook.object, hook.method, hook.fn)
   end

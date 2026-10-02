@@ -29,6 +29,7 @@ local start_inv = {
   "norm_heal_bullet", }
 local prefabs = FlattenTree(start_inv, true)
 table.insert(prefabs, "kaltsit_esperanta_mon3tr")
+table.insert(prefabs, "kaltsit_esperanta_skill1_range_fx")
 
 local function CustomFoodStatsMod(inst, health_delta, hunger_delta, sanity_delta, food, feeder)
   if food.prefab == "surfnturf" then
