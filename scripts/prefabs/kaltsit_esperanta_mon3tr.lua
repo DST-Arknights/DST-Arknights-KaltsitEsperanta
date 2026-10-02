@@ -8,6 +8,7 @@ local prefabs = {
   "yellowamuletlight",
   "battlesong_instant_panic_fx",
   "kaltsit_mon3tr_intimidate_fx",
+  "kaltsit_esperanta_mon3tr_claw",
 }
 local assets = {
   -- Asset("ATLAS", "images/map_icons/kaltsit_esperanta_mon3tr.xml"),
@@ -21,6 +22,24 @@ local function IsPlayerControlled(inst)
   return userid ~= nil and userid ~= ""
 end
 
+local function UpdateClaw(inst)
+  local claw = inst._kaltsit_mon3tr_claw
+  if IsPlayerControlled(inst) or inst:HasAnyTag("playerghost", "corpse")
+    or inst.components.health:IsDead() then
+    inst._kaltsit_mon3tr_claw = nil
+    if claw ~= nil and claw:IsValid() then
+      claw:Remove()
+    end
+    return
+  end
+  if claw == nil or not claw:IsValid() then
+    claw = SpawnPrefab("kaltsit_esperanta_mon3tr_claw")
+    inst:AddChild(claw)
+    claw.Follower:FollowSymbol(inst.GUID, "swap_hat", 0, 120, 0)
+    inst._kaltsit_mon3tr_claw = claw
+  end
+end
+
 local function UpdateBrain(inst)
   local brainfn = not IsPlayerControlled(inst) and brain or nil
   if inst.brainfn ~= brainfn then
@@ -28,7 +47,18 @@ local function UpdateBrain(inst)
   end
 end
 
+local function OnSetOwner(inst)
+  UpdateBrain(inst)
+  UpdateClaw(inst)
+  -- 接管时中止尚未结束的 AI 挥爪，玩家仍使用原有攻击入口。
+  if IsPlayerControlled(inst) and inst.sg.currentstate.name == "kaltsit_mon3tr_claw_attack" then
+    inst:ClearBufferedAction()
+    inst.sg:GoToState("idle")
+  end
+end
+
 local function SetupPetEnvironment(inst)
+  UpdateClaw(inst)
   if IsPlayerControlled(inst) then
     return
   end
@@ -51,6 +81,7 @@ local function SetupPetEnvironment(inst)
 end
 
 local function onbecameghost(inst)
+  UpdateClaw(inst)
   if not IsPlayerControlled(inst) then
     -- 原版在 ms_becameghost 返回后仍需访问 player_classified，下一帧再清理。
     inst:DoTaskInTime(0, function()
@@ -90,7 +121,7 @@ local function MasterPostInit(inst)
 
   inst:AddComponent("kaltsit_mon3tr_behavior")
   -- Network 的 owner 已更新时，userid 字段的 setowner 回调可能尚未执行。
-  inst:ListenForEvent("setowner", UpdateBrain)
+  inst:ListenForEvent("setowner", OnSetOwner)
   UpdateBrain(inst)
   -- 等 setowner 与读档组件恢复完成后，再区分玩家和 AI 宠物。
   inst:DoTaskInTime(0, SetupPetEnvironment)
