@@ -29,6 +29,12 @@ function Mon3trBrain:GetMode()
   return self.inst.components.kaltsit_mon3tr_behavior:GetMode()
 end
 
+function Mon3trBrain:GetCombatMaxDistance()
+  local mode = self:GetMode()
+  return mode == "attack" and TUNING.ABIGAIL_COMBAT_TARGET_DISTANCE + 2
+    or mode == "work" and WORK_KEEP_DIST or TUNING.ABIGAIL_DEFENSIVE_MAX_FOLLOW
+end
+
 function Mon3trBrain:IsActive()
   return not self.stopped and self.inst.brain == self
 end
@@ -215,8 +221,9 @@ function Mon3trBrain:CanFight()
   if not self:IsActive() then return false end
   local inst, combat, now = self.inst, self.inst.components.combat, GetTime()
   local aggressive = self:GetMode() == "attack"
+  local working = self:GetMode() == "work"
   local anchor = GetLeader(inst) or inst
-  local maxdist = aggressive and TUNING.ABIGAIL_COMBAT_TARGET_DISTANCE + 2 or TUNING.ABIGAIL_DEFENSIVE_MAX_FOLLOW
+  local maxdist = self:GetCombatMaxDistance()
   if inst:GetDistanceSqToInst(anchor) >= maxdist * maxdist or (combat.target ~= nil and not self:CanTarget(combat.target)) then
     if combat.target ~= nil or self.ai_target ~= nil then
       combat:GiveUp()
@@ -236,9 +243,11 @@ function Mon3trBrain:CanFight()
   end
   if combat.target == nil and now >= (self.next_retarget or 0) then
     self.next_retarget = now + .5
-    local radius = aggressive and TUNING.ABIGAIL_COMBAT_TARGET_DISTANCE or TUNING.ABIGAIL_DEFENSIVE_MAX_FOLLOW
+    local radius = aggressive and TUNING.ABIGAIL_COMBAT_TARGET_DISTANCE or maxdist
+    -- 工作中的威胁不限 monster/prey；仍须正在攻击主人/自己，或是主人的战斗目标。
+    local tags = aggressive and AGGRESSIVE_TAGS or (not working and DEFENSIVE_TAGS or nil)
     local x, y, z = inst.Transform:GetWorldPosition()
-    for _, target in ipairs(TheSim:FindEntities(x, y, z, radius, COMBAT_TAGS, COMBAT_NOTAGS, aggressive and AGGRESSIVE_TAGS or DEFENSIVE_TAGS)) do
+    for _, target in ipairs(TheSim:FindEntities(x, y, z, radius, COMBAT_TAGS, COMBAT_NOTAGS, tags)) do
       if self:CanTarget(target) and target:IsNear(anchor, TUNING.ABIGAIL_COMBAT_TARGET_DISTANCE)
         and (aggressive or target.components.combat.target == anchor
           or target.components.combat.target == inst
@@ -286,7 +295,7 @@ function Mon3trBrain:CombatAction()
   local action = BufferedAction(self.inst, target, ACTIONS.ATTACK)
   action.validfn = function()
     local anchor = GetLeader(self.inst) or self.inst
-    local maxdist = mode == "attack" and TUNING.ABIGAIL_COMBAT_TARGET_DISTANCE + 2 or TUNING.ABIGAIL_DEFENSIVE_MAX_FOLLOW
+    local maxdist = self:GetCombatMaxDistance()
     return self:IsActive() and self:GetMode() == mode and self:CanTarget(target)
       and self.inst:GetDistanceSqToInst(anchor) < maxdist * maxdist
   end
@@ -342,11 +351,24 @@ function Mon3trBrain:OnAttacked(data)
   self.ignored_target, self.ignore_until = nil, nil
   if not self:CanTarget(attacker) then return end
   local anchor = GetLeader(self.inst) or self.inst
-  if self:GetMode() == "attack" or (self.inst:IsNear(anchor, TUNING.ABIGAIL_DEFENSIVE_MAX_FOLLOW)
-    and attacker:IsNear(anchor, TUNING.ABIGAIL_DEFENSIVE_MAX_FOLLOW)) then
+  local maxdist = self:GetCombatMaxDistance()
+  if self:GetMode() == "attack" or (self.inst:IsNear(anchor, maxdist)
+    and attacker:IsNear(anchor, maxdist)) then
     if not IsBusy(self.inst) then self:ClearAction() end
     self:SetTarget(attacker)
     self:ForceUpdate()
+  end
+end
+
+function Mon3trBrain:UpdateLeader()
+  local leader = GetLeader(self.inst)
+  if leader == self.leader then return end
+  if self.leader ~= nil then
+    self.inst:RemoveEventCallback("attacked", self.onleaderattacked, self.leader)
+  end
+  self.leader = leader
+  if leader ~= nil then
+    self.inst:ListenForEvent("attacked", self.onleaderattacked, leader)
   end
 end
 
@@ -357,12 +379,23 @@ function Mon3trBrain:OnStart()
     self:ForceUpdate()
   end
   self.onattacked = function(_, data) self:OnAttacked(data) end
+  self.onleaderattacked = function(_, data)
+    if self:GetMode() == "work" then self:OnAttacked(data) end
+  end
+  self.onleaderchanged = function()
+    self:UpdateLeader()
+    self:ClearAI()
+    self.bt:Reset()
+    self:ForceUpdate()
+  end
   self.onattackother = function(_, data)
     if data ~= nil and data.target == self.ai_target then self.chase_started = GetTime() end
   end
   self.inst:ListenForEvent("kaltsit_mon3tr_modechanged", self.onmodechanged)
   self.inst:ListenForEvent("attacked", self.onattacked)
+  self.inst:ListenForEvent("leaderchanged", self.onleaderchanged)
   self.inst:ListenForEvent("onattackother", self.onattackother)
+  self:UpdateLeader()
   local function FollowDistance(defensive, aggressive)
     return function() return self:GetMode() == "attack" and aggressive or defensive end
   end
@@ -392,7 +425,12 @@ function Mon3trBrain:OnStop()
   self.stopped = true
   self.inst:RemoveEventCallback("kaltsit_mon3tr_modechanged", self.onmodechanged)
   self.inst:RemoveEventCallback("attacked", self.onattacked)
+  self.inst:RemoveEventCallback("leaderchanged", self.onleaderchanged)
   self.inst:RemoveEventCallback("onattackother", self.onattackother)
+  if self.leader ~= nil then
+    self.inst:RemoveEventCallback("attacked", self.onleaderattacked, self.leader)
+    self.leader = nil
+  end
   self:ClearAI()
 end
 
