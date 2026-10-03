@@ -74,10 +74,7 @@ local Mon3trUI = Class(Widget, function(self, owner, controls)
     self:SetCommandDescription(slot.icon, function()
       local strings = STRINGS.UI.KALTSIT_MON3TR_SKILL
       local desc = strings.LEVEL_DESC[index]
-      if skill.implemented ~= true then
-        desc = desc .. "\n\n" .. strings.NOT_IMPLEMENTED
-      end
-      if slot.state == "locked" then
+      if skill.implemented == true and slot.state == "locked" then
         desc = desc .. "\n\n" .. strings.LOCKED_DESC[index]
       end
       return strings.NAME[index], desc

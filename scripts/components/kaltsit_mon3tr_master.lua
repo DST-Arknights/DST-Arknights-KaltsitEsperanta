@@ -2,7 +2,7 @@ local CONSTANTS = require("ark_constants")
 local SKILLS = TUNING.KALTSIT_MON3TR_SKILLS
 local SKILLS_BY_ID = TUNING.KALTSIT_MON3TR_SKILLS_BY_ID
 local SKILLS_BY_KEY = TUNING.KALTSIT_MON3TR_SKILLS_BY_KEY
-local DEBUG_UNLOCK_ALL_SKILLS = true
+local DEBUG_UNLOCK_ALL_SKILLS = false
 
 local KaltsitMon3trMaster = Class(function(self, inst)
   self.inst = inst
@@ -86,11 +86,12 @@ function KaltsitMon3trMaster:SyncSkills()
   for index, config in ipairs(SKILLS) do
     local skill = manager ~= nil and manager:GetSkill(config.id) or nil
     if skill ~= nil then
-      -- 调试阶段临时开放全部技能；关闭开关后恢复智识门槛。
+      -- 未实现的技能保持锁定；已实现技能按智识门槛解锁。
       if skill:GetLevel() ~= 1 then
         skill:SetLevel(1)
       end
-      local unlocked = DEBUG_UNLOCK_ALL_SKILLS or index == 1 or maxintellect >= config.intellect_threshold
+      local unlocked = config.implemented == true
+        and (DEBUG_UNLOCK_ALL_SKILLS or index == 1 or maxintellect >= config.intellect_threshold)
       if unlocked and not skill:IsUnlocked() then
         skill:Unlock()
       elseif not unlocked and skill:IsUnlocked() then

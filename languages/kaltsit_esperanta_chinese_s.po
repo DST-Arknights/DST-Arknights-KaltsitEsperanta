@@ -215,8 +215,8 @@ msgstr "破梏重生"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.4
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.NAME.4"
-msgid "Summon Mon3tr"
-msgstr "召唤 Mon3tr"
+msgid "Mon3tr"
+msgstr "Mon3tr"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.1
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.1"
@@ -281,8 +281,8 @@ msgstr "-指定位置部署一个锚点并释放一次无消耗的[医者丰碑]
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.4.1
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.4.1"
-msgid "Summon Mon3tr on safe ground nearby. Mon3tr follows you until the skill ends. Press V again to dismiss it. One bullet; automatically recharges over 180 minutes after the summon ends."
-msgstr "-在附近安全地块召唤 Mon3tr，持续跟随主人\n-再次使用技能解除召唤；Mon3tr 死亡或消失时技能结束\n-弹药1，召唤结束后自动充能，冷却180分钟"
+msgid "Mon3tr, follow me."
+msgstr "Mon3tr，跟着我。"
 
 #. STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_NEED_SAFE_GROUND
 msgctxt "STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_NEED_SAFE_GROUND"
@@ -391,58 +391,58 @@ msgstr "移动速度降低80%，持续5秒。"
 
 #. STRINGS.UI.KALTSIT_MON3TR_MODE.NAME.STANDBY
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_MODE.NAME.STANDBY"
-msgid "Standby"
-msgstr "待命"
+msgid "Command: Standby"
+msgstr "指令：待命"
 
 #. STRINGS.UI.KALTSIT_MON3TR_MODE.NAME.ATTACK
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_MODE.NAME.ATTACK"
-msgid "Attack"
-msgstr "攻击"
+msgid "Command: Emergency Purification Defense"
+msgstr "指令：应急肃正防线"
 
 #. STRINGS.UI.KALTSIT_MON3TR_MODE.NAME.WORK
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_MODE.NAME.WORK"
-msgid "Work"
-msgstr "工作"
+msgid "Command: Tactical Coordination"
+msgstr "指令：战术协同"
 
 #. STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.STANDBY
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.STANDBY"
-msgid "Follows the master and defends against nearby threats."
-msgstr "跟随主人，并防御附近威胁。"
+msgid "Ready"
+msgstr "就绪"
 
 #. STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.ATTACK
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.ATTACK"
-msgid "Actively seeks and attacks nearby valid targets."
-msgstr "主动寻找并攻击附近可攻击的目标。"
+msgid "Attack"
+msgstr "进攻"
 
 #. STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.WORK
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.WORK"
-msgid "Prioritizes defending against nearby threats as in standby mode. Collects nearby items before chopping, mining, or digging; delivers them when near the owner or when work is done, and keeps anything the owner cannot carry."
-msgstr "优先按待命策略防御附近威胁。拾取附近物品后再砍树、采矿或挖掘；靠近主人或收工后交付，主人装不下的物品自行保留。"
+msgid "Mon3tr, collect the tissue samples I need."
+msgstr "Mon3tr，采集好我需要的组织样本。"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.NAME.1
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.NAME.1"
-msgid "Double Intimidation"
-msgstr "双重恐吓"
+msgid "Command: Double Intimidation"
+msgstr "指令：双重恐吓"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.NAME.2
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.NAME.2"
-msgid "Assault"
-msgstr "突袭"
+msgid "Command: Assault"
+msgstr "指令：突袭"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.NAME.3
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.NAME.3"
-msgid "Structural Reinforcement"
-msgstr "结构加固"
+msgid "Command: Structural Reinforcement"
+msgstr "指令：结构加固"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.NAME.4
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.NAME.4"
-msgid "Castling"
-msgstr "王车易位"
+msgid "Command: Castling"
+msgstr "指令：王车易位"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.NAME.5
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.NAME.5"
-msgid "Meltdown"
-msgstr "熔毁"
+msgid "Command: Meltdown"
+msgstr "指令：熔毁"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LOCKED_DESC.1
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LOCKED_DESC.1"
@@ -471,28 +471,28 @@ msgstr "主人智识上限达到200时解锁。"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.1
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.1"
-msgid "The master and Mon3tr intimidate nearby panicable creatures within 10 units for 10 seconds. Charges for 30 seconds."
-msgstr "主人与Mon3tr同时恐吓各自10距离单位内可恐慌的生物，恐慌持续10秒。充能30秒。"
+msgid "Frighten"
+msgstr "惊吓"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.2
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.2"
-msgid "Mon3tr automatically leaps to an enemy within 8 units. On landing, it deals twice its normal attack damage to enemies within a 4-unit radius and draws the aggro of those hit. Cooldown: 10 seconds."
-msgstr "Mon3tr自动跃向8距离单位内的敌人，落地时对半径4距离单位内的敌人造成自身普攻2倍的伤害，并吸引被命中敌人的仇恨。冷却时间10秒。"
+msgid "Leaps toward the target and taunts nearby enemies."
+msgstr "跃向目标并嘲讽周围的敌人"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.3
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.3"
-msgid "Caps each hit taken by the master and Mon3tr at 15% of their maximum health. Overhealing becomes temporary shields; the master's healing increases by 100%. Lasts 30 seconds, then charges for 60 seconds."
-msgstr "主人与Mon3tr单次受到的伤害不超过各自最大生命值的15%。溢出治疗转为临时护盾，主人治疗量提高100%。持续30秒；结束后充能60秒。"
+msgid "Not implemented"
+msgstr "未实现"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.4
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.4"
-msgid "The master and Mon3tr immediately swap positions and each gain one Bone Armor effect. Charges for 60 seconds."
-msgstr "主人与Mon3tr立即互换位置，双方各获得一次骨甲效果。充能60秒。"
+msgid "Not implemented"
+msgstr "未实现"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.5
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.5"
-msgid "Mon3tr enters attack mode and deals true damage for 20 seconds. Each second, its stackable damage reduction falls from +50% to 0%, and attack bonus from +200% to 0%. With no kills, it loses 50% of maximum health on expiry. Then charges for 200 seconds."
-msgstr "Mon3tr进入攻击模式并造成真实伤害，持续20秒。额外减伤从50%逐渐降至0%，可与其它减伤叠加；攻击加成从200%逐渐降至0%，每秒更新。期间未击杀敌人则结束时流失最大生命值的50%。结束后充能200秒。"
+msgid "Not implemented"
+msgstr "未实现"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.NOT_IMPLEMENTED
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.NOT_IMPLEMENTED"

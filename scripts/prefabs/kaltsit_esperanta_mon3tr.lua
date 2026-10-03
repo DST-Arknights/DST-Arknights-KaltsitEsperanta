@@ -3,7 +3,6 @@ local brain = require "brains/kaltsit_esperanta_mon3trbrain"
 local PET_LIGHT_RADIUS = 0.5
 
 local prefabs = {
-  "spawn_fx_medium_static",
   "yellowamuletlight",
   "battlesong_instant_panic_fx",
   "kaltsit_mon3tr_intimidate_fx",
@@ -52,9 +51,10 @@ end
 local function OnSetOwner(inst)
   UpdateBrain(inst)
   UpdateClaw(inst)
-  -- 接管时中止 AI 挥爪或突袭，并由对应状态恢复移动、碰撞和动画速度。
+  -- 接管时中止 AI 动作，由对应状态恢复移动、碰撞和动画速度。
   local state = inst.sg.currentstate.name
-  if IsPlayerControlled(inst) and (state == "kaltsit_mon3tr_claw_attack" or state == "kaltsit_mon3tr_assault") then
+  if IsPlayerControlled(inst) and (state == "kaltsit_mon3tr_claw_attack"
+    or state == "kaltsit_mon3tr_assault" or state == "kaltsit_mon3tr_jump") then
     inst:ClearBufferedAction()
     inst.sg:GoToState("idle")
   end
@@ -65,7 +65,7 @@ local function SetupPetEnvironment(inst)
   if IsPlayerControlled(inst) then
     return
   end
-
+  inst:AddTag("immune_stun")
   -- 独立子光源，避免 SGwilson 的电击状态关闭角色自带的 Light。
   local light = SpawnPrefab("yellowamuletlight")
   light.Light:SetRadius(PET_LIGHT_RADIUS)
@@ -89,8 +89,7 @@ local function onbecameghost(inst)
     -- 原版在 ms_becameghost 返回后仍需访问 player_classified，下一帧再清理。
     inst:DoTaskInTime(0, function()
       if not IsPlayerControlled(inst) and inst:HasAnyTag("playerghost", "corpse") then
-        local fx = SpawnPrefab("spawn_fx_medium_static")
-        fx.Transform:SetPosition(inst.Transform:GetWorldPosition())
+        -- AI 死亡兜底同样不播放上下线特效；玩家离开由原版入口处理。
         inst:Remove()
       end
     end)
@@ -108,6 +107,9 @@ local function MasterPostInit(inst)
 
   -- 角色属性
   inst.components.health:SetMaxHealth(TUNING.KALTSIT_ESPERANTA_MON3TR_HEALTH)
+  inst.components.locomotor.walkspeed = TUNING.KALTSIT_ESPERANTA_MON3TR_WALK_SPEED
+  inst.components.locomotor.runspeed = TUNING.KALTSIT_ESPERANTA_MON3TR_RUN_SPEED
+  inst.components.combat:SetDefaultDamage(TUNING.KALTSIT_ESPERANTA_MON3TR_DAMAGE)
   inst.components.hunger:SetMax(TUNING.KALTSIT_ESPERANTA_MON3TR_HUNGER)
   inst.components.hunger.burnratemodifiers:SetModifier("kaltsit_esperanta_mon3tr", -200)
   inst.components.sanity:SetMax(TUNING.KALTSIT_ESPERANTA_MON3TR_SANITY)

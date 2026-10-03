@@ -110,13 +110,9 @@ local CommonPostInit = function(inst)
   inst.talker_path_override = "kaltsit_esperanta_voice_" .. (TUNING.KALTSIT_ESPERANTA_VOICE_LANG or "jp") .. "/"
   inst:AddTag("ark_character")
   inst:AddTag("kaltsit_esperanta")
-  inst:AddTag("kaltsit_prototyper_no_priority")
   inst:AddTag("bookbuilder")
   inst:AddTag("reader")
   inst:AddTag("handyperson")
-  inst:AddTag("kelshi_spotlight_builder")
-  inst:AddTag("kelshi_spotlight_heated")
-  inst:AddTag("kelshi_spotlight_ranged")
 end
 
 -- This initializes for the server only. Components are added here.
@@ -161,6 +157,13 @@ local masterPostInit = function(inst)
   inst:AddComponent("ark_skill")
   -- 在 petleash:OnLoad 前声明专属名额，不占普通宠物的容量。
   inst.components.petleash:SetMaxPetsForPrefab("kaltsit_esperanta_mon3tr", 1)
+  ArkHookFunction(inst.components.petleash, "onspawnfn", function(next, owner, pet)
+    -- 只跳过技能本次召出；上线读档及世界迁移仍走原版的延迟特效。
+    if pet.prefab == "kaltsit_esperanta_mon3tr" and owner._kaltsit_mon3tr_summoning then
+      return
+    end
+    return next(owner, pet)
+  end)
   inst:AddComponent("ark_currency")
   -- prototyper
   -- inst:AddComponent("prototyper")

@@ -2,6 +2,9 @@ table.insert(Assets, Asset("ATLAS", "images/ui_kaltsit_esperanta_skill.xml"))
 
 local ARK_CONSTANTS = require("ark_constants")
 local common = require("kaltsit_esperanta_common")
+local mon3trJump = require("kaltsit_mon3tr_jump")
+
+AddStategraphState("wilson", mon3trJump.MakeState())
 
 local SKILL_VOICE_KEYS = {
   kaltsit_esperanta_skill1 = "KALTSIT_ESPERANTA_SKILL_1",
@@ -37,7 +40,7 @@ local SKILL1_COOLDOWN = 2 * 60
 local SKILL2_COOLDOWN = 2 * 60
 local SKILL3_COOLDOWN = 10 * 60
 local SKILL3_DURATION = 2 * 60
-local SKILL4_COOLDOWN = 1 * 60 * 0.1
+local SKILL4_COOLDOWN = 180
 local MON3TR_PREFAB = "kaltsit_esperanta_mon3tr"
 
 local function FindMon3tr(inst)
@@ -66,6 +69,26 @@ local function FindMon3trSummonPoint(inst)
   return IsSafeSummonPoint(pos) and pos or nil
 end
 
+local function RecallMon3tr(skill, pet)
+  local owner = skill.inst
+  skill:SetState("recalling", true)
+  local function FinishRecall(recalledPet)
+    skill:RemoveState("recalling")
+    if recalledPet:IsValid() and not skill._ownerRemoving then
+      -- 仅屏蔽这次技能回收的特效；上下线及迁移不设置此标记。
+      local noSpawnFX = recalledPet.no_spawn_fx
+      recalledPet.no_spawn_fx = true
+      owner.components.petleash:DespawnPet(recalledPet)
+      if recalledPet:IsValid() then
+        recalledPet.no_spawn_fx = noSpawnFX
+      end
+    end
+  end
+  if not mon3trJump.Recall(pet, owner, FinishRecall) then
+    FinishRecall(pet)
+  end
+end
+
 local function OnSkill4Install(skill)
   -- owner 的删除先发 onremove，再清理组件；上下线交给 petleash。
   skill:ListenForEvent("onremove", function()
@@ -90,10 +113,19 @@ local function OnSkill4Activate(skill)
   local pos = skill._summonPoint or FindMon3trSummonPoint(skill.inst)
   skill._summonPoint = nil
   if pos ~= nil then
+    -- onspawnfn 没有来源参数，用同步调用范围区分技能召出和 petleash 读档。
+    skill.inst._kaltsit_mon3tr_summoning = true
     skill._mon3tr = skill.inst.components.petleash:SpawnPetAt(pos.x, 0, pos.z, MON3TR_PREFAB)
+    skill.inst._kaltsit_mon3tr_summoning = nil
   end
-  if skill._mon3tr == nil then
+  if skill._mon3tr ~= nil then
+    skill.inst.components.sanity:DoDelta(skill:GetLevelParams().sanity_bonus)
+    mon3trJump.Summon(skill._mon3tr, skill.inst, pos)
+  else
+    -- 生成失败只退回充能，不执行召唤/回收的理智变化。
+    skill._summonFailed = true
     skill:CutBullet()
+    skill._summonFailed = nil
     skill:AddEnergyProgress(SKILL4_COOLDOWN)
   end
 end
@@ -131,10 +163,51 @@ local function OnSkill4Deactivate(skill)
   skill._mon3trRemoveListener = nil
   local pet = skill._mon3tr
   skill._mon3tr = nil
-  if not skill._ownerRemoving and pet ~= nil and pet:IsValid() then
-    skill.inst.components.petleash:DespawnPet(pet)
+  if not skill._ownerRemoving and not skill._summonFailed then
+    skill.inst.components.sanity:DoDelta(-skill:GetLevelParams().sanity_bonus)
+    if pet ~= nil and pet:IsValid() then
+      RecallMon3tr(skill, pet)
+    end
   end
 end
+
+local function OnSkill4Load(skill)
+  if skill:GetState("recalling") then
+    -- 召回动画中存档：petleash 仍负责还原实体，下一帧继续完成回收。
+    skill.inst:DoTaskInTime(0, function()
+      if not skill._ownerRemoving and not skill._removing then
+        local pet = FindMon3tr(skill.inst)
+        if pet ~= nil then
+          RecallMon3tr(skill, pet)
+        else
+          skill:RemoveState("recalling")
+        end
+      end
+    end)
+  end
+end
+
+AddStategraphPostInit("wilson", function(sg)
+  ArkHookFunction(sg.events.death, "fn", function(next, inst, data)
+    if inst.prefab == MON3TR_PREFAB then
+      local userid = inst.Network:GetUserID()
+      local behavior = inst.components.kaltsit_mon3tr_behavior
+      local owner = behavior ~= nil and behavior:GetOwner() or nil
+      local manager = owner ~= nil and owner.components.ark_skill or nil
+      local skill = manager ~= nil and manager:GetSkill("kaltsit_esperanta_skill4") or nil
+      if (userid == nil or userid == "") and skill ~= nil
+        and skill:IsActivating() and skill._mon3tr == inst then
+        -- 原版 death 不允许退出；宠物先结束召唤并跳回，避免进入玩家死亡链。
+        inst.components.inventory:DropEverything(true)
+        skill:CutBullet()
+        if not inst:IsValid() or (inst.sg ~= nil and inst.sg.currentstate.name == "kaltsit_mon3tr_jump") then
+          return
+        end
+      end
+    end
+    return next(inst, data)
+  end)
+end)
 
 local function OnSkill1ActivateTest(skill)
   local inst = skill.inst
@@ -375,10 +448,12 @@ local skills = { {
   OnActivate = OnSkill4Activate,
   OnActivateEffect = OnSkill4ActivateEffect,
   OnDeactivate = OnSkill4Deactivate,
+  OnLoad = OnSkill4Load,
   levels = { {
     activationEnergy = SKILL4_COOLDOWN,
     bulletCount = 1,
     desc = STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC[4][1],
+    params = { sanity_bonus = 100 },
   } }
 } }
 

@@ -93,7 +93,7 @@ AddClassPostConstruct("components/builder_replica", function(self)
 end)
 
 AddComponentPostInit("builder", function(self)
-    if not self.inst:HasTag("kaltsit_prototyper_no_priority") then
+    if not self.inst:HasTag("kaltsit_esperanta") then
         return
     end
     ArkHookFunction(self, "EvaluateTechTrees", function(next, self)

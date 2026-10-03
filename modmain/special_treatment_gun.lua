@@ -126,9 +126,9 @@ ACTIONS.SPECIAL_GUN_DESTROY.priority = 10
 ACTIONS.SPECIAL_GUN_DESTROY.canforce = true
 ACTIONS.SPECIAL_GUN_DESTROY.customarrivecheck = ShootArriveCheck
 
--- 注册组件动作：点击玩家或玩家的宠物时显示"治疗"选项
+-- 左键治疗友方；原版左键跳过自身目标，因此自我治疗使用右键。
 AddComponentAction("EQUIPPED", "weapon", function(inst, doer, target, actions, right)
-  if right or target == nil then
+  if target == nil or (right and target ~= doer) then
     return
   end
   if common.IsSpecialTreatmentGun(inst) and common.CanTriggerSpecialTreatmentHealAction(doer, target) then
@@ -214,7 +214,7 @@ AddStategraphState("wilson", State {
     if inst.components.combat.target ~= nil then
       inst.components.combat:BattleCry()
     end
-    if target ~= nil and target:IsValid() then
+    if target ~= nil and target ~= inst and target:IsValid() then
       inst:FacePoint(Point(target.Transform:GetWorldPosition()))
     end
     inst.sg.statemem.target = target
@@ -305,7 +305,9 @@ AddStategraphState("wilson_client", State {
         ArkLogger:Debug("kaltsit_shoot: buffered action has no preview_cb, skip RPC", buffaction.action)
       end
       if buffaction.target ~= nil and buffaction.target:IsValid() then
-        inst:FacePoint(buffaction.target:GetPosition())
+        if buffaction.target ~= inst then
+          inst:FacePoint(buffaction.target:GetPosition())
+        end
         inst.sg.statemem.attacktarget = buffaction.target
         inst.sg.statemem.retarget = buffaction.target
       end
@@ -354,6 +356,11 @@ AddStategraphState("wilson_client", State {
 -- 友方以及树木可被持枪者发射弹药. 但这里不允许子弹触发伤害
 AddComponentPostInit("combat", function(self)
   ArkHookFunction(self, "CanHitTarget", function(next, self, target, weapon)
+    -- Projectile:Hit 在 DoAttack 后仍会调用 OnHit；自射只结算治疗/技能效果，
+    -- 避免原版允许自伤而导致扣血、损耗护甲或触发受击打断。
+    if target == self.inst and weapon ~= nil and weapon:HasTag("special_treatment_projectile") then
+      return false
+    end
     if common.IsSpecialTreatmentGun(weapon) then
       if common.CanHitSpecialTreatmentHealTarget(self.inst, target) then
         return true

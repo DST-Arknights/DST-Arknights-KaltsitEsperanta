@@ -23,19 +23,24 @@ local SkillSlot = Class(Widget, function(self, atlas, texture, size)
 
   self.dim = self:AddChild(Image("images/ui.xml", "black.tex"))
   self.dim:SetSize(size, size)
-  self.dim:SetTint(1, 1, 1, 0.6)
+  self.dim:SetTint(1, 1, 1, 0.3)
   self.dim:SetClickable(false)
+
+  self.lockedDim = self:AddChild(Image("images/ui.xml", "black.tex"))
+  self.lockedDim:SetSize(size, size)
+  self.lockedDim:SetTint(1, 1, 1, 0.6)
+  self.lockedDim:SetClickable(false)
 
   self.charge = self:AddChild(Image("images/ui.xml", "white.tex"))
   self.charge:SetVRegPoint(ANCHOR_BOTTOM)
   self.charge:SetPosition(0, -size / 2, 0)
-  self.charge:SetTint(0, 1, 0, 0.4)
+  self.charge:SetTint(0, 1, 0, 0.2)
   self.charge:SetClickable(false)
 
   self.buff = self:AddChild(Image("images/ui.xml", "white.tex"))
   self.buff:SetVRegPoint(ANCHOR_BOTTOM)
   self.buff:SetPosition(0, -size / 2, 0)
-  self.buff:SetTint(1, 0.5, 0, 0.3)
+  self.buff:SetTint(1, 0.5, 0, 0.15)
   self.buff:SetClickable(false)
 
   self.lock = self:AddChild(Image("images/ark_skill.xml", "lock.tex"))
@@ -112,16 +117,18 @@ function SkillSlot:SetState(state, current, total)
   self.lock:Hide()
   self.stop:Hide()
   self.dim:Hide()
+  self.lockedDim:Hide()
   local auto = self.activationMode == CONSTANTS.ACTIVATION_MODE.AUTO
   local passive = self.activationMode == CONSTANTS.ACTIVATION_MODE.PASSIVE
   self.autoActivation:Hide()
   if auto and state ~= "locked" then
     self.autoActivation:Show()
   end
-  if not passive and (auto or state ~= "ready") then
+  if state ~= "locked" and not passive and (auto or state ~= "ready") then
     self.dim:Show()
   end
   if state == "locked" then
+    self.lockedDim:Show()
     self.lock:Show()
     self:StopBlink()
   elseif state == "charging" or state == "buff" or state == "bullet" then

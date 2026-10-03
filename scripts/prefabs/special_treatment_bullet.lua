@@ -311,9 +311,13 @@ local function MakeDestroyProjectileOnHit(def)
     for _, ent in ipairs(ents) do
       if ent.components.workable and ent.components.workable:CanBeWorked() then
         SpawnPrefab("collapse_small").Transform:SetPosition(ent.Transform:GetWorldPosition())
-        repeat
+        -- 工作回调可能恢复工作量或延迟移除实体，限制尝试次数避免卡住服务端。
+        for _ = 1, 2 do
           ent.components.workable:Destroy(attacker)
-        until not (ent:IsValid() and ent.components.workable and ent.components.workable:CanBeWorked())
+          if not (ent:IsValid() and ent.components.workable and ent.components.workable:CanBeWorked()) then
+            break
+          end
+        end
       end
     end
     local friends = common.FindFriendlyEntities(attacker, Vector3(x, y, z), destroy_range, function(ent)
@@ -366,6 +370,7 @@ local function projectile_fn(def, make_on_hit_fn)
   inst.AnimState:PlayAnimation(def.fly_anim, true)
 
   inst:AddTag("projectile")
+  inst:AddTag("special_treatment_projectile")
 
   inst.entity:SetPristine()
   if not TheWorld.ismastersim then return inst end
