@@ -1,5 +1,11 @@
 # 版本更新记录
 
+## v2.0.1 (2026-10-03)
+
+- 优化 Mon3tr 的饥饿管理，使其在 AI 状态下也会保持饥饿暂停。
+---
+- Improved Mon3tr's hunger management so it stays hunger-paused while under AI control.
+
 本项目的所有重要变更。
 
 ## v2.0.0 (2026-10-03)
