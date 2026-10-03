@@ -32,13 +32,6 @@ local function UpdateHunger(inst)
   end
 end
 
-local function PausePetHunger(inst)
-  -- 原版进食等状态退出时会 Resume，AI 仍需保持饥饿暂停。
-  if not IsPlayerControlled(inst) then
-    inst.components.hunger:Pause()
-  end
-end
-
 local function UpdateClaw(inst)
   local claw = inst._kaltsit_mon3tr_claw
   if IsPlayerControlled(inst) or inst:HasAnyTag("playerghost", "corpse")
@@ -79,10 +72,10 @@ end
 
 local function SetupPetEnvironment(inst)
   UpdateClaw(inst)
-  PausePetHunger(inst)
   if IsPlayerControlled(inst) then
     return
   end
+  inst.components.hunger:Pause()
   inst:AddTag("immune_stun")
   -- 独立子光源，避免 SGwilson 的电击状态关闭角色自带的 Light。
   local light = SpawnPrefab("yellowamuletlight")
@@ -130,6 +123,14 @@ local function MasterPostInit(inst)
   inst.components.combat:SetDefaultDamage(TUNING.KALTSIT_ESPERANTA_MON3TR_DAMAGE)
   inst.components.hunger:SetMax(TUNING.KALTSIT_ESPERANTA_MON3TR_HUNGER)
   inst.components.hunger.burnratemodifiers:SetModifier("kaltsit_esperanta_mon3tr", -200)
+  -- 原版进食、浮水等回调会主动 Resume；仅玩家控制时允许恢复计时。
+  local resume_hunger = inst.components.hunger.Resume
+  inst.components.hunger.Resume = function(hunger, ...)
+    if IsPlayerControlled(hunger.inst) then
+      return resume_hunger(hunger, ...)
+    end
+    hunger:Pause()
+  end
   inst.components.sanity:SetMax(TUNING.KALTSIT_ESPERANTA_MON3TR_SANITY)
   inst.components.sanity.externalmodifiers:SetModifier("kaltsit_esperanta_mon3tr", 200)
 
@@ -145,7 +146,6 @@ local function MasterPostInit(inst)
   inst:AddComponent("kaltsit_mon3tr_behavior")
   -- Network 的 owner 已更新时，userid 字段的 setowner 回调可能尚未执行。
   inst:ListenForEvent("setowner", OnSetOwner)
-  inst:ListenForEvent("newstate", PausePetHunger)
   UpdateBrain(inst)
   UpdateHunger(inst)
   -- 等 setowner 与读档组件恢复完成后，再区分玩家和 AI 宠物。
