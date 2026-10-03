@@ -23,6 +23,22 @@ local function IsPlayerControlled(inst)
   return userid ~= nil and userid ~= ""
 end
 
+local function UpdateHunger(inst)
+  if not IsPlayerControlled(inst) or GetGameModeProperty("no_hunger")
+    or inst:HasAnyTag("playerghost", "corpse") or inst.components.health:IsDead() then
+    inst.components.hunger:Pause()
+  else
+    inst.components.hunger:Resume()
+  end
+end
+
+local function PausePetHunger(inst)
+  -- 原版进食等状态退出时会 Resume，AI 仍需保持饥饿暂停。
+  if not IsPlayerControlled(inst) then
+    inst.components.hunger:Pause()
+  end
+end
+
 local function UpdateClaw(inst)
   local claw = inst._kaltsit_mon3tr_claw
   if IsPlayerControlled(inst) or inst:HasAnyTag("playerghost", "corpse")
@@ -51,6 +67,7 @@ end
 local function OnSetOwner(inst)
   UpdateBrain(inst)
   UpdateClaw(inst)
+  UpdateHunger(inst)
   -- 接管时中止 AI 动作，由对应状态恢复移动、碰撞和动画速度。
   local state = inst.sg.currentstate.name
   if IsPlayerControlled(inst) and (state == "kaltsit_mon3tr_claw_attack"
@@ -62,6 +79,7 @@ end
 
 local function SetupPetEnvironment(inst)
   UpdateClaw(inst)
+  PausePetHunger(inst)
   if IsPlayerControlled(inst) then
     return
   end
@@ -127,7 +145,9 @@ local function MasterPostInit(inst)
   inst:AddComponent("kaltsit_mon3tr_behavior")
   -- Network 的 owner 已更新时，userid 字段的 setowner 回调可能尚未执行。
   inst:ListenForEvent("setowner", OnSetOwner)
+  inst:ListenForEvent("newstate", PausePetHunger)
   UpdateBrain(inst)
+  UpdateHunger(inst)
   -- 等 setowner 与读档组件恢复完成后，再区分玩家和 AI 宠物。
   inst:DoTaskInTime(0, SetupPetEnvironment)
 
