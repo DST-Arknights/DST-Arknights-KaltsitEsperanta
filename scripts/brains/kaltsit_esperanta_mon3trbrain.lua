@@ -265,6 +265,21 @@ function Mon3trBrain:CanFight()
   return true
 end
 
+function Mon3trBrain:TryAssault()
+  local inst = self.inst
+  local target = inst.components.combat.target
+  if not self:IsActive() or not self:CanTarget(target) then return false end
+  local manager = inst.components.ark_skill
+  local skill = manager ~= nil and manager:GetSkill(TUNING.KALTSIT_MON3TR_SKILLS_BY_KEY.assault.id) or nil
+  local params = { target = target }
+  if skill == nil or not skill:CanActivate(params) then return false end
+
+  -- 先验证再取消追击动作；此次目标保留为局部引用，供技能再次验证。
+  self:ClearAction()
+  self:SetTarget(target)
+  return skill:TryActivate(params)
+end
+
 function Mon3trBrain:CombatAction()
   local target, mode = self.inst.components.combat.target, self:GetMode()
   if not self:IsActive() or target == nil then return nil end
@@ -353,7 +368,10 @@ function Mon3trBrain:OnStart()
   end
   self.bt = BT(self.inst, PriorityNode({
     WhileNode(function() return IsBusy(self.inst) end, "Finish current action", ConditionWaitNode(function() return not IsBusy(self.inst) end)),
-    WhileNode(function() return self:CanFight() end, "Fight", DoAction(self.inst, function() return self:CombatAction() end, "Attack", true)),
+    WhileNode(function() return self:CanFight() end, "Fight", PriorityNode({
+      ConditionNode(function() return self:TryAssault() end, "Assault"),
+      DoAction(self.inst, function() return self:CombatAction() end, "Attack", true),
+    }, .25)),
     WhileNode(function() return self:GetMode() == "work" end, "Collect and work", PriorityNode({
       DoAction(self.inst, function() return self:GiveAction(true) end, "Give nearby owner", true),
       DoAction(self.inst, function() return self:PickupAction() end, "Collect nearby items", true),

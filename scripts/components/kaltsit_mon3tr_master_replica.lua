@@ -1,6 +1,6 @@
 local BehaviorReplica = require("components/kaltsit_mon3tr_behavior_replica")
 local CONSTANTS = require("ark_constants")
-local skillconfig = require("kaltsit_mon3tr_skill_config")
+local SKILLS_BY_KEY = TUNING.KALTSIT_MON3TR_SKILLS_BY_KEY
 
 local SKILL_DEFAULTS = {
   id = "",
@@ -27,7 +27,7 @@ local KaltsitMon3trMasterReplica = Class(function(self, inst)
   self._onsnapshotdirty = function() inst:PushEvent("kaltsit_mon3tr_masterdirty") end
   inst:ListenForEvent("kaltsit_mon3tr_mastersnapshotdirty", self._onsnapshotdirty)
   self.states = {}
-  for index = 1, #skillconfig.skills do
+  for index = 1, TUNING.KALTSIT_MON3TR_SKILL_COUNT do
     local state = NetState(inst, "kaltsit_mon3tr_skill")
     self.states[index] = state
     state:Attach(inst)
@@ -112,9 +112,10 @@ function KaltsitMon3trMasterReplica:RequestMode(mode)
 end
 
 function KaltsitMon3trMasterReplica:RequestSkill(key)
-  local definition = skillconfig.by_key[key]
-  if definition == nil or not definition.implemented or not self:HasMon3tr()
-    or self.inst:HasTag("playerghost") then
+  local definition = SKILLS_BY_KEY[key]
+  if definition == nil or not definition.implemented
+    or definition.activationMode ~= CONSTANTS.ACTIVATION_MODE.MANUAL
+    or not self:HasMon3tr() or self.inst:HasTag("playerghost") then
     return false
   end
   local state = self:GetSkillState(definition.index)

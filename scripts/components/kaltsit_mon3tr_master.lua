@@ -1,4 +1,8 @@
-local skillconfig = require("kaltsit_mon3tr_skill_config")
+local CONSTANTS = require("ark_constants")
+local SKILLS = TUNING.KALTSIT_MON3TR_SKILLS
+local SKILLS_BY_ID = TUNING.KALTSIT_MON3TR_SKILLS_BY_ID
+local SKILLS_BY_KEY = TUNING.KALTSIT_MON3TR_SKILLS_BY_KEY
+local DEBUG_UNLOCK_ALL_SKILLS = true
 
 local KaltsitMon3trMaster = Class(function(self, inst)
   self.inst = inst
@@ -10,13 +14,13 @@ local KaltsitMon3trMaster = Class(function(self, inst)
   end
   self._onmon3trremoved = function(pet) self:ClearMon3tr(pet) end
   self._onskillstatuschanged = function(pet, data)
-    local config = data ~= nil and skillconfig.by_id[data.skillId] or nil
+    local config = data ~= nil and SKILLS_BY_ID[data.skillId] or nil
     if pet == self.mon3tr and config ~= nil then
       self:SyncSkill(config.index)
     end
   end
   self._onskilladded = function(pet, data)
-    if pet == self.mon3tr and data ~= nil and skillconfig.by_id[data.id] ~= nil then
+    if pet == self.mon3tr and data ~= nil and SKILLS_BY_ID[data.id] ~= nil then
       self:SyncSkills()
     end
   end
@@ -38,7 +42,7 @@ function KaltsitMon3trMaster:SyncMon3tr()
 end
 
 function KaltsitMon3trMaster:SyncSkill(index)
-  local config = skillconfig.skills[index]
+  local config = SKILLS[index]
   if config == nil then
     return
   end
@@ -79,14 +83,14 @@ function KaltsitMon3trMaster:SyncSkills()
   local manager = pet.components.ark_skill
   local intellect = self.inst.components.kaltsit_intellect
   local maxintellect = intellect ~= nil and intellect.max or 0
-  for index, config in ipairs(skillconfig.skills) do
+  for index, config in ipairs(SKILLS) do
     local skill = manager ~= nil and manager:GetSkill(config.id) or nil
     if skill ~= nil then
-      -- 目前配置均为单等级；智识决定解锁，首技能始终可用。
+      -- 调试阶段临时开放全部技能；关闭开关后恢复智识门槛。
       if skill:GetLevel() ~= 1 then
         skill:SetLevel(1)
       end
-      local unlocked = index == 1 or maxintellect >= config.intellect_threshold
+      local unlocked = DEBUG_UNLOCK_ALL_SKILLS or index == 1 or maxintellect >= config.intellect_threshold
       if unlocked and not skill:IsUnlocked() then
         skill:Unlock()
       elseif not unlocked and skill:IsUnlocked() then
@@ -136,7 +140,7 @@ function KaltsitMon3trMaster:ClearMon3tr(expectedpet)
   end
   DetachMon3tr(self)
   self.inst.replica.kaltsit_mon3tr_master:SetSnapshot(false, "standby")
-  for index = 1, #skillconfig.skills do
+  for index = 1, TUNING.KALTSIT_MON3TR_SKILL_COUNT do
     self.inst.replica.kaltsit_mon3tr_master:SetSkillSnapshot(index, nil)
   end
   return true
@@ -161,8 +165,9 @@ function KaltsitMon3trMaster:SetMode(mode)
 end
 
 function KaltsitMon3trMaster:ActivateSkill(key)
-  local definition = skillconfig.by_key[key]
+  local definition = SKILLS_BY_KEY[key]
   if definition == nil or not definition.implemented
+    or definition.activationMode ~= CONSTANTS.ACTIVATION_MODE.MANUAL
     or not self.inst:IsValid() or self.inst:HasTag("playerghost") then
     return false
   end

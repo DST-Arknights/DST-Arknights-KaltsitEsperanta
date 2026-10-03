@@ -5,10 +5,10 @@ local UIAnim = require "widgets/uianim"
 local SkillSlot = require "widgets/kaltsit_mon3tr_skill_slot"
 local CommandDesc = require "widgets/kaltsit_mon3tr_command_desc"
 local layout = require "kaltsit_mon3tr_ui_config"
-local skillConfig = require "kaltsit_mon3tr_skill_config"
+local CONSTANTS = require "ark_constants"
 
 local MODES = { "standby", "attack", "work" }
-local SKILLS = skillConfig.skills
+local SKILLS = TUNING.KALTSIT_MON3TR_SKILLS
 
 local Mon3trUI = Class(Widget, function(self, owner, controls)
   Widget._ctor(self, "KaltsitMon3trUI")
@@ -33,7 +33,8 @@ local Mon3trUI = Class(Widget, function(self, owner, controls)
 
   local size = layout.icon_size
   local modeWidth = #MODES * size + (#MODES - 1) * layout.mode_gap
-  local skillWidth = #SKILLS * size + (#SKILLS - 1) * layout.skill_gap
+  local skillCount = TUNING.KALTSIT_MON3TR_SKILL_COUNT
+  local skillWidth = skillCount * size + (skillCount - 1) * layout.skill_gap
   local startX = -(modeWidth + layout.group_gap + skillWidth) / 2 + size / 2 + layout.row_x
   self.modeGroup = self.content:AddChild(Widget("mon3tr_modes"))
   self.modeGroup:SetPosition(startX, layout.row_y, 0)
@@ -65,7 +66,8 @@ local Mon3trUI = Class(Widget, function(self, owner, controls)
     slot:SetPosition((index - 1) * (size + layout.skill_gap), 0, 0)
     slot:SetOnClick(function()
       local master = self.owner.replica.kaltsit_mon3tr_master
-      if master ~= nil and self.hasMon3tr and not self.sliding and self:IsVisible() then
+      if skill.activationMode == CONSTANTS.ACTIVATION_MODE.MANUAL
+        and master ~= nil and self.hasMon3tr and not self.sliding and self:IsVisible() then
         master:RequestSkill(skill.key)
       end
     end)
@@ -156,7 +158,8 @@ function Mon3trUI:SetCommandsEnabled(enabled)
     end
   end
   for _, skill in ipairs(SKILLS) do
-    self.skillSlots[skill.key]:SetCommandEnabled(enabled and skill.implemented == true)
+    self.skillSlots[skill.key]:SetCommandEnabled(enabled and skill.implemented == true
+      and skill.activationMode == CONSTANTS.ACTIVATION_MODE.MANUAL)
   end
 end
 

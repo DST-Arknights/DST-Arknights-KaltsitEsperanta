@@ -1,6 +1,5 @@
 local MakePlayerCharacter = require "prefabs/player_common"
 local brain = require "brains/kaltsit_esperanta_mon3trbrain"
-local skillconfig = require "kaltsit_mon3tr_skill_config"
 local PET_LIGHT_RADIUS = 0.5
 
 local prefabs = {
@@ -9,6 +8,9 @@ local prefabs = {
   "battlesong_instant_panic_fx",
   "kaltsit_mon3tr_intimidate_fx",
   "kaltsit_esperanta_mon3tr_claw",
+  "groundpoundring_fx",
+  "pine_needles_chop",
+  "boss_ripple_fx",
 }
 local assets = {
   -- Asset("ATLAS", "images/map_icons/kaltsit_esperanta_mon3tr.xml"),
@@ -50,8 +52,9 @@ end
 local function OnSetOwner(inst)
   UpdateBrain(inst)
   UpdateClaw(inst)
-  -- 接管时中止尚未结束的 AI 挥爪，玩家仍使用原有攻击入口。
-  if IsPlayerControlled(inst) and inst.sg.currentstate.name == "kaltsit_mon3tr_claw_attack" then
+  -- 接管时中止 AI 挥爪或突袭，并由对应状态恢复移动、碰撞和动画速度。
+  local state = inst.sg.currentstate.name
+  if IsPlayerControlled(inst) and (state == "kaltsit_mon3tr_claw_attack" or state == "kaltsit_mon3tr_assault") then
     inst:ClearBufferedAction()
     inst.sg:GoToState("idle")
   end
@@ -111,7 +114,7 @@ local function MasterPostInit(inst)
   inst.components.sanity.externalmodifiers:SetModifier("kaltsit_esperanta_mon3tr", 200)
 
   inst:AddComponent("ark_skill")
-  for _, skill in ipairs(skillconfig.skills) do
+  for _, skill in ipairs(TUNING.KALTSIT_MON3TR_SKILLS) do
     inst.components.ark_skill:AddSkill(skill.id)
   end
 

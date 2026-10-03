@@ -1,6 +1,7 @@
 local constants = require("ark_constants")
-local config = require("kaltsit_mon3tr_skill_config")
+local assault = require("kaltsit_mon3tr_assault")
 local strings = STRINGS.UI.KALTSIT_MON3TR_SKILL
+local SKILL_ATLAS = "images/ui_kaltsit_experanta_mon3tr_skill.xml"
 local INTIMIDATE_STATE = "kaltsit_mon3tr_intimidate"
 local SCARE_CANT_TAGS = { "INLIMBO", "DECOR", "FX", "NOCLICK" }
 
@@ -76,6 +77,8 @@ AddStategraphState("wilson", State {
   },
 })
 
+AddStategraphState("wilson", assault.MakeState())
+
 local function OnIntimidateActivate(skill)
   local pet = skill.inst
   local owner = GetIntimidateOwner(pet)
@@ -100,31 +103,105 @@ local function UnlockOnInstall(skill)
   skill:Unlock()
 end
 
-for index, definition in ipairs(config.skills) do
-  local params = { sanity_cost = 20 }
-  if index == 1 then
-    params.range = 10
-    params.panic_duration = 10
-  end
-  RegisterArkSkill({
-    id = definition.id,
-    name = strings.NAME[index],
-    lockedDesc = strings.LOCKED_DESC[index],
+local skills = {
+  {
+    key = "intimidate",
+    id = "kaltsit_mon3tr_intimidate",
+    implemented = true,
+    intellect_threshold = 1,
+    name = strings.NAME[1],
+    lockedDesc = strings.LOCKED_DESC[1],
     energyRecoveryMode = constants.ENERGY_RECOVERY_MODE.AUTO,
     activationMode = constants.ACTIVATION_MODE.MANUAL,
-    atlas = config.atlas,
-    image = definition.key .. ".tex",
-    OnInstall = index == 1 and UnlockOnInstall or nil,
-    ActivateTest = index == 1 and OnIntimidateActivateTest or nil,
-    OnActivate = index == 1 and OnIntimidateActivate or nil,
-    levels = {
-      {
-        activationEnergy = definition.activation_energy,
-        buffDuration = definition.buff_duration,
-        desc = strings.LEVEL_DESC[index],
-        -- 理智消耗暂不接入；其它四个技能仍仅配置框架运行状态。
-        params = params,
-      },
-    },
-  })
+    atlas = SKILL_ATLAS,
+    image = "intimidate.tex",
+    OnInstall = UnlockOnInstall,
+    ActivateTest = OnIntimidateActivateTest,
+    OnActivate = OnIntimidateActivate,
+    levels = { {
+      activationEnergy = 30,
+      buffDuration = 0,
+      desc = strings.LEVEL_DESC[1],
+      params = { range = 10, panic_duration = 10 },
+    } },
+  }, {
+    key = "assault",
+    id = "kaltsit_mon3tr_assault",
+    implemented = true,
+    intellect_threshold = 50,
+    name = strings.NAME[2],
+    lockedDesc = strings.LOCKED_DESC[2],
+    energyRecoveryMode = constants.ENERGY_RECOVERY_MODE.AUTO,
+    activationMode = constants.ACTIVATION_MODE.AUTO,
+    atlas = SKILL_ATLAS,
+    image = "assault.tex",
+    ActivateTest = assault.CanActivate,
+    OnActivate = assault.Activate,
+    levels = { {
+      activationEnergy = 10,
+      buffDuration = 0,
+      desc = strings.LEVEL_DESC[2],
+      params = { range = 8, radius = 4, damage_mult = 2 },
+    } },
+  }, {
+    key = "reinforce",
+    id = "kaltsit_mon3tr_reinforce",
+    implemented = false,
+    intellect_threshold = 100,
+    name = strings.NAME[3],
+    lockedDesc = strings.LOCKED_DESC[3],
+    energyRecoveryMode = constants.ENERGY_RECOVERY_MODE.AUTO,
+    activationMode = constants.ACTIVATION_MODE.MANUAL,
+    atlas = SKILL_ATLAS,
+    image = "reinforce.tex",
+    levels = { {
+      activationEnergy = 60,
+      buffDuration = 30,
+      desc = strings.LEVEL_DESC[3],
+    } },
+  }, {
+    key = "castling",
+    id = "kaltsit_mon3tr_castling",
+    implemented = false,
+    intellect_threshold = 150,
+    name = strings.NAME[4],
+    lockedDesc = strings.LOCKED_DESC[4],
+    energyRecoveryMode = constants.ENERGY_RECOVERY_MODE.AUTO,
+    activationMode = constants.ACTIVATION_MODE.MANUAL,
+    atlas = SKILL_ATLAS,
+    image = "castling.tex",
+    levels = { {
+      activationEnergy = 60,
+      buffDuration = 0,
+      desc = strings.LEVEL_DESC[4],
+    } },
+  }, {
+    key = "meltdown",
+    id = "kaltsit_mon3tr_meltdown",
+    implemented = false,
+    intellect_threshold = 200,
+    name = strings.NAME[5],
+    lockedDesc = strings.LOCKED_DESC[5],
+    energyRecoveryMode = constants.ENERGY_RECOVERY_MODE.AUTO,
+    activationMode = constants.ACTIVATION_MODE.MANUAL,
+    atlas = SKILL_ATLAS,
+    image = "meltdown.tex",
+    levels = { {
+      activationEnergy = 200,
+      buffDuration = 20,
+      desc = strings.LEVEL_DESC[5],
+    } },
+  },
+}
+
+-- 与凯尔希技能一样逐项定义；共享数量与查询索引供宠物、代理和 UI 使用。
+TUNING.KALTSIT_MON3TR_SKILLS = skills
+TUNING.KALTSIT_MON3TR_SKILL_COUNT = #skills
+TUNING.KALTSIT_MON3TR_SKILLS_BY_ID = {}
+TUNING.KALTSIT_MON3TR_SKILLS_BY_KEY = {}
+for index, skill in ipairs(skills) do
+  skill.index = index
+  TUNING.KALTSIT_MON3TR_SKILLS_BY_ID[skill.id] = skill
+  TUNING.KALTSIT_MON3TR_SKILLS_BY_KEY[skill.key] = skill
+  RegisterArkSkill(skill)
 end

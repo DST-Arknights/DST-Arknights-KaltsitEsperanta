@@ -476,8 +476,8 @@ msgstr "The master and Mon3tr intimidate nearby panicable creatures within 10 un
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.2
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.2"
-msgid "Mon3tr leaps to a chosen location, dealing area damage at 200% attack and targeting the nearest creature there. Charges for 10 seconds."
-msgstr "Mon3tr leaps to a chosen location, dealing area damage at 200% attack and targeting the nearest creature there. Charges for 10 seconds."
+msgid "Mon3tr automatically leaps to an enemy within 8 units. On landing, it deals twice its normal attack damage to enemies within a 4-unit radius and draws the aggro of those hit. Cooldown: 10 seconds."
+msgstr "Mon3tr automatically leaps to an enemy within 8 units. On landing, it deals twice its normal attack damage to enemies within a 4-unit radius and draws the aggro of those hit. Cooldown: 10 seconds."
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.3
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.3"
