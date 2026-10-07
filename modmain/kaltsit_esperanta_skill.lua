@@ -75,6 +75,27 @@ local function RecallMon3tr(skill, pet)
   local function FinishRecall(recalledPet)
     skill:RemoveState("recalling")
     if recalledPet:IsValid() and not skill._ownerRemoving then
+      local inventory = recalledPet.components.inventory
+      -- 主动回收优先归还物品；死亡或主人为灵魂时仍直接掉落。
+      if not recalledPet.components.health:IsDead() and not owner:HasAnyTag("playerghost", "corpse") then
+        local ownerInventory = owner.components.inventory
+        local items = inventory:FindItems(function(item)
+          return not item.components.inventoryitem.islockedinslot and item.components.curseditem == nil
+        end)
+        local ignorefull = ownerInventory.ignorefull
+        ownerInventory.ignorefull = true -- 容量不足时不占用鼠标物品。
+        for _, item in ipairs(items) do
+          item.components.inventoryitem:RemoveFromOwner(true)
+          item.prevcontainer = nil
+          item.prevslot = nil
+          if not ownerInventory:GiveItem(item, nil, recalledPet:GetPosition()) and item:IsValid() then
+            inventory:DropItem(item, true, true)
+          end
+        end
+        ownerInventory.ignorefull = ignorefull
+      end
+      -- 移除实体前掉落剩余物品，包括死亡时保留的物品。
+      inventory:DropEverything()
       -- 仅屏蔽这次技能回收的特效；上下线及迁移不设置此标记。
       local noSpawnFX = recalledPet.no_spawn_fx
       recalledPet.no_spawn_fx = true
