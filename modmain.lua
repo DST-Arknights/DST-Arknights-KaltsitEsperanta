@@ -17,7 +17,7 @@ table.insert(Assets, Asset("SOUND", "sound/kaltsit_esperanta_voice_zh.fsb"))
 table.insert(Assets, Asset("SOUNDPACKAGE", "sound/kaltsit_esperanta_voice_jp.fev"))
 table.insert(Assets, Asset("SOUND", "sound/kaltsit_esperanta_voice_jp.fsb"))
 
-assert(ARK_ITEM_PACKAGE_LOADED, "请安装前置模组: ark_item_package\n please install the required mod: ark_item_package\n[https://steamcommunity.com/sharedfiles/filedetails/?id=3677284770]")
+assert(ARK_ITEM_PACKAGE_LOADED, "请安装前置模组: 源枢\n please install the required mod: Arknights: Nexus\n[https://steamcommunity.com/sharedfiles/filedetails/?id=3677284770]")
 
 ArkLogger:DeclareLogger("INFO", "K2CEsperanta")
 

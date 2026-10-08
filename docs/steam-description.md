@@ -36,4 +36,4 @@
 - 策划：塔rua
 - 码师：望月心灵
 - 交流与问题反馈：QQ群 696891347
-- 前置模组：DST-ArknightsItemPackage
+- 前置模组：源枢

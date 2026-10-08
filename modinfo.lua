@@ -30,9 +30,9 @@ v2.0.1 (2026-10-03)
 ]]
 
 description = T({
-    en = [[An Arknights character mod for Don't Starve Together, featuring Kal'tsit Esperanta, Intellect progression, advanced medical skills, and exclusive equipment. Design: 塔rua; Code: 望月心灵. Requires DST-ArknightsItemPackage. Feedback and discussion: QQ group 696891347.
+    en = [[An Arknights character mod for Don't Starve Together, featuring Kal'tsit Esperanta, Intellect progression, advanced medical skills, and exclusive equipment. Design: 塔rua; Code: 望月心灵. Requires "Arknights: Nexus". Feedback and discussion: QQ group 696891347.
 ]] .. UPDATE_EN,
-    zh = [[饥荒联机版明日方舟角色模组：凯尔希·思衡托。通过「智识」培养解锁进阶技能，使用专属医疗装备。策划：塔rua；代码：望月心灵。需要前置模组 DST-ArknightsItemPackage。交流与反馈：QQ群 696891347。
+    zh = [[饥荒联机版明日方舟角色模组：凯尔希·思衡托。通过「智识」培养解锁进阶技能，使用专属医疗装备。策划：塔rua；代码：望月心灵。需要前置模组 源枢。交流与反馈：QQ群 696891347。
 ]] .. UPDATE_ZH,
 })
 author = "望月心灵"
@@ -162,5 +162,5 @@ configuration_options = {
 
 
 mod_dependencies = {
-    {["DST-ArknightsItemPackage"] = false},
+    {["DST-Arknights-Nexus"] = false},
 }
