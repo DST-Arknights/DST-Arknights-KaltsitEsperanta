@@ -17,6 +17,8 @@ local Mon3trUI = Class(Widget, function(self, owner, controls)
   self.hooks = {}
   self.modeButtons = {}
   self.skillSlots = {}
+  self.descriptionButtons = {}
+  self.descriptionHoverGroup = {}
   self.hasMon3tr = false
 
   self.clip = self:AddChild(Widget("mon3tr_clip"))
@@ -57,7 +59,7 @@ local Mon3trUI = Class(Widget, function(self, owner, controls)
       local strings = STRINGS.UI.KALTSIT_MON3TR_MODE
       local key = string.upper(mode)
       return strings.NAME[key], strings.DESC[key]
-    end)
+    end, true)
     self.modeButtons[mode] = button
   end
 
@@ -114,23 +116,42 @@ local Mon3trUI = Class(Widget, function(self, owner, controls)
   self:RefreshSkills()
 end)
 
-function Mon3trUI:SetCommandDescription(button, getDescription)
+function Mon3trUI:SetCommandDescription(button, getDescription, isMode)
+  local params = {
+    -- 提示独立挂在库存前层，不继承技能栏的底层绘制顺序与 clip。
+    attach_to_parent = self.controls.inv.root,
+    show_delay = 0.08,
+    hide_delay = isMode and 0.35 or 0,
+    keep_on_hover = isMode == true,
+    exclusive_group = self.descriptionHoverGroup,
+  }
   button:SetHoverWidget(function()
     if not self.hasMon3tr or self.sliding or not self:IsVisible() then
       return
     end
     local title, description = getDescription()
-    local card = CommandDesc(title, description)
-    -- 文字沿用技能提示的尺寸，仅抵消本栏自身的缩小比例。
-    card:SetScale(1 / layout.scale)
-    card:SetPosition(card:GetWidth() / (2 * layout.scale) - layout.icon_size / 2, 0, 0)
+    local master = isMode and self.owner.replica.kaltsit_mon3tr_master or nil
+    local card = CommandDesc(title, description, master)
+    -- 提示脱离技能栏后，显式保留原来的 hand_base 缩放与图标左边缘对齐。
+    local barScale = select(1, self:GetLooseScale())
+    local cardScale = barScale / layout.scale
+    card:SetScale(cardScale)
+    card:SetPosition(card:GetWidth() * cardScale / 2 - layout.icon_size * barScale / 2, 0, 0)
+    params.offset_y = (layout.bg_height / 2 - layout.row_y + 12) * barScale
     return card
-  end, {
-    attach_to_parent = self, -- 不放入 clip，避免提示框被裁剪。
-    offset_y = layout.bg_height / 2 - layout.row_y + 12,
-    show_delay = 0.08,
-    hide_delay = 0,
-  })
+  end, params)
+  table.insert(self.descriptionButtons, button)
+end
+
+function Mon3trUI:HideCommandDescriptions()
+  for _, button in ipairs(self.descriptionButtons) do
+    button:HideHoverWidget()
+  end
+end
+
+function Mon3trUI:OnHide()
+  self:HideCommandDescriptions()
+  self:ClearFocus()
 end
 
 function Mon3trUI:HookLayout(object, method)
@@ -145,6 +166,7 @@ end
 
 function Mon3trUI:SetCommandsEnabled(enabled)
   if not enabled then
+    self:HideCommandDescriptions()
     self:ClearFocus()
   end
   for _, button in pairs(self.modeButtons) do
@@ -264,12 +286,9 @@ function Mon3trUI:SetSkillState(skill, state, current, total)
 end
 
 function Mon3trUI:Kill()
-  -- 提示根节点与 clip 同级，先由所属按钮释放，避免父树无序销毁时重复 Kill。
-  for _, button in pairs(self.modeButtons) do
+  -- 提示位于外部库存前层，先由所属按钮释放。
+  for _, button in ipairs(self.descriptionButtons) do
     button:ClearHoverWidget()
-  end
-  for _, slot in pairs(self.skillSlots) do
-    slot.icon:ClearHoverWidget()
   end
   self.content:CancelMoveTo()
   self.activeFrame:CancelMoveTo()

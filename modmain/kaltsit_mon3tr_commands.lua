@@ -29,6 +29,13 @@ AddModRPCHandler("kaltsit_esperanta", "mon3tr_set_mode", function(player, mode)
   end
 end)
 
+AddModRPCHandler("kaltsit_esperanta", "mon3tr_cycle_mode", function(player)
+  local master = player ~= nil and player.components.kaltsit_mon3tr_master or nil
+  if master ~= nil then
+    master:CycleMode()
+  end
+end)
+
 AddModRPCHandler("kaltsit_esperanta", "mon3tr_activate_skill", function(player, key)
   local master = player ~= nil and player.components.kaltsit_mon3tr_master or nil
   if master ~= nil then

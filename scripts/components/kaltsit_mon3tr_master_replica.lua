@@ -1,6 +1,7 @@
 local BehaviorReplica = require("components/kaltsit_mon3tr_behavior_replica")
 local CONSTANTS = require("ark_constants")
 local SKILLS_BY_KEY = TUNING.KALTSIT_MON3TR_SKILLS_BY_KEY
+local MODE_HOTKEY_NAME = "kaltsit_mon3tr_cycle_mode"
 
 local SKILL_DEFAULTS = {
   id = "",
@@ -24,8 +25,22 @@ local KaltsitMon3trMasterReplica = Class(function(self, inst)
   self.inst = inst
   self._hasmon3tr = net_bool(inst.GUID, "kaltsit_mon3tr_master.hasmon3tr", "kaltsit_mon3tr_mastersnapshotdirty")
   self._mode = net_tinybyte(inst.GUID, "kaltsit_mon3tr_master.mode", "kaltsit_mon3tr_mastersnapshotdirty")
-  self._onsnapshotdirty = function() inst:PushEvent("kaltsit_mon3tr_masterdirty") end
+  self._onsnapshotdirty = function()
+    if self:HasMon3tr() then
+      self:RegisterModeHotkey()
+    else
+      self:UnregisterModeHotkey()
+    end
+    inst:PushEvent("kaltsit_mon3tr_masterdirty")
+  end
   inst:ListenForEvent("kaltsit_mon3tr_mastersnapshotdirty", self._onsnapshotdirty)
+  if not TheNet:IsDedicated() then
+    self._onplayeractivated = function() self:RegisterModeHotkey() end
+    self._onplayerdeactivated = function() self:UnregisterModeHotkey() end
+    inst:ListenForEvent("playeractivated", self._onplayeractivated)
+    inst:ListenForEvent("playerdeactivated", self._onplayerdeactivated)
+    self:RegisterModeHotkey()
+  end
   self.states = {}
   for index = 1, TUNING.KALTSIT_MON3TR_SKILL_COUNT do
     local state = NetState(inst, "kaltsit_mon3tr_skill")
@@ -111,6 +126,59 @@ function KaltsitMon3trMasterReplica:RequestMode(mode)
   return true
 end
 
+function KaltsitMon3trMasterReplica:RequestCycleMode()
+  if not self:HasMon3tr() or self.inst:HasTag("playerghost") then
+    return false
+  end
+  if TheWorld.ismastersim then
+    local master = self.inst.components.kaltsit_mon3tr_master
+    return master ~= nil and master:CycleMode() or false
+  end
+  SendModRPCToServer(GetModRPC("kaltsit_esperanta", "mon3tr_cycle_mode"))
+  return true
+end
+
+function KaltsitMon3trMasterReplica:RegisterModeHotkey()
+  if self._removed or self._modeHotkeyManager ~= nil or TheNet:IsDedicated()
+    or self.inst ~= ThePlayer or not self:HasMon3tr() then
+    return
+  end
+  self._modeHotkeyManager = GetHotKeyManager(self.inst)
+  self._modeHotkeyManager:Register(MODE_HOTKEY_NAME, function()
+    if self.inst:IsValid() and self.inst == ThePlayer then
+      self:RequestCycleMode()
+    end
+  end, KEY_R)
+end
+
+function KaltsitMon3trMasterReplica:UnregisterModeHotkey()
+  if self._modeHotkeyManager ~= nil then
+    self._modeHotkeyManager:Unregister(MODE_HOTKEY_NAME)
+    self._modeHotkeyManager = nil
+  end
+end
+
+function KaltsitMon3trMasterReplica:GetModeHotkey()
+  self:RegisterModeHotkey()
+  return self._modeHotkeyManager ~= nil and self._modeHotkeyManager:GetHotkey(MODE_HOTKEY_NAME) or nil
+end
+
+function KaltsitMon3trMasterReplica:SetModeHotkey(key)
+  if key ~= nil then
+    self:RegisterModeHotkey()
+    if self._modeHotkeyManager ~= nil then
+      self._modeHotkeyManager:SetHotkey(MODE_HOTKEY_NAME, key)
+    end
+  end
+end
+
+function KaltsitMon3trMasterReplica:RestoreDefaultModeHotkey()
+  self:RegisterModeHotkey()
+  if self._modeHotkeyManager ~= nil then
+    self._modeHotkeyManager:RestoreDefaultHotkey(MODE_HOTKEY_NAME)
+  end
+end
+
 function KaltsitMon3trMasterReplica:RequestSkill(key)
   local definition = SKILLS_BY_KEY[key]
   if definition == nil or not definition.implemented
@@ -132,6 +200,11 @@ end
 
 function KaltsitMon3trMasterReplica:OnRemoveEntity()
   self._removed = true
+  self:UnregisterModeHotkey()
+  if self._onplayeractivated ~= nil then
+    self.inst:RemoveEventCallback("playeractivated", self._onplayeractivated)
+    self.inst:RemoveEventCallback("playerdeactivated", self._onplayerdeactivated)
+  end
   if self._inittask ~= nil then
     self._inittask:Cancel()
     self._inittask = nil

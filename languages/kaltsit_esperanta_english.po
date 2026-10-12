@@ -419,6 +419,11 @@ msgctxt "STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.WORK"
 msgid "Mon3tr, collect the tissue samples I need."
 msgstr "Mon3tr, collect the tissue samples I need."
 
+#. STRINGS.UI.KALTSIT_MON3TR_MODE.HOTKEY_LABEL
+msgctxt "STRINGS.UI.KALTSIT_MON3TR_MODE.HOTKEY_LABEL"
+msgid "Cycle"
+msgstr "Cycle"
+
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.NAME.1
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.NAME.1"
 msgid "Command: Double Intimidation"

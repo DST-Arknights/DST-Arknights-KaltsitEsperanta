@@ -3,6 +3,11 @@ local SKILLS = TUNING.KALTSIT_MON3TR_SKILLS
 local SKILLS_BY_ID = TUNING.KALTSIT_MON3TR_SKILLS_BY_ID
 local SKILLS_BY_KEY = TUNING.KALTSIT_MON3TR_SKILLS_BY_KEY
 local DEBUG_UNLOCK_ALL_SKILLS = false
+local NEXT_MODE = {
+  standby = "attack",
+  attack = "work",
+  work = "standby",
+}
 
 local KaltsitMon3trMaster = Class(function(self, inst)
   self.inst = inst
@@ -163,6 +168,17 @@ function KaltsitMon3trMaster:SetMode(mode)
     return false
   end
   return behavior:SetMode(mode)
+end
+
+function KaltsitMon3trMaster:CycleMode()
+  local pet = self.mon3tr
+  local behavior = pet ~= nil and pet:IsValid() and pet.components.kaltsit_mon3tr_behavior or nil
+  if behavior == nil then
+    return false
+  end
+  -- 在服务端读取当前模式，连续请求也会依次推进；有效性检查沿用 SetMode。
+  local mode = NEXT_MODE[behavior:GetMode()]
+  return mode ~= nil and self:SetMode(mode) or false
 end
 
 function KaltsitMon3trMaster:ActivateSkill(key)
