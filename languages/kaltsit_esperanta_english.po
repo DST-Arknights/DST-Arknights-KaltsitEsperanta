@@ -226,12 +226,12 @@ msgstr "There is still much I must relearn."
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.2
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.2"
 msgid "Locked"
-msgstr "There is still much I must relearn."
+msgstr "There is still much I must relearn.\nUnlocks upon promotion to Elite 1 at 100 maximum Intellect."
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.3
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.3"
 msgid "Locked"
-msgstr "There is still much I must relearn."
+msgstr "There is still much I must relearn.\nUnlocks upon promotion to Elite 2 at 200 maximum Intellect."
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.1
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.1"

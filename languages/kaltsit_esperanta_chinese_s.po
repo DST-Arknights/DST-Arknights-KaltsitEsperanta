@@ -226,12 +226,12 @@ msgstr "许多事物我都要重新熟悉"
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.2
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.2"
 msgid "Locked"
-msgstr "许多事物我都要重新熟悉"
+msgstr "许多事物我都要重新熟悉\n智识上限达到100时精英化一解锁"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.3
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.3"
 msgid "Locked"
-msgstr "许多事物我都要重新熟悉"
+msgstr "许多事物我都要重新熟悉\n智识上限达到200时精英化二解锁"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.1
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.1"

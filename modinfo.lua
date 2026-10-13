@@ -8,6 +8,8 @@ name = T({
     en = "Kaltsit Esperanta",
     zh = "凯尔希 思衡托"
 })
+version = "2.0.2"
+
 -- 版本更新说明（由发布脚本自动维护，请勿手动编辑）
 local UPDATE_EN = [[
 v2.0.2 (2026-10-08)
@@ -31,12 +33,13 @@ v2.0.1 (2026-10-03)
 
 description = T({
     en = [[An Arknights character mod for Don't Starve Together, featuring Kal'tsit Esperanta, Intellect progression, advanced medical skills, and exclusive equipment. Design: 塔rua; Code: 望月心灵. Requires "Arknights: Nexus". Feedback and discussion: QQ group 696891347.
-]] .. UPDATE_EN,
+
+Current version: ]] .. version .. "\n" .. UPDATE_EN,
     zh = [[饥荒联机版明日方舟角色模组：凯尔希·思衡托。通过「智识」培养解锁进阶技能，使用专属医疗装备。策划：塔rua；代码：望月心灵。需要前置模组 源枢。交流与反馈：QQ群 696891347。
-]] .. UPDATE_ZH,
+
+当前版本: ]] .. version .. "\n" .. UPDATE_ZH,
 })
 author = "望月心灵"
-version = "2.0.2"
 forumthread = "https://github.com/DST-Arknights/DST-Arknights-KaltsitEsperanta/issues"
 
 api_version = 10
