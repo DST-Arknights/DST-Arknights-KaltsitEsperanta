@@ -5,6 +5,9 @@ PrefabFiles = { "kaltsit_esperanta", "kaltsit_esperanta_none", "kaltsit_esperant
   "mon3tr_signboard", "kaltsit_esperanta_mon3tr", "kaltsit_esperanta_mon3tr_claw", "kaltsit_esperanta_fx", "kaltsit_esperanta_buff", "tactical_anchor", "tactical_anchor_range", "kaltsit_esperanta_reticule", "mon3tr_handheld_doll" }
 Assets = {}
 
+-- 独立食物类型，专属药剂不会改变其他角色的普通饮食范围。
+FOODTYPE.KALTSIT_CLINICAL = "KALTSIT_CLINICAL"
+
 -- 凯尔希·思衡托技能音效：
 -- 源文件在 soundSource/kaltsit_esperanta/*.mp3，手动编译为 sound/kaltsit_esperanta.fev + .fsb。
 -- FEV 事件组使用 sfx，事件名与源文件名一致，播放路径为 kaltsit_esperanta/sfx/<事件名>。
@@ -91,6 +94,7 @@ modimport "modmain/kaltsit_esperanta_tech.lua"
 modimport "modmain/special_treatment_gun.lua"
 modimport "modmain/special_treatment_bullet.lua"
 modimport "modmain/kaltsit_animal_affinity.lua"
+modimport "modmain/kaltsit_cursed_trinkets.lua"
 modimport "modmain/kaltsit_esperanta_skill.lua"
 modimport "modmain/tactical_anchor_action.lua"
 

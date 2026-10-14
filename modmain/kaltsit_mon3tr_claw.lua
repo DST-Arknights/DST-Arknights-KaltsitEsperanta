@@ -1,4 +1,5 @@
 local ATTACK_STATE = "kaltsit_mon3tr_claw_attack"
+local AreaAttack = require("kaltsit_mon3tr_area_attack")
 
 local function HasClaw(inst)
   if inst.prefab ~= "kaltsit_esperanta_mon3tr" then
@@ -67,7 +68,12 @@ AddStategraphState("wilson", State {
       end
       -- 工作模式的 ATTACK 成功回调也在这里执行，不能改为直接 DoAttack。
       inst.sg.statemem.recoilstate = "attack_recoil"
-      inst:PerformBufferedAction()
+      local combat, target = inst.components.combat, inst.sg.statemem.attacktarget
+      local weapon = combat:GetWeapon()
+      local canhit = target ~= nil and target.components.combat ~= nil and combat:CanHitTarget(target, weapon)
+      if inst:PerformBufferedAction() and canhit then
+        AreaAttack.Attack(inst, target, weapon)
+      end
       inst.sg:RemoveStateTag("abouttoattack")
       inst.SoundEmitter:PlaySound("dontstarve/wilson/attack_weapon", nil, nil, true)
     end),

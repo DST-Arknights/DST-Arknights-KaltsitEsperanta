@@ -1,10 +1,10 @@
 local builder_tag = "kaltsit_esperanta"
 -- 普通治疗弹 	可以恢复10血，
--- 一次制作10个。	①	15蜘蛛腺体＋1金子
+-- 一次制作10个。	①	5蜘蛛腺体＋1金子
 -- ②	5蝴蝶翅膀＋1金子
 -- ③	10鸟蛋＋1金子
 AddCharacterRecipe("norm_heal_bullet1", {
-  Ingredient("spidergland", 15),
+  Ingredient("spidergland", 5),
   Ingredient("goldnugget", 1)
 }, TECH.NONE, {
   builder_tag = builder_tag,

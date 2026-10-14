@@ -1,6 +1,7 @@
 local easing = require("easing")
 local MakePlayerCharacter = require "prefabs/player_common"
 local eliteConfig = require("elite_config")
+local medicine = require("kaltsit_clinical_medicine")
 local assets =
 {
   Asset("ATLAS", "images/map_icons/kaltsit_esperanta.xml"),
@@ -110,6 +111,7 @@ local CommonPostInit = function(inst)
   inst.talker_path_override = "kaltsit_esperanta_voice_" .. (TUNING.KALTSIT_ESPERANTA_VOICE_LANG or "jp") .. "/"
   inst:AddTag("ark_character")
   inst:AddTag("kaltsit_esperanta")
+  inst:AddTag(medicine.FOODTYPE .. "_eater")
   inst:AddTag("bookbuilder")
   inst:AddTag("reader")
   inst:AddTag("handyperson")
@@ -127,6 +129,7 @@ local masterPostInit = function(inst)
 
   -- 海鲜牛排+15 sanitydelta
   inst.components.eater.custom_stats_mod_fn = CustomFoodStatsMod
+  medicine.EnableEating(inst)
 
   -- 潮湿双倍温度负面效果
   inst.components.temperature.maxmoisturepenalty = inst.components.temperature.maxmoisturepenalty * 2

@@ -406,18 +406,18 @@ msgstr "指令：战术协同"
 
 #. STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.STANDBY
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.STANDBY"
-msgid "Ready"
-msgstr "就绪"
+msgid " - Stays near Kal'tsit and responds to her enemies.\n - Normal attacks hit enemies within 4 units of Mon3tr."
+msgstr " - 跟随凯尔希，协助攻击她的敌人。\n - 普通攻击对自身4单位内的敌人造成范围伤害。"
 
 #. STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.ATTACK
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.ATTACK"
-msgid "Attack"
-msgstr "进攻"
+msgid " - Actively seeks enemies; movement speed increases by 50%.\n - Normal attacks hit enemies within 4 units of Mon3tr."
+msgstr " - 主动寻找敌人，移速提升50%。\n - 普通攻击对自身4单位内的敌人造成范围伤害。"
 
 #. STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.WORK
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.WORK"
-msgid "Mon3tr, collect the tissue samples I need."
-msgstr "Mon3tr，采集好我需要的组织样本。"
+msgid " - Gathers resources, chops trees, mines and tills nearby soil.\n - Grass and saplings are harvested once and left to regrow.\n - Continues to defend Kal'tsit in combat."
+msgstr " - 自动采集、砍树、挖矿与耕地。\n - 草和树枝只采摘一次，保留根部再生。\n - 仍会协助攻击凯尔希的敌人。"
 
 #. STRINGS.UI.KALTSIT_MON3TR_MODE.HOTKEY_LABEL
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_MODE.HOTKEY_LABEL"
@@ -476,28 +476,28 @@ msgstr "主人智识上限达到200时解锁。"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.1
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.1"
-msgid "Frighten"
-msgstr "惊吓"
+msgid " - Kal'tsit and Mon3tr frighten targets within 10 units for 10 seconds.\n - Only creatures that can panic are affected.\n - Recharges in 30 seconds."
+msgstr " - 凯尔希与Mon3tr同时恐吓，令10单位内的目标惊慌10秒。\n - 仅对能够恐慌的生物生效。\n - 充能30秒。"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.2
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.2"
-msgid "Leaps toward the target and taunts nearby enemies."
-msgstr "跃向目标并嘲讽周围的敌人"
+msgid " - Automatically leaps toward a target within 8 units.\n - Deals 200% attack damage within 4 units of the landing point and draws the attention of surviving enemies hit.\n - Recharges in 10 seconds."
+msgstr " - 自动跃向8单位内的目标。\n - 对落点4单位内的敌人造成200%攻击伤害，并吸引命中敌人的仇恨。\n - 充能10秒。"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.3
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.3"
-msgid "Costs 20 Sanity. For 30 seconds, each hit is capped at 15% of maximum Health for Kal'tsit and Mon3tr. Overhealing becomes a shield until the skill ends; Kal'tsit's healing is doubled. Recharges in 60 seconds after the skill ends."
-msgstr "消耗20理智。30秒内凯尔希与Mon3tr单次受伤不超过最大生命的15%，溢出治疗转化为持续至技能结束的临时护盾，凯尔希治疗量翻倍。结束后充能60秒。"
+msgid " - Costs 20 Sanity; lasts 30 seconds.\n - Each hit on Kal'tsit or Mon3tr is capped at 15% of maximum Health.\n - Overhealing becomes a shield until the skill ends.\n - Kal'tsit's healing is doubled.\n - Recharges for 60 seconds after the skill ends."
+msgstr " - 消耗20理智，持续30秒。\n - 凯尔希与Mon3tr单次受伤不超过最大生命的15%。\n - 溢出治疗转为临时护盾，技能结束时清除。\n - 凯尔希的治疗量翻倍。\n - 结束后充能60秒。"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.4
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.4"
-msgid "Costs 20 Sanity. Kal'tsit and Mon3tr immediately swap positions and each receive a shield that blocks one attack. Cannot be used while riding or with an unsafe destination. Recharges in 60 seconds."
-msgstr "消耗20理智。凯尔希与Mon3tr立即互换位置，双方各获得抵挡一次攻击的护盾。骑乘或落点不可用时无法释放。充能60秒。"
+msgid " - Costs 20 Sanity.\n - Kal'tsit and Mon3tr swap positions and each gain a shield that blocks one attack.\n - Cannot be used while riding or with an unsafe destination.\n - Recharges in 60 seconds."
+msgstr " - 消耗20理智。\n - 凯尔希与Mon3tr互换位置，双方各获得抵挡一次攻击的护盾。\n - 骑乘或落点不可用时无法释放。\n - 充能60秒。"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.5
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.5"
-msgid "Costs 20 Sanity. Mon3tr enters Attack mode for a 20-second boost: +200% damage and +50% damage absorption decay every second, and attacks deal true damage. If she kills no enemy, she loses 50% of maximum Health when the skill expires. Recharges in 200 seconds after the skill ends."
-msgstr "消耗20理智。Mon3tr转入攻击模式，20秒内攻击转为真伤，额外200%攻击力与50%免伤逐秒降至0。自然结束时若未击杀敌人，流失最大生命的50%。结束后充能200秒。"
+msgid " - Costs 20 Sanity; lasts 20 seconds.\n - Mon3tr enters Attack mode and deals true damage.\n - The extra 200% damage and 50% absorption decay each second to zero.\n - If no enemy is killed, natural expiry costs 50% of maximum Health.\n - Recharges for 200 seconds after the skill ends."
+msgstr " - 消耗20理智，持续20秒。\n - Mon3tr转入攻击模式，攻击变为真伤。\n - 额外200%攻击力与50%免伤逐秒降至0。\n - 自然结束时若未击杀敌人，流失最大生命的50%。\n - 结束后充能200秒。"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.CASTLING_SHIELD_TITLE
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.CASTLING_SHIELD_TITLE"
@@ -513,3 +513,58 @@ msgstr "抵挡下一次攻击，重复施加刷新，不叠加。"
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.NOT_IMPLEMENTED"
 msgid "This skill is not implemented yet."
 msgstr "此技能暂未实现。"
+
+#. STRINGS.UI.KALTSIT_MON3TR_SKILL.CAST_LINE.1
+msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.CAST_LINE.1"
+msgid "Mon3tr, deter them."
+msgstr "Mon3tr，威慑他们。"
+
+#. STRINGS.UI.KALTSIT_MON3TR_SKILL.CAST_LINE.2
+msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.CAST_LINE.2"
+msgid "Mon3tr, advance."
+msgstr "Mon3tr，突进。"
+
+#. STRINGS.UI.KALTSIT_MON3TR_SKILL.CAST_LINE.3
+msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.CAST_LINE.3"
+msgid "Is the battle plan ready? Engage."
+msgstr "准备好作战计划了吗？迎敌。"
+
+#. STRINGS.UI.KALTSIT_MON3TR_SKILL.CAST_LINE.4
+msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.CAST_LINE.4"
+msgid "Mon3tr, switch positions."
+msgstr "Mon3tr，交换位置。"
+
+#. STRINGS.UI.KALTSIT_MON3TR_SKILL.CAST_LINE.5
+msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.CAST_LINE.5"
+msgid "Strategy confirmed. Mon3tr, prepare to eliminate them. Leave none behind."
+msgstr "策略已确认。Mon3tr，准备歼灭，一个不留。"
+
+#. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.NEURO_GEL_TITLE
+msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.NEURO_GEL_TITLE"
+msgid "Neurotransmitter Regulation"
+msgstr "神经递质调节"
+
+#. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.NEURO_GEL_DESCRIPTION
+msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.NEURO_GEL_DESCRIPTION"
+msgid " - Restores 0.5% of maximum Sanity each second for 120 seconds.\n - Mon3tr gains 1-second invulnerability after a hit; hits during this window retaliate twice for 20 damage each."
+msgstr " - 每秒恢复0.5%最大理智，持续120秒。\n - Mon3tr受击后的无敌时间延长至1秒；无敌期间向敌方攻击者反击两次，每次20伤害。"
+
+#. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.TISSUE_REPAIR_TITLE
+msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.TISSUE_REPAIR_TITLE"
+msgid "Tissue Repair"
+msgstr "组织修复"
+
+#. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.TISSUE_REPAIR_DESCRIPTION
+msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.TISSUE_REPAIR_DESCRIPTION"
+msgid " - Immediately heals Kal'tsit for 20% of maximum Health and the active Mon3tr for 150 Health.\n - For 30 seconds, heals Kal'tsit for 1% of maximum Health and Mon3tr for 20 Health each second."
+msgstr " - 立即恢复凯尔希20%最大生命，并恢复已召唤Mon3tr的150生命。\n - 持续30秒：凯尔希每秒恢复1%最大生命，Mon3tr每秒恢复20生命。"
+
+#. STRINGS.NAMES.KALTSIT_ESPERANTA_PUREBRILLIANCE
+msgctxt "STRINGS.NAMES.KALTSIT_ESPERANTA_PUREBRILLIANCE"
+msgid "Cursed Trinket Purification"
+msgstr "饰品净化"
+
+#. STRINGS.RECIPE_DESC.KALTSIT_ESPERANTA_PUREBRILLIANCE
+msgctxt "STRINGS.RECIPE_DESC.KALTSIT_ESPERANTA_PUREBRILLIANCE"
+msgid "Convert one cursed trinket into one Pure Brilliance."
+msgstr "将一枚诅咒饰品转化为一份纯粹辉煌。"

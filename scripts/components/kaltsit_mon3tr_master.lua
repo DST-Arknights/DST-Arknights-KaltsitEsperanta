@@ -35,6 +35,15 @@ local KaltsitMon3trMaster = Class(function(self, inst)
       self:SyncSkills()
     end
   end
+  self._onskillactivated = function(pet, data)
+    local config = data ~= nil and SKILLS_BY_ID[data.skillId] or nil
+    local behavior = pet.components.kaltsit_mon3tr_behavior
+    if pet ~= self.mon3tr or config == nil or behavior == nil or behavior:GetOwner() ~= self.inst
+      or not self.inst:IsValid() or self.inst:HasTag("playerghost")
+      or self.inst.components.health:IsDead() or self.inst.components.talker == nil then return end
+    local line = STRINGS.UI.KALTSIT_MON3TR_SKILL.CAST_LINE[config.index]
+    if line ~= nil then self.inst.components.talker:Say(line) end
+  end
   self._onintellectchanged = function() self:SyncSkills() end
 end)
 
@@ -123,6 +132,7 @@ local function DetachMon3tr(self)
     self.inst:RemoveEventCallback("kaltsit_mon3tr_modechanged", self._onmodechanged, pet)
     self.inst:RemoveEventCallback("ark_skill_status_changed", self._onskillstatuschanged, pet)
     self.inst:RemoveEventCallback("ark_skill_added", self._onskilladded, pet)
+    self.inst:RemoveEventCallback("ark_skill_activate", self._onskillactivated, pet)
     self.inst:RemoveEventCallback("onremove", self._onmon3trremoved, pet)
     self.inst:RemoveEventCallback("intellect_changed", self._onintellectchanged)
     self.inst:RemoveEventCallback("kaltsit_mon3tr_progresschanged", self._onprogresschanged, pet)
@@ -144,6 +154,7 @@ function KaltsitMon3trMaster:SetMon3tr(pet)
     self.inst:ListenForEvent("kaltsit_mon3tr_modechanged", self._onmodechanged, pet)
     self.inst:ListenForEvent("ark_skill_status_changed", self._onskillstatuschanged, pet)
     self.inst:ListenForEvent("ark_skill_added", self._onskilladded, pet)
+    self.inst:ListenForEvent("ark_skill_activate", self._onskillactivated, pet)
     self.inst:ListenForEvent("onremove", self._onmon3trremoved, pet)
     self.inst:ListenForEvent("intellect_changed", self._onintellectchanged)
     self.inst:ListenForEvent("kaltsit_mon3tr_progresschanged", self._onprogresschanged, pet)

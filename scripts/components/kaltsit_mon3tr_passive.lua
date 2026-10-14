@@ -1,3 +1,4 @@
+local temporary_control = require("kaltsit_temporary_control")
 local ARMOR_RANGE = 12
 local ARMOR_ABSORPTION = 0.5
 local INVULNERABILITY_DURATION = 0.5
@@ -285,7 +286,7 @@ function KaltsitMon3trPassive:OnKnockedDown()
     if self:IsEnemy(target) then
       target.components.combat:GetAttacked(owner, 0, nil, nil, { true_damage = COLLAPSE_DAMAGE })
       if IsAlive(target) then
-        ArkApplyDebuff(target, "stun", { duration = COLLAPSE_STUN_DURATION }, owner, COLLAPSE_STUN_KEY)
+        temporary_control.ApplyStun(target, COLLAPSE_STUN_DURATION, COLLAPSE_STUN_KEY)
       end
     end
   end

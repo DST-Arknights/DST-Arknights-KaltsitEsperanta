@@ -193,16 +193,7 @@ local ammo_defs = {
   },
 }
 
-local SKILL2_PAUSE_BUFF = "kaltsit_esperanta_skill2_pause_buff"
-
-local function ApplySkill2Pause(target, attacker)
-  ArkApplyDebuff(target, "slow", {
-    duration = 5,
-    speed_mult = 0.2,
-    fx = "slingshotammo_slow_debuff_fx",
-    hit_fx = "slingshot_shadow_aoe_fx",
-  }, attacker, SKILL2_PAUSE_BUFF)
-end
+local ApplySkill2Pause = require("kaltsit_temporary_control").ApplySkill2Pause
 
 local function GetSkill2TrueDamage(attacker, target)
   local true_damage = 2000
@@ -249,7 +240,7 @@ local function DoSkill2AreaDamage(inst, attacker, target, x, y, z, range)
       local damage, spdamage = combat:CalcDamage(ent, inst)
       ent.components.combat:GetAttacked(attacker, damage, inst, stimuli, spdamage)
       if ent:IsValid() and not ent.components.health:IsDead() then
-        ApplySkill2Pause(ent, attacker)
+        ApplySkill2Pause(ent)
       end
     end
   end
@@ -350,7 +341,7 @@ local function MakeDestroyProjectileOnHit(def)
     end
     if target.components.combat ~= nil
         and not common.CanHitSpecialTreatmentHealTarget(attacker, target) then
-      ApplySkill2Pause(target, attacker)
+      ApplySkill2Pause(target)
     end
     inst:Remove()
   end
@@ -450,6 +441,6 @@ end
 
 table.insert(all_prefabs, Prefab(destroy_projectile_def.name,
   function() return projectile_fn(destroy_projectile_def, MakeDestroyProjectileOnHit) end, assets,
-  { "ark_slow_buff", "slingshotammo_slow_debuff_fx", "slingshot_shadow_aoe_fx" }))
+  { "slingshotammo_slow_debuff_fx", "slingshot_shadow_aoe_fx" }))
 
 return unpack(all_prefabs)

@@ -11,7 +11,6 @@ local prefabs = {
   "pine_needles_chop",
   "boss_ripple_fx",
   "kaltsit_mon3tr_castling_shield_buff",
-  "ark_stun_buff",
   "sand_puff_large_front",
   "sand_puff_large_back",
   "shadow_shield1",
