@@ -1,66 +1,54 @@
-local SKILL2_PAUSE_SPEED_MULTIPLIER = 0.2
-local SKILL2_PAUSE_SPEED_KEY = "kaltsit_esperanta_skill2_pause"
+local common = require("kaltsit_esperanta_common")
 
-local function SpawnSkill2PauseShadowFx(target)
-  if target == nil or not target:IsValid() then
-    return
+local function GetTreatmentHealer(inst)
+  if inst._treatment_healer ~= nil and inst._treatment_healer:IsValid() then
+    return inst._treatment_healer
   end
-  local fx = SpawnPrefab("slingshot_shadow_aoe_fx")
-  if fx ~= nil then
-    local x, _, z = target.Transform:GetWorldPosition()
-    fx.Transform:SetPosition(x, 0, z)
-  end
-end
-
-local function EnsureSkill2PauseSlowFx(inst, target)
-  if inst._skill2_pause_fx ~= nil and inst._skill2_pause_fx:IsValid() then
-    return
-  end
-  local fx = SpawnPrefab("slingshotammo_slow_debuff_fx")
-  if fx ~= nil then
-    fx.entity:SetParent(target.entity)
-    if fx.StartFX ~= nil then
-      fx:StartFX(target)
-    end
-    inst._skill2_pause_fx = fx
-  end
-end
-
-local function OnSkill2PauseAttached(inst, target)
-  if target.components.locomotor ~= nil then
-    target.components.locomotor:SetExternalSpeedMultiplier(
-      inst, SKILL2_PAUSE_SPEED_KEY, SKILL2_PAUSE_SPEED_MULTIPLIER)
-  end
-  EnsureSkill2PauseSlowFx(inst, target)
-  SpawnSkill2PauseShadowFx(target)
-end
-
-local function OnSkill2PauseExtended(inst, target)
-  if target.components.locomotor ~= nil then
-    target.components.locomotor:SetExternalSpeedMultiplier(
-      inst, SKILL2_PAUSE_SPEED_KEY, SKILL2_PAUSE_SPEED_MULTIPLIER)
-  end
-  EnsureSkill2PauseSlowFx(inst, target)
-  SpawnSkill2PauseShadowFx(target)
-end
-
-local function OnSkill2PauseDetached(inst, target)
-  if target.components.locomotor ~= nil then
-    target.components.locomotor:RemoveExternalSpeedMultiplier(inst, SKILL2_PAUSE_SPEED_KEY)
-  end
-  if inst._skill2_pause_fx ~= nil then
-    if inst._skill2_pause_fx:IsValid() then
-      if inst._skill2_pause_fx.KillFX ~= nil then
-        inst._skill2_pause_fx:KillFX()
-      else
-        inst._skill2_pause_fx:Remove()
+  local userid = inst.buffData ~= nil and inst.buffData.healer_userid or nil
+  if userid ~= nil and userid ~= "" then
+    for _, player in ipairs(AllPlayers) do
+      if player.userid == userid then
+        inst._treatment_healer = player
+        return player
       end
     end
-    inst._skill2_pause_fx = nil
   end
 end
 
 local buffers = { {
+  name = "kaltsit_mon3tr_castling_shield_buff",
+  keepondespawn = true,
+  prefabs = { "shadow_shield1" },
+  title = STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.CASTLING_SHIELD_TITLE,
+  description = STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.CASTLING_SHIELD_DESCRIPTION,
+  icon_atlas = "images/ui_kaltsit_experanta_mon3tr_skill.xml",
+  icon_image = "castling.tex",
+  OnAttached = function(inst, target)
+    local combat = target.components.combat
+    if combat == nil then return end
+    inst._shield_hook = function(next, self, attacker, damage, weapon, stimuli, spdamage)
+      local health = self.inst.components.health
+      local hit = (damage or 0) > 0
+      for _, value in pairs(spdamage or {}) do
+        if value > 0 then hit = true break end
+      end
+      if hit and health ~= nil and not health:IsDead() and not health:IsInvincible()
+        and not self.inst.is_teleporting then
+        local fx = SpawnPrefab("shadow_shield1")
+        if fx ~= nil then fx.entity:SetParent(self.inst.entity) end
+        self.inst:RemoveDebuff("kaltsit_mon3tr_castling_shield_buff")
+        return true
+      end
+      return next(self, attacker, damage, weapon, stimuli, spdamage)
+    end
+    ArkHookFunction(combat, "GetAttacked", inst._shield_hook)
+  end,
+  OnDetached = function(inst, target)
+    if target.components.combat ~= nil then
+      ArkUnhookFunction(target.components.combat, "GetAttacked", inst._shield_hook)
+    end
+  end,
+}, {
   name = "doctors_monuments_invincible_buff",
   duration = 10,
   keepondespawn = true,
@@ -102,11 +90,22 @@ local buffers = { {
   OnAttached = function(inst, target, followsymbol, followoffset, data, buffer)
     -- 每秒回复的数值
     local health = data and data.health or 2
+    inst._treatment_healer = buffer
+    inst._treatment_amount = health
     inst._treatment_task = inst:DoPeriodicTask(1, function()
       if target.components.health and not target.components.health:IsDead() then
-        target.components.health:DoDelta(health, false, "doctors_monuments_treatment_buff")
+        local healer = GetTreatmentHealer(inst)
+        if healer ~= nil then
+          common.HealTarget(healer, target, inst._treatment_amount, "doctors_monuments_treatment_buff", false)
+        else
+          target.components.health:DoDelta(inst._treatment_amount, false, "doctors_monuments_treatment_buff")
+        end
       end
     end)
+  end,
+  OnExtended = function(inst, target, followsymbol, followoffset, data, buffer)
+    inst._treatment_healer = buffer
+    inst._treatment_amount = data and data.health or 2
   end,
   OnDetached = function(inst, target)
     if inst._treatment_task then
@@ -146,7 +145,10 @@ local buffers = { {
       end
       if target.components.health and not target.components.health:IsDead() then
         local heal = target.components.health:GetMaxWithPenalty() * healthPercent
-        target.components.health:DoDelta(heal, false, "kaltsit_anchor_field_buff")
+        local owner = anchor.components.tactical_anchor:GetOwner()
+        if owner ~= nil then
+          common.HealTarget(owner, target, heal, "kaltsit_anchor_field_buff", false)
+        end
       end
     end)
   end,
@@ -159,15 +161,6 @@ local buffers = { {
       inst._field_task = nil
     end
   end,
-}, {
-  name = "kaltsit_esperanta_skill2_pause_buff",
-  duration = 5,
-  prefabs = { "slingshotammo_slow_debuff_fx", "slingshot_shadow_aoe_fx" },
-  title = STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.SKILL2_PAUSE_TITLE,
-  description = STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.SKILL2_PAUSE_DESCRIPTION,
-  OnAttached = OnSkill2PauseAttached,
-  OnExtended = OnSkill2PauseExtended,
-  OnDetached = OnSkill2PauseDetached,
 } }
 
 local results = {}

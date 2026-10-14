@@ -486,18 +486,28 @@ msgstr "跃向目标并嘲讽周围的敌人"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.3
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.3"
-msgid "Not implemented"
-msgstr "未实现"
+msgid "Costs 20 Sanity. For 30 seconds, each hit is capped at 15% of maximum Health for Kal'tsit and Mon3tr. Overhealing becomes a shield until the skill ends; Kal'tsit's healing is doubled. Recharges in 60 seconds after the skill ends."
+msgstr "消耗20理智。30秒内凯尔希与Mon3tr单次受伤不超过最大生命的15%，溢出治疗转化为持续至技能结束的临时护盾，凯尔希治疗量翻倍。结束后充能60秒。"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.4
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.4"
-msgid "Not implemented"
-msgstr "未实现"
+msgid "Costs 20 Sanity. Kal'tsit and Mon3tr immediately swap positions and each receive a shield that blocks one attack. Cannot be used while riding or with an unsafe destination. Recharges in 60 seconds."
+msgstr "消耗20理智。凯尔希与Mon3tr立即互换位置，双方各获得抵挡一次攻击的护盾。骑乘或落点不可用时无法释放。充能60秒。"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.5
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.5"
-msgid "Not implemented"
-msgstr "未实现"
+msgid "Costs 20 Sanity. Mon3tr enters Attack mode for a 20-second boost: +200% damage and +50% damage absorption decay every second, and attacks deal true damage. If she kills no enemy, she loses 50% of maximum Health when the skill expires. Recharges in 200 seconds after the skill ends."
+msgstr "消耗20理智。Mon3tr转入攻击模式，20秒内攻击转为真伤，额外200%攻击力与50%免伤逐秒降至0。自然结束时若未击杀敌人，流失最大生命的50%。结束后充能200秒。"
+
+#. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.CASTLING_SHIELD_TITLE
+msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.CASTLING_SHIELD_TITLE"
+msgid "Castling Shield"
+msgstr "王车易位护盾"
+
+#. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.CASTLING_SHIELD_DESCRIPTION
+msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.CASTLING_SHIELD_DESCRIPTION"
+msgid "Blocks the next attack. Repeated casts refresh the shield without stacking."
+msgstr "抵挡下一次攻击，重复施加刷新，不叠加。"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.NOT_IMPLEMENTED
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.NOT_IMPLEMENTED"

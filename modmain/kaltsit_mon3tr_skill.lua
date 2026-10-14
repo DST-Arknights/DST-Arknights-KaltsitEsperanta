@@ -1,5 +1,8 @@
 local constants = require("ark_constants")
 local assault = require("kaltsit_mon3tr_assault")
+local reinforce = require("kaltsit_mon3tr_reinforce")
+local castling = require("kaltsit_mon3tr_castling")
+local meltdown = require("kaltsit_mon3tr_meltdown")
 local strings = STRINGS.UI.KALTSIT_MON3TR_SKILL
 local SKILL_ATLAS = "images/ui_kaltsit_experanta_mon3tr_skill.xml"
 local INTIMIDATE_STATE = "kaltsit_mon3tr_intimidate"
@@ -78,6 +81,8 @@ AddStategraphState("wilson", State {
 })
 
 AddStategraphState("wilson", assault.MakeState())
+AddStategraphState("wilson", castling.MakeState())
+AddComponentPostInit("health", reinforce.InstallHealingBonus)
 
 local function OnIntimidateActivate(skill)
   local pet = skill.inst
@@ -146,7 +151,7 @@ local skills = {
   }, {
     key = "reinforce",
     id = "kaltsit_mon3tr_reinforce",
-    implemented = false,
+    implemented = true,
     intellect_threshold = 100,
     name = strings.NAME[3],
     lockedDesc = strings.LOCKED_DESC[3],
@@ -154,15 +159,21 @@ local skills = {
     activationMode = constants.ACTIVATION_MODE.MANUAL,
     atlas = SKILL_ATLAS,
     image = "reinforce.tex",
+    ActivateTest = reinforce.CanActivate,
+    OnActivate = reinforce.Activate,
+    OnActivateEffect = reinforce.Apply,
+    OnDeactivate = reinforce.End,
+    OnStep = reinforce.Step,
     levels = { {
       activationEnergy = 60,
       buffDuration = 30,
       desc = strings.LEVEL_DESC[3],
+      params = { sanity_cost = 20, damage_cap = 0.15, healing_mult = 2 },
     } },
   }, {
     key = "castling",
     id = "kaltsit_mon3tr_castling",
-    implemented = false,
+    implemented = true,
     intellect_threshold = 150,
     name = strings.NAME[4],
     lockedDesc = strings.LOCKED_DESC[4],
@@ -170,15 +181,18 @@ local skills = {
     activationMode = constants.ACTIVATION_MODE.MANUAL,
     atlas = SKILL_ATLAS,
     image = "castling.tex",
+    ActivateTest = castling.CanActivate,
+    OnActivate = castling.Activate,
     levels = { {
       activationEnergy = 60,
       buffDuration = 0,
       desc = strings.LEVEL_DESC[4],
+      params = { sanity_cost = 20 },
     } },
   }, {
     key = "meltdown",
     id = "kaltsit_mon3tr_meltdown",
-    implemented = false,
+    implemented = true,
     intellect_threshold = 200,
     name = strings.NAME[5],
     lockedDesc = strings.LOCKED_DESC[5],
@@ -186,10 +200,16 @@ local skills = {
     activationMode = constants.ACTIVATION_MODE.MANUAL,
     atlas = SKILL_ATLAS,
     image = "meltdown.tex",
+    ActivateTest = meltdown.CanActivate,
+    OnActivate = meltdown.Activate,
+    OnActivateEffect = meltdown.LoadPostPass,
+    OnDeactivate = meltdown.End,
+    OnStep = meltdown.Step,
     levels = { {
       activationEnergy = 200,
       buffDuration = 20,
       desc = strings.LEVEL_DESC[5],
+      params = { sanity_cost = 20, damage_bonus = 2, absorb = 0.5, penalty_health_percent = 0.5 },
     } },
   },
 }

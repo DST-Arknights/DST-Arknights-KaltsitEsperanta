@@ -1,3 +1,4 @@
+local common = require("kaltsit_esperanta_common")
 local DURATION = 120
 local TICK_RATE = 1
 local buffPrefab = "kaltsit_tissue_repair_solvent_buff"
@@ -13,7 +14,7 @@ local function BuffOnTick(inst, target)
   if target.components.health ~= nil then
     -- 回复1%的最大生命值
     local health_delta = math.ceil(target.components.health.maxhealth * 0.01)
-    target.components.health:DoDelta(health_delta)
+    common.HealTarget(target, target, health_delta, "kaltsit_tissue_repair_solvent_buff", true)
   else
     inst.components.debuff:Stop()
   end
@@ -23,7 +24,7 @@ local function BuffOnAttached(inst, target)
   if target.components.health ~= nil then
     -- 回复20%的最大生命值
     local health_delta = math.ceil(target.components.health.maxhealth * 0.2)
-    target.components.health:DoDelta(health_delta)
+    common.HealTarget(target, target, health_delta, "kaltsit_tissue_repair_solvent_buff", false)
   end
   inst.entity:SetParent(target.entity)
   inst.Transform:SetPosition(0, 0, 0)

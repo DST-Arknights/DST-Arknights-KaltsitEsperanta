@@ -26,6 +26,10 @@ end
 
 function KaltsitMon3trBehavior:SyncOwner()
   local owner = self:GetOwner()
+  local passive = self.inst.components.kaltsit_mon3tr_passive
+  if passive ~= nil then
+    passive:SetOwner(owner)
+  end
   local master = nil
   if owner ~= nil then
     -- 宠物可能先于玩家的 AddPlayerPostInit 完成归属绑定。

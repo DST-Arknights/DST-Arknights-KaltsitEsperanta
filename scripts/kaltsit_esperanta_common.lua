@@ -15,6 +15,17 @@ local function CanHitSpecialTreatmentHealTarget(inst, target)
   return false
 end
 
+local function HealTarget(healer, target, amount, cause, overtime)
+  if target == nil or not target:IsValid()
+    or target.components.health == nil or target.components.health:IsDead() then
+    return 0
+  end
+  if healer ~= nil and not healer:IsValid() then
+    healer = nil
+  end
+  return target.components.health:DoDelta(amount, overtime, cause, false, healer)
+end
+
 local function IsSpecialTreatmentGun(inst)
   return inst and inst.prefab == "special_treatment_gun"
       and inst.replica.container
@@ -113,7 +124,8 @@ local function FindFriendlyEntities(source_inst, pos, range, fn)
 end
 
 -- 医者丰碑 buff：以 doer 为中心，覆盖 levelParams.range 内友方。
-local function ActiveDoctorsMonumentsBuff(doer, pos, levelParams)
+local function ActiveDoctorsMonumentsBuff(doer, pos, levelParams, healer)
+  healer = healer or doer
   local ents = FindFriendlyEntities(doer, pos, levelParams.range, function(ent)
     return not ent:HasTag("ghost")
   end)
@@ -125,10 +137,11 @@ local function ActiveDoctorsMonumentsBuff(doer, pos, levelParams)
     })
     ent:AddDebuff("doctors_monuments_treatment_buff", "doctors_monuments_treatment_buff", {
       health = levelParams.health,
+      healer_userid = healer.userid or (healer.Network ~= nil and healer.Network:GetUserID() or nil),
       buffConfig = {
         duration = levelParams.treatment_duration,
       }
-    })
+    }, nil, nil, healer)
   end
 end
 
@@ -147,6 +160,7 @@ local function PlaySkillSfx(inst, event, volume)
 end
 
 return {
+  HealTarget = HealTarget,
   CanHitSpecialTreatmentHealTarget = CanHitSpecialTreatmentHealTarget,
   CanHitSpecialTreatmentDestroyTarget = CanHitSpecialTreatmentDestroyTarget,
   CanTriggerSpecialTreatmentHealAction = CanTriggerSpecialTreatmentHealAction,

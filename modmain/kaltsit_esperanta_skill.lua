@@ -251,7 +251,7 @@ local function OnSkill1Activate(skill, data)
   -- 扫描附近玩家, 给予buff
   local levelParams = skill:GetLevelParams()
   if skill.inst.components.health then
-    skill.inst.components.health:DoDelta(-levelParams.health_cost, nil, "kaltsit_esperanta_skill1")
+    skill.inst.components.health:DoDelta(-levelParams.health_cost, nil, "kaltsit_esperanta_skill1", true, nil, true)
   end
   if skill.inst.components.sanity then
     skill.inst.components.sanity:DoDelta(-levelParams.sanity_cost)

@@ -10,6 +10,11 @@ local prefabs = {
   "groundpoundring_fx",
   "pine_needles_chop",
   "boss_ripple_fx",
+  "kaltsit_mon3tr_castling_shield_buff",
+  "ark_stun_buff",
+  "sand_puff_large_front",
+  "sand_puff_large_back",
+  "shadow_shield1",
 }
 local assets = {
   -- Asset("ATLAS", "images/map_icons/kaltsit_esperanta_mon3tr.xml"),
@@ -143,6 +148,17 @@ local function MasterPostInit(inst)
   inst.components.follower:KeepLeaderOnAttacked()
   inst.components.follower.keepdeadleader = true
 
+  inst:AddComponent("kaltsit_mon3tr_passive")
+  if inst.components.hauntable == nil then
+    inst:AddComponent("hauntable")
+  end
+  ArkHookFunction(inst.components.hauntable, "onhaunt", function(next, pet, haunter)
+    local passive = pet.components.kaltsit_mon3tr_passive
+    if passive ~= nil and passive:TryResurrect(haunter) then
+      return true
+    end
+    return next(pet, haunter)
+  end)
   inst:AddComponent("kaltsit_mon3tr_behavior")
   -- Network 的 owner 已更新时，userid 字段的 setowner 回调可能尚未执行。
   inst:ListenForEvent("setowner", OnSetOwner)

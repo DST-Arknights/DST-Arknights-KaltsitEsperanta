@@ -12,6 +12,12 @@ local NEXT_MODE = {
 local KaltsitMon3trMaster = Class(function(self, inst)
   self.inst = inst
   self.mon3tr = nil
+  self.mon3tr_progress = nil
+  self._onprogresschanged = function(pet)
+    if pet == self.mon3tr and pet.components.kaltsit_mon3tr_passive ~= nil then
+      self.mon3tr_progress = pet.components.kaltsit_mon3tr_passive:GetProgress()
+    end
+  end
   self._onmodechanged = function(pet)
     if pet == self.mon3tr then
       self:SyncMon3tr()
@@ -109,6 +115,9 @@ end
 
 local function DetachMon3tr(self)
   local pet = self.mon3tr
+  if pet ~= nil and pet.components.kaltsit_mon3tr_passive ~= nil then
+    self.mon3tr_progress = pet.components.kaltsit_mon3tr_passive:GetProgress()
+  end
   self.mon3tr = nil
   if pet ~= nil then
     self.inst:RemoveEventCallback("kaltsit_mon3tr_modechanged", self._onmodechanged, pet)
@@ -116,6 +125,7 @@ local function DetachMon3tr(self)
     self.inst:RemoveEventCallback("ark_skill_added", self._onskilladded, pet)
     self.inst:RemoveEventCallback("onremove", self._onmon3trremoved, pet)
     self.inst:RemoveEventCallback("intellect_changed", self._onintellectchanged)
+    self.inst:RemoveEventCallback("kaltsit_mon3tr_progresschanged", self._onprogresschanged, pet)
   end
 end
 
@@ -128,11 +138,15 @@ function KaltsitMon3trMaster:SetMon3tr(pet)
     -- 更换对象只发布最终快照，避免同帧出现一次无宠物的 UI 状态。
     DetachMon3tr(self)
     self.mon3tr = pet
+    if pet.components.kaltsit_mon3tr_passive ~= nil and self.mon3tr_progress ~= nil then
+      pet.components.kaltsit_mon3tr_passive:SetProgress(self.mon3tr_progress)
+    end
     self.inst:ListenForEvent("kaltsit_mon3tr_modechanged", self._onmodechanged, pet)
     self.inst:ListenForEvent("ark_skill_status_changed", self._onskillstatuschanged, pet)
     self.inst:ListenForEvent("ark_skill_added", self._onskilladded, pet)
     self.inst:ListenForEvent("onremove", self._onmon3trremoved, pet)
     self.inst:ListenForEvent("intellect_changed", self._onintellectchanged)
+    self.inst:ListenForEvent("kaltsit_mon3tr_progresschanged", self._onprogresschanged, pet)
   end
   self:SyncMon3tr()
   self:SyncSkills()
@@ -206,6 +220,23 @@ end
 function KaltsitMon3trMaster:OnRemoveFromEntity()
   -- 主人端只清理指令关系；宠物生命周期仍由 petleash 管理，自管理也不能删除自己。
   self:ClearMon3tr()
+end
+
+function KaltsitMon3trMaster:OnSave()
+  local pet = self.mon3tr
+  local passive = pet ~= nil and pet.components.kaltsit_mon3tr_passive or nil
+  local progress = passive ~= nil and passive:GetProgress() or self.mon3tr_progress
+  return progress ~= nil and { mon3tr_progress = progress } or nil
+end
+
+function KaltsitMon3trMaster:OnLoad(data)
+  if data ~= nil and data.mon3tr_progress ~= nil then
+    self.mon3tr_progress = data.mon3tr_progress
+    local pet = self.mon3tr
+    if pet ~= nil and pet.components.kaltsit_mon3tr_passive ~= nil then
+      pet.components.kaltsit_mon3tr_passive:SetProgress(self.mon3tr_progress)
+    end
+  end
 end
 
 KaltsitMon3trMaster.OnRemoveEntity = KaltsitMon3trMaster.OnRemoveFromEntity

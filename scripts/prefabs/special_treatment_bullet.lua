@@ -59,7 +59,7 @@ local ammo_defs = {
     damage    = 10,
     OnHealAlly = function(attacker, target)
       if target.components.health then
-        target.components.health:DoDelta(15, false, "norm_heal_bullet")
+        common.HealTarget(attacker, target, 15, "norm_heal_bullet", false)
       end
       PlayHitAllySound(target)
     end,
@@ -75,7 +75,7 @@ local ammo_defs = {
       local function DoHealTick(remaining)
         if not target:IsValid() then return end
         if target.components.health and not target.components.health:IsDead() then
-          target.components.health:DoDelta(15, false, "potent_heal_bullet")
+          common.HealTarget(attacker, target, 15, "potent_heal_bullet", false)
         PlayHitAllySound(target)
           if target.components.health.penalty ~= nil
               and target.components.health.penalty > 0 then
@@ -139,7 +139,7 @@ local ammo_defs = {
           return
         end
         if target.components.health and not target.components.health:IsDead() then
-          target.components.health:DoDelta(2, false, "regen_heal_bullet")
+          common.HealTarget(attacker, target, 2, "regen_heal_bullet", false)
         end
         if remaining > 1 then
           target:DoTaskInTime(2, function() DoTick(remaining - 1) end)
@@ -173,7 +173,7 @@ local ammo_defs = {
     damage    = 20,
     OnHealAlly = function(attacker, target)
       if target.components.health then
-        target.components.health:DoDelta(30, false, "trait_heal_bullet")
+        common.HealTarget(attacker, target, 30, "trait_heal_bullet", false)
       end
       if target.components.temperature then
         target.components.temperature:SetTemperature(20)
@@ -194,6 +194,15 @@ local ammo_defs = {
 }
 
 local SKILL2_PAUSE_BUFF = "kaltsit_esperanta_skill2_pause_buff"
+
+local function ApplySkill2Pause(target, attacker)
+  ArkApplyDebuff(target, "slow", {
+    duration = 5,
+    speed_mult = 0.2,
+    fx = "slingshotammo_slow_debuff_fx",
+    hit_fx = "slingshot_shadow_aoe_fx",
+  }, attacker, SKILL2_PAUSE_BUFF)
+end
 
 local function GetSkill2TrueDamage(attacker, target)
   local true_damage = 2000
@@ -240,7 +249,7 @@ local function DoSkill2AreaDamage(inst, attacker, target, x, y, z, range)
       local damage, spdamage = combat:CalcDamage(ent, inst)
       ent.components.combat:GetAttacked(attacker, damage, inst, stimuli, spdamage)
       if ent:IsValid() and not ent.components.health:IsDead() then
-        ent:AddDebuff(SKILL2_PAUSE_BUFF, SKILL2_PAUSE_BUFF)
+        ApplySkill2Pause(ent, attacker)
       end
     end
   end
@@ -326,7 +335,7 @@ local function MakeDestroyProjectileOnHit(def)
     local healed = false
     for _, friend in ipairs(friends) do
       if friend.components.health then
-        friend.components.health:DoDelta(health)
+        common.HealTarget(attacker, friend, health, "special_treatment_destroy_proj", false)
         healed = true
       end
     end
@@ -341,7 +350,7 @@ local function MakeDestroyProjectileOnHit(def)
     end
     if target.components.combat ~= nil
         and not common.CanHitSpecialTreatmentHealTarget(attacker, target) then
-      target:AddDebuff(SKILL2_PAUSE_BUFF, SKILL2_PAUSE_BUFF)
+      ApplySkill2Pause(target, attacker)
     end
     inst:Remove()
   end
@@ -440,6 +449,7 @@ for _, def in ipairs(ammo_defs) do
 end
 
 table.insert(all_prefabs, Prefab(destroy_projectile_def.name,
-  function() return projectile_fn(destroy_projectile_def, MakeDestroyProjectileOnHit) end, assets))
+  function() return projectile_fn(destroy_projectile_def, MakeDestroyProjectileOnHit) end, assets,
+  { "ark_slow_buff", "slingshotammo_slow_debuff_fx", "slingshot_shadow_aoe_fx" }))
 
 return unpack(all_prefabs)

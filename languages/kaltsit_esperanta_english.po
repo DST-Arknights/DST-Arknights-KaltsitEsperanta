@@ -486,18 +486,28 @@ msgstr "Leaps toward the target and taunts nearby enemies."
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.3
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.3"
-msgid "Not implemented"
-msgstr "Not implemented"
+msgid "Costs 20 Sanity. For 30 seconds, each hit is capped at 15% of maximum Health for Kal'tsit and Mon3tr. Overhealing becomes a shield until the skill ends; Kal'tsit's healing is doubled. Recharges in 60 seconds after the skill ends."
+msgstr "Costs 20 Sanity. For 30 seconds, each hit is capped at 15% of maximum Health for Kal'tsit and Mon3tr. Overhealing becomes a shield until the skill ends; Kal'tsit's healing is doubled. Recharges in 60 seconds after the skill ends."
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.4
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.4"
-msgid "Not implemented"
-msgstr "Not implemented"
+msgid "Costs 20 Sanity. Kal'tsit and Mon3tr immediately swap positions and each receive a shield that blocks one attack. Cannot be used while riding or with an unsafe destination. Recharges in 60 seconds."
+msgstr "Costs 20 Sanity. Kal'tsit and Mon3tr immediately swap positions and each receive a shield that blocks one attack. Cannot be used while riding or with an unsafe destination. Recharges in 60 seconds."
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.5
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.5"
-msgid "Not implemented"
-msgstr "Not implemented"
+msgid "Costs 20 Sanity. Mon3tr enters Attack mode for a 20-second boost: +200% damage and +50% damage absorption decay every second, and attacks deal true damage. If she kills no enemy, she loses 50% of maximum Health when the skill expires. Recharges in 200 seconds after the skill ends."
+msgstr "Costs 20 Sanity. Mon3tr enters Attack mode for a 20-second boost: +200% damage and +50% damage absorption decay every second, and attacks deal true damage. If she kills no enemy, she loses 50% of maximum Health when the skill expires. Recharges in 200 seconds after the skill ends."
+
+#. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.CASTLING_SHIELD_TITLE
+msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.CASTLING_SHIELD_TITLE"
+msgid "Castling Shield"
+msgstr "Castling Shield"
+
+#. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.CASTLING_SHIELD_DESCRIPTION
+msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.CASTLING_SHIELD_DESCRIPTION"
+msgid "Blocks the next attack. Repeated casts refresh the shield without stacking."
+msgstr "Blocks the next attack. Repeated casts refresh the shield without stacking."
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.NOT_IMPLEMENTED
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.NOT_IMPLEMENTED"

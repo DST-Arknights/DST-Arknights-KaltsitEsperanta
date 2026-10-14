@@ -47,7 +47,7 @@ local function ApplyDoctorsMonumentsAfterRevive(player, skillOwner)
   local params = skill ~= nil and skill:GetLevelParams() or nil
   if params ~= nil then
     -- 参数取锚点施术者的技能等级；效果以复活者为中心施加。
-    common.ActiveDoctorsMonumentsBuff(player, nil, params)
+    common.ActiveDoctorsMonumentsBuff(player, nil, params, skillOwner)
   end
 end
 
@@ -68,6 +68,10 @@ end)
 -- 技能放置锚点时记录施术者，用于复活时读取其一技能参数。
 function TacticalAnchor:SetOwner(owner)
   self._owner = owner
+end
+
+function TacticalAnchor:GetOwner()
+  return self._owner ~= nil and self._owner:IsValid() and self._owner or nil
 end
 
 -- 技能放置锚点时设置领域 buff 强度（health_percent / damage_multiplier）
