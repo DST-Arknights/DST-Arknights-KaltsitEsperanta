@@ -8,35 +8,31 @@ name = T({
     en = "Kaltsit Esperanta",
     zh = "凯尔希 思衡托"
 })
-version = "2.1.0"
+version = "2.1.1"
 
 -- 版本更新说明（由发布脚本自动维护，请勿手动编辑）
 local UPDATE_EN = [[
+v2.1.1 (2026-10-18)
+- Moved Trinket Purification to Intellect crafting and changed its recipe to 10:1.
+---
 v2.1.0 (2026-10-18)
 - Improved Mon3tr's gathering, shields, area attacks, advanced skills, and linked abilities; registered the pet minimap icon and refined skill descriptions.
 - Improved Clinical Potion and curse trinket purification.
 - Updated Kaltsit's skill unlock description with Insight cap information.
 - Fixed the Mon3tr mode hotkey settings freeze; the three basic states now support hotkey cycling and custom keys, with the switch hotkey shown on the description card.
 - Fixed hover card focus and switching behavior, prevented freezes when key text is truncated, and changed the buttons to [Settings]/[Reset] with complete Chinese/English prompts.
----
-v2.0.2 (2026-10-08)
-- Active recall now prioritizes transferring Mon3tr's items to Kal'tsit, supporting inventory, backpacks, and stacks; overflow drops directly and does not occupy the mouse cursor. Transfers preserve vanilla locked-slot and curse restrictions.
-- Mon3tr death recall and cases where the owner is in soul or corpse states still drop items directly; skill recalls handle leftover inventory before entity removal so items do not vanish with Mon3tr.
-- Adjusted SkillSlot transparency for improved visuals.
 ]]
 
 local UPDATE_ZH = [[
+v2.1.1 (2026-10-18)
+- 将 Trinket Purification 移至 Intellect 制作，并改为 10:1 配方。
+---
 v2.1.0 (2026-10-18)
 - 完善 Mon3tr 的采集、护盾、范围攻击、进阶技能与联动能力，注册宠物小地图图标并优化技能描述。
 - 完善 Clinical Potion 与诅咒饰品净化。
 - 更新 Kaltsit 技能解锁描述，补充 Insight 上限信息。
 - 修复 Mon3tr 模式快捷键设置卡死；三种基础状态支持快捷键循环切换、自定义按键，并在描述卡显示切换快捷键。
 - 修正悬浮卡片焦点与切换行为，避免按键文本截断时卡死，按钮改为 [设置]/[重置] 并补齐中英文提示。
----
-v2.0.2 (2026-10-08)
-- Mon3tr 主动回收时会优先将物品转交 Kal'tsit，支持库存、背包和堆叠；容量不足的部分直接掉落，且不占用鼠标物品。转交时保留原版锁槽与诅咒限制。
-- Mon3tr 死亡回收、主人处于灵魂或尸体状态时仍直接掉落；技能回收会先处理剩余库存，避免物品随实体删除而消失。
-- 调整 SkillSlot 的透明度，优化视觉效果。
 ]]
 
 description = T({

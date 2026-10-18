@@ -1,5 +1,11 @@
 # 版本更新记录
 
+## v2.1.1 (2026-10-18)
+
+- 将 Trinket Purification 移至 Intellect 制作，并改为 10:1 配方。
+---
+- Moved Trinket Purification to Intellect crafting and changed its recipe to 10:1.
+
 ## v2.1.0 (2026-10-18)
 
 - 完善 Mon3tr 的采集、护盾、范围攻击、进阶技能与联动能力，注册宠物小地图图标并优化技能描述。
