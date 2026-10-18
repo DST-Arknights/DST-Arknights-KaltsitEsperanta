@@ -566,5 +566,5 @@ msgstr "饰品净化"
 
 #. STRINGS.RECIPE_DESC.KALTSIT_ESPERANTA_PUREBRILLIANCE
 msgctxt "STRINGS.RECIPE_DESC.KALTSIT_ESPERANTA_PUREBRILLIANCE"
-msgid "Convert one cursed trinket into one Pure Brilliance."
-msgstr "将一枚诅咒饰品转化为一份纯粹辉煌。"
+msgid "Let ill omens fade, leaving only pure radiance"
+msgstr "褪去不祥，留下纯粹的辉光"

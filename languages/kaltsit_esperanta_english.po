@@ -566,5 +566,5 @@ msgstr "Cursed Trinket Purification"
 
 #. STRINGS.RECIPE_DESC.KALTSIT_ESPERANTA_PUREBRILLIANCE
 msgctxt "STRINGS.RECIPE_DESC.KALTSIT_ESPERANTA_PUREBRILLIANCE"
-msgid "Convert one cursed trinket into one Pure Brilliance."
-msgstr "Convert one cursed trinket into one Pure Brilliance."
+msgid "Let ill omens fade, leaving only pure radiance"
+msgstr "Let ill omens fade, leaving only pure radiance"

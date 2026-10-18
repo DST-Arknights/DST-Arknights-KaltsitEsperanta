@@ -156,16 +156,17 @@ local function AddKaltsitIntellectRecipe(product, ingredients)
 end
 
 -- 注册配方
-AddCharacterRecipe("kaltsit_esperanta_purebrilliance", {
-    Ingredient("cursed_monkey_token", 1, nil, nil, "cursed_beads1.tex"),
-}, TECH.NONE, {
+AddRecipe2("kaltsit_esperanta_purebrilliance", {
+    Ingredient("cursed_monkey_token", 10, nil, nil, "cursed_beads1.tex"),
+}, TECH.KALTSIT_INTELLECT_ONE, {
     builder_tag = "kaltsit_esperanta",
+    nounlock = true,
     product = "purebrilliance",
     description = "KALTSIT_ESPERANTA_PUREBRILLIANCE",
     nameoverride = "KALTSIT_ESPERANTA_PUREBRILLIANCE",
     numtogive = 1,
     no_deconstruction = true,
-})
+}, { "MODS", "CRAFTING_STATION" })
 
 AddKaltsitIntellectRecipe("greengem", {
     Ingredient("kaltsit_intellect", 10),
