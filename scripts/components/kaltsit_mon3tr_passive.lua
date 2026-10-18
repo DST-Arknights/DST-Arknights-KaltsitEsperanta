@@ -2,6 +2,8 @@ local temporary_control = require("kaltsit_temporary_control")
 local ARMOR_RANGE = 12
 local ARMOR_ABSORPTION = 0.5
 local INVULNERABILITY_DURATION = 0.5
+local INVULNERABILITY_COOLDOWN = 5
+local INVULNERABILITY_BUFF = "kaltsit_mon3tr_invulnerability_buff"
 local REGEN_CAUSE = "kaltsit_mon3tr_regen"
 local SYMBIOSIS_CAUSE = "kaltsit_mon3tr_symbiosis"
 local ARMOR_KEY = "kaltsit_mon3tr_beast_armor"
@@ -31,15 +33,21 @@ local KaltsitMon3trPassive = Class(function(self, inst)
   self.owner = nil
   self.foods = {}
   self.invulnerability_until = 0
+  self.invulnerability_cooldown_until = 0
   self._knockeddown = false
   self._regen_elapsed = 0
   self._ownerremoved = function() self:SetOwner(nil) end
   self._oneat = function(_, data) self:OnEat(data) end
-  self._ondeath = function(_, data) self:OnKnockedDown(data) end
+  self._ondeath = function(_, data)
+    self:SetInvulnerability(0)
+    self:OnKnockedDown(data)
+  end
   self._onattacked = function(_, data)
     if self:IsEnabled() and IsAlive(inst) and data ~= nil
-      and ((data.damageresolved or data.damage or 0) > 0) then
-      self.invulnerability_until = GetTime() + self:GetInvulnerabilityDuration()
+      and ((data.damageresolved or data.damage or 0) > 0)
+      and GetTime() >= self.invulnerability_cooldown_until then
+      self.invulnerability_cooldown_until = GetTime() + INVULNERABILITY_COOLDOWN
+      self:SetInvulnerability(self:GetInvulnerabilityDuration())
     end
   end
   self._petredirect = function(next, target, amount, overtime, cause, ignore_invincible, afflicter, ignore_absorb)
@@ -116,6 +124,7 @@ function KaltsitMon3trPassive:SetOwner(owner)
   end
   if owner == self.owner then
     self:RefreshArmor()
+    self:RefreshInvulnerabilityBuff()
     return
   end
   local oldowner = self.owner
@@ -128,7 +137,7 @@ function KaltsitMon3trPassive:SetOwner(owner)
   self._added_immune_stun = nil
   self._ownerfeeding = nil
   self._regen_elapsed = 0
-  if oldowner ~= nil or owner == nil then self.invulnerability_until = 0 end
+  if oldowner ~= nil or owner == nil then self:SetInvulnerability(0) end
   if owner ~= nil then
     -- 空链仍需返回数值；仅为缺失回调补基线，保留已有回调。
     if owner.components.health.deltamodifierfn == nil then
@@ -141,6 +150,7 @@ function KaltsitMon3trPassive:SetOwner(owner)
   end
   self:RefreshArmor()
   self:RefreshFoodDamage()
+  self:RefreshInvulnerabilityBuff()
 end
 
 function KaltsitMon3trPassive:RefreshArmor()
@@ -175,6 +185,31 @@ end
 
 function KaltsitMon3trPassive:IsInvulnerable()
   return GetTime() < self.invulnerability_until
+end
+
+function KaltsitMon3trPassive:RefreshInvulnerabilityBuff()
+  if self:IsEnabled() and IsAlive(self.inst) and self:IsInvulnerable() then
+    if not self.inst:HasDebuff(INVULNERABILITY_BUFF) then
+      self.inst:AddDebuff(INVULNERABILITY_BUFF, INVULNERABILITY_BUFF)
+    end
+  else
+    self.inst:RemoveDebuff(INVULNERABILITY_BUFF)
+  end
+end
+
+function KaltsitMon3trPassive:SetInvulnerability(duration)
+  if self._invulnerability_task ~= nil then
+    self._invulnerability_task:Cancel()
+    self._invulnerability_task = nil
+  end
+  self.invulnerability_until = GetTime() + duration
+  if duration > 0 then
+    self._invulnerability_task = self.inst:DoTaskInTime(duration, function()
+      self._invulnerability_task = nil
+      self:SetInvulnerability(0)
+    end)
+  end
+  self:RefreshInvulnerabilityBuff()
 end
 
 function KaltsitMon3trPassive:IsEnemy(target)
@@ -296,6 +331,7 @@ function KaltsitMon3trPassive:OnSave()
   return {
     progress = self:GetProgress(),
     invulnerability_remaining = math.max(0, self.invulnerability_until - GetTime()),
+    invulnerability_cooldown_remaining = math.max(0, self.invulnerability_cooldown_until - GetTime()),
     knockeddown = self._knockeddown,
   }
 end
@@ -303,11 +339,14 @@ end
 function KaltsitMon3trPassive:OnLoad(data)
   if data == nil then return end
   self:SetProgress(data.progress)
-  self.invulnerability_until = GetTime() + math.min(1, math.max(0, tonumber(data.invulnerability_remaining) or 0))
+  self.invulnerability_cooldown_until = GetTime()
+    + math.min(INVULNERABILITY_COOLDOWN, math.max(0, tonumber(data.invulnerability_cooldown_remaining) or 0))
+  self:SetInvulnerability(math.min(1, math.max(0, tonumber(data.invulnerability_remaining) or 0)))
   self._knockeddown = data.knockeddown == true
 end
 
 function KaltsitMon3trPassive:OnRemoveFromEntity()
+  self:SetInvulnerability(0)
   self:SetOwner(nil)
   if self._task ~= nil then self._task:Cancel(); self._task = nil end
   ArkUnhookFunction(self.inst.components.health, "redirect", self._petredirect)

@@ -1,5 +1,5 @@
 local STATE_NAME = "kaltsit_mon3tr_castling"
-local SHIELD_BUFF = "kaltsit_mon3tr_castling_shield_buff"
+local SHIELD_BUFF = "doctors_monuments_invincible_buff"
 local PAUSE_FRAMES = 3
 
 local function GetOwner(pet)

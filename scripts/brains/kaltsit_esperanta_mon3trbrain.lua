@@ -6,14 +6,21 @@ local COMBAT_TAGS = { "_combat", "_health" }
 local COMBAT_NOTAGS = { "INLIMBO", "noauradamage", "companion" }
 local DEFENSIVE_TAGS = { "monster", "prey" }
 local AGGRESSIVE_TAGS = { "monster", "prey", "insect", "hostile", "character", "animal" }
-local WORK_TAGS = { "CHOP_workable", "MINE_workable", "DIG_workable" }
+local WORK_TAGS = { "pickable", "CHOP_workable", "MINE_workable", "DIG_workable" }
 local WORK_NOTAGS = { "fire", "smolder", "event_trigger", "waxedplant", "INLIMBO", "NOCLICK", "carnivalgame_part" }
 local WORK_DIST, WORK_SEARCH_DIST, WORK_KEEP_DIST = 2, 10, 14
 local GIVE_DIST, ITEM_ACTION_TIMEOUT, ITEM_RETRY_TIME = 3, 10, 5
 
-local function IsGatherPlant(target)
+local function GetWorkAction(target)
   local pickable = target.components.pickable
-  return pickable ~= nil and (pickable.product == "cutgrass" or pickable.product == "twigs")
+  -- 可采摘目标始终保留根部；空株、枯萎或卡住时也不能退回挖掘。
+  if pickable ~= nil then
+    return pickable:CanBePicked() and pickable.caninteractwith and not pickable:IsStuck()
+      and ACTIONS.PICK or nil
+  end
+  local workable = target.components.workable
+  local action = workable ~= nil and workable:CanBeWorked() and workable:GetWorkAction() or nil
+  return (action == ACTIONS.CHOP or action == ACTIONS.MINE or action == ACTIONS.DIG) and action or nil
 end
 
 local function GetLeader(inst)
@@ -313,16 +320,8 @@ function Mon3trBrain:CanWork(target)
     or not target.entity:IsVisible() or not target:IsNear(GetLeader(self.inst) or self.inst, WORK_KEEP_DIST) then
     return false
   end
-  local workable, burnable = target.components.workable, target.components.burnable
-  local action = workable ~= nil and workable:GetWorkAction() or nil
-  local pickable = target.components.pickable
-  local gatherplant = IsGatherPlant(target)
-  -- 草丛和树苗只收割，不再走 DIG；空株/枯萎株等再生后才会重新采集。
-  local canwork = gatherplant
-    and pickable:CanBePicked() and pickable.caninteractwith and not pickable:IsStuck()
-    or not gatherplant and workable ~= nil and workable:CanBeWorked()
-  return canwork
-    and (action == ACTIONS.CHOP or action == ACTIONS.MINE or action == ACTIONS.DIG)
+  local burnable = target.components.burnable
+  return GetWorkAction(target) ~= nil
     and (burnable == nil or not (burnable:IsBurning() or burnable:IsSmoldering()))
 end
 
@@ -351,7 +350,7 @@ function Mon3trBrain:WorkAction()
   if near then
     action:AddSuccessAction(function()
       if action.validfn() then
-        if IsGatherPlant(target) then
+        if GetWorkAction(target) == ACTIONS.PICK then
           target.components.pickable:Pick(inst)
         else
           target.components.workable:WorkedBy(inst, 1)

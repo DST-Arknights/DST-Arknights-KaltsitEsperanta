@@ -15,39 +15,34 @@ local function GetTreatmentHealer(inst)
   end
 end
 
+local function ShowForcefield(inst, target)
+  if inst._forcefield_fx == nil then
+    inst._forcefield_fx = SpawnPrefab("forcefieldfx")
+    inst._forcefield_fx.entity:SetParent(target.entity)
+    inst._forcefield_fx.Transform:SetPosition(0, 0.2, 0)
+    inst._forcefield_fx.Light:Enable(false)
+  end
+end
+
+local function HideForcefield(inst)
+  if inst._forcefield_fx ~= nil then
+    if inst._forcefield_fx:IsValid() then
+      inst._forcefield_fx:kill_fx()
+    end
+    inst._forcefield_fx = nil
+  end
+end
+
 local buffers = { {
-  name = "kaltsit_mon3tr_castling_shield_buff",
-  keepondespawn = true,
-  prefabs = { "shadow_shield1" },
-  title = STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.CASTLING_SHIELD_TITLE,
-  description = STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.CASTLING_SHIELD_DESCRIPTION,
-  icon_atlas = "images/ui_kaltsit_experanta_mon3tr_skill.xml",
-  icon_image = "castling.tex",
-  OnAttached = function(inst, target)
-    local combat = target.components.combat
-    if combat == nil then return end
-    inst._shield_hook = function(next, self, attacker, damage, weapon, stimuli, spdamage)
-      local health = self.inst.components.health
-      local hit = (damage or 0) > 0
-      for _, value in pairs(spdamage or {}) do
-        if value > 0 then hit = true break end
-      end
-      if hit and health ~= nil and not health:IsDead() and not health:IsInvincible()
-        and not self.inst.is_teleporting then
-        local fx = SpawnPrefab("shadow_shield1")
-        if fx ~= nil then fx.entity:SetParent(self.inst.entity) end
-        self.inst:RemoveDebuff("kaltsit_mon3tr_castling_shield_buff")
-        return true
-      end
-      return next(self, attacker, damage, weapon, stimuli, spdamage)
-    end
-    ArkHookFunction(combat, "GetAttacked", inst._shield_hook)
-  end,
-  OnDetached = function(inst, target)
-    if target.components.combat ~= nil then
-      ArkUnhookFunction(target.components.combat, "GetAttacked", inst._shield_hook)
-    end
-  end,
+  name = "kaltsit_mon3tr_invulnerability_buff",
+  -- 仅显示受击无敌，由 passive 的实际起止控制，不单独计时或抵挡一次后消失。
+  prefabs = { "forcefieldfx" },
+  title = STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.MON3TR_INVULNERABILITY_TITLE,
+  description = STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.MON3TR_INVULNERABILITY_DESCRIPTION,
+  icon_atlas = "images/ui_kaltsit_esperanta_skill.xml",
+  icon_image = "skill1.tex",
+  OnAttached = ShowForcefield,
+  OnDetached = HideForcefield,
 }, {
   name = "doctors_monuments_invincible_buff",
   duration = 10,
@@ -62,23 +57,13 @@ local buffers = { {
       target.components.health.externalabsorbmodifiers:SetModifier(inst, 1.0)
     end
     -- 铥矿皇冠同款力场护盾特效（forcefieldfx），无敌可见
-    if inst._forcefield_fx == nil then
-      inst._forcefield_fx = SpawnPrefab("forcefieldfx")
-      inst._forcefield_fx.entity:SetParent(target.entity)
-      inst._forcefield_fx.Transform:SetPosition(0, 0.2, 0)
-      inst._forcefield_fx.Light:Enable(false)
-    end
+    ShowForcefield(inst, target)
   end,
   OnDetached = function(inst, target)
     if target.components.health then
       target.components.health.externalabsorbmodifiers:RemoveModifier(inst)
     end
-    if inst._forcefield_fx ~= nil then
-      if inst._forcefield_fx:IsValid() and inst._forcefield_fx.kill_fx ~= nil then
-        inst._forcefield_fx:kill_fx()
-      end
-      inst._forcefield_fx = nil
-    end
+    HideForcefield(inst)
   end,
 }, {
   name = "doctors_monuments_treatment_buff",

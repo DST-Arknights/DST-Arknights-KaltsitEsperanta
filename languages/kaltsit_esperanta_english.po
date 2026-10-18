@@ -221,17 +221,17 @@ msgstr "Mon3tr"
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.1
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.1"
 msgid "Locked"
-msgstr "There is still much I must relearn."
+msgstr "There is still much I must relearn"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.2
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.2"
 msgid "Locked"
-msgstr "There is still much I must relearn.\nUnlocks upon promotion to Elite 1 at 100 maximum Intellect."
+msgstr "There is still much I must relearn\nUnlocks upon promotion to Elite 1 at 100 maximum Intellect"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.3
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LOCKED_DESC.3"
 msgid "Locked"
-msgstr "There is still much I must relearn.\nUnlocks upon promotion to Elite 2 at 200 maximum Intellect."
+msgstr "There is still much I must relearn\nUnlocks upon promotion to Elite 2 at 200 maximum Intellect"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.1
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.1.1"
@@ -281,8 +281,8 @@ msgstr "-Deploy an anchor at the selected location and cast Doctor's Monument on
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.4.1
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.4.1"
-msgid "Mon3tr, follow me."
-msgstr "Mon3tr, follow me."
+msgid "-Summons Mon3tr and restores 100 Sanity\n-Recalling Mon3tr or its death costs 100 Sanity\n-Only one Mon3tr can be summoned at a time\n-Recharges for 180 seconds after the summon ends"
+msgstr "-Summons Mon3tr and restores 100 Sanity\n-Recalling Mon3tr or its death costs 100 Sanity\n-Only one Mon3tr can be summoned at a time\n-Recharges for 180 seconds after the summon ends"
 
 #. STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_NEED_SAFE_GROUND
 msgctxt "STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_NEED_SAFE_GROUND"
@@ -349,6 +349,16 @@ msgctxt "STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_SKILL_3_B"
 msgid "Do not be afraid. This power will only be used for healing."
 msgstr "Do not be afraid. This power will only be used for healing."
 
+#. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.MON3TR_INVULNERABILITY_TITLE
+msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.MON3TR_INVULNERABILITY_TITLE"
+msgid "Mon3tr Invulnerability"
+msgstr "Mon3tr Invulnerability"
+
+#. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.MON3TR_INVULNERABILITY_DESCRIPTION
+msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.MON3TR_INVULNERABILITY_DESCRIPTION"
+msgid "Immune to damage during the post-hit invulnerability window; 5-second trigger cooldown"
+msgstr "Immune to damage during the post-hit invulnerability window; 5-second trigger cooldown"
+
 #. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.DOCTORS_MONUMENTS_INVINCIBLE_TITLE
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.DOCTORS_MONUMENTS_INVINCIBLE_TITLE"
 msgid "Doctor's Monument Shield"
@@ -356,8 +366,8 @@ msgstr "Doctor's Monument Shield"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.DOCTORS_MONUMENTS_INVINCIBLE_DESCRIPTION
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.DOCTORS_MONUMENTS_INVINCIBLE_DESCRIPTION"
-msgid "Blocks one hit."
-msgstr "Blocks one hit."
+msgid "Blocks one hit"
+msgstr "Blocks one hit"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.DOCTORS_MONUMENTS_TREATMENT_TITLE
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.DOCTORS_MONUMENTS_TREATMENT_TITLE"
@@ -366,8 +376,8 @@ msgstr "Doctor's Monument Healing"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.DOCTORS_MONUMENTS_TREATMENT_DESCRIPTION
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.DOCTORS_MONUMENTS_TREATMENT_DESCRIPTION"
-msgid "Restores 2 health per second for 20 seconds."
-msgstr "Restores 2 health per second for 20 seconds."
+msgid "Restores 2 health per second for 20 seconds"
+msgstr "Restores 2 health per second for 20 seconds"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.ANCHOR_FIELD_TITLE
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.ANCHOR_FIELD_TITLE"
@@ -376,8 +386,8 @@ msgstr "Tactical Anchor Field"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.ANCHOR_FIELD_DESCRIPTION
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.ANCHOR_FIELD_DESCRIPTION"
-msgid "Restores 2% of maximum health per second and increases damage by 20%."
-msgstr "Restores 2% of maximum health per second and increases damage by 20%."
+msgid "Restores 2% of maximum health per second and increases damage by 20%"
+msgstr "Restores 2% of maximum health per second and increases damage by 20%"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.SKILL2_PAUSE_TITLE
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.SKILL2_PAUSE_TITLE"
@@ -386,8 +396,8 @@ msgstr "Stagger"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.SKILL2_PAUSE_DESCRIPTION
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.SKILL2_PAUSE_DESCRIPTION"
-msgid "Reduces movement speed by 80% for 5 seconds."
-msgstr "Reduces movement speed by 80% for 5 seconds."
+msgid "Reduces movement speed by 80% for 5 seconds"
+msgstr "Reduces movement speed by 80% for 5 seconds"
 
 #. STRINGS.UI.KALTSIT_MON3TR_MODE.NAME.STANDBY
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_MODE.NAME.STANDBY"
@@ -406,18 +416,18 @@ msgstr "Command: Tactical Coordination"
 
 #. STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.STANDBY
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.STANDBY"
-msgid " - Stays near Kal'tsit and responds to her enemies.\n - Normal attacks hit enemies within 4 units of Mon3tr."
-msgstr " - Stays near Kal'tsit and responds to her enemies.\n - Normal attacks hit enemies within 4 units of Mon3tr."
+msgid " -Stays near Kal'tsit and responds to her enemies\n -Normal attacks hit enemies within 4 units of Mon3tr"
+msgstr " -Stays near Kal'tsit and responds to her enemies\n -Normal attacks hit enemies within 4 units of Mon3tr"
 
 #. STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.ATTACK
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.ATTACK"
-msgid " - Actively seeks enemies; movement speed increases by 50%.\n - Normal attacks hit enemies within 4 units of Mon3tr."
-msgstr " - Actively seeks enemies; movement speed increases by 50%.\n - Normal attacks hit enemies within 4 units of Mon3tr."
+msgid " -Actively seeks enemies; movement speed increases by 50%\n -Normal attacks hit enemies within 4 units of Mon3tr"
+msgstr " -Actively seeks enemies; movement speed increases by 50%\n -Normal attacks hit enemies within 4 units of Mon3tr"
 
 #. STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.WORK
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_MODE.DESC.WORK"
-msgid " - Gathers resources, chops trees, mines and tills nearby soil.\n - Grass and saplings are harvested once and left to regrow.\n - Continues to defend Kal'tsit in combat."
-msgstr " - Gathers resources, chops trees, mines and tills nearby soil.\n - Grass and saplings are harvested once and left to regrow.\n - Continues to defend Kal'tsit in combat."
+msgid " -Gathers resources, chops trees, mines and digs up stumps\n -Harvestable plants are picked and left to regrow\n -Continues to defend Kal'tsit in combat"
+msgstr " -Gathers resources, chops trees, mines and digs up stumps\n -Harvestable plants are picked and left to regrow\n -Continues to defend Kal'tsit in combat"
 
 #. STRINGS.UI.KALTSIT_MON3TR_MODE.HOTKEY_LABEL
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_MODE.HOTKEY_LABEL"
@@ -451,63 +461,53 @@ msgstr "Command: Meltdown"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LOCKED_DESC.1
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LOCKED_DESC.1"
-msgid "Unlocks when you acquire Mon3tr."
-msgstr "Unlocks when you acquire Mon3tr."
+msgid "Unlocks when you acquire Mon3tr"
+msgstr "Unlocks when you acquire Mon3tr"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LOCKED_DESC.2
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LOCKED_DESC.2"
-msgid "Unlocks when the master's maximum Intellect reaches 50."
-msgstr "Unlocks when the master's maximum Intellect reaches 50."
+msgid "Unlocks when the master's maximum Intellect reaches 50"
+msgstr "Unlocks when the master's maximum Intellect reaches 50"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LOCKED_DESC.3
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LOCKED_DESC.3"
-msgid "Unlocks when the master's maximum Intellect reaches 100."
-msgstr "Unlocks when the master's maximum Intellect reaches 100."
+msgid "Unlocks when the master's maximum Intellect reaches 100"
+msgstr "Unlocks when the master's maximum Intellect reaches 100"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LOCKED_DESC.4
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LOCKED_DESC.4"
-msgid "Unlocks when the master's maximum Intellect reaches 150."
-msgstr "Unlocks when the master's maximum Intellect reaches 150."
+msgid "Unlocks when the master's maximum Intellect reaches 150"
+msgstr "Unlocks when the master's maximum Intellect reaches 150"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LOCKED_DESC.5
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LOCKED_DESC.5"
-msgid "Unlocks when the master's maximum Intellect reaches 200."
-msgstr "Unlocks when the master's maximum Intellect reaches 200."
+msgid "Unlocks when the master's maximum Intellect reaches 200"
+msgstr "Unlocks when the master's maximum Intellect reaches 200"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.1
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.1"
-msgid " - Kal'tsit and Mon3tr frighten targets within 10 units for 10 seconds.\n - Only creatures that can panic are affected.\n - Recharges in 30 seconds."
-msgstr " - Kal'tsit and Mon3tr frighten targets within 10 units for 10 seconds.\n - Only creatures that can panic are affected.\n - Recharges in 30 seconds."
+msgid " -Kal'tsit and Mon3tr frighten targets within 10 units for 10 seconds\n -Only creatures that can panic are affected\n -Recharges in 30 seconds"
+msgstr " -Kal'tsit and Mon3tr frighten targets within 10 units for 10 seconds\n -Only creatures that can panic are affected\n -Recharges in 30 seconds"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.2
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.2"
-msgid " - Automatically leaps toward a target within 8 units.\n - Deals 200% attack damage within 4 units of the landing point and draws the attention of surviving enemies hit.\n - Recharges in 10 seconds."
-msgstr " - Automatically leaps toward a target within 8 units.\n - Deals 200% attack damage within 4 units of the landing point and draws the attention of surviving enemies hit.\n - Recharges in 10 seconds."
+msgid " -Automatically leaps toward a target within 8 units\n -Deals 200% attack damage within 4 units of the landing point and draws the attention of surviving enemies hit\n -Recharges in 10 seconds"
+msgstr " -Automatically leaps toward a target within 8 units\n -Deals 200% attack damage within 4 units of the landing point and draws the attention of surviving enemies hit\n -Recharges in 10 seconds"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.3
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.3"
-msgid " - Costs 20 Sanity; lasts 30 seconds.\n - Each hit on Kal'tsit or Mon3tr is capped at 15% of maximum Health.\n - Overhealing becomes a shield until the skill ends.\n - Kal'tsit's healing is doubled.\n - Recharges for 60 seconds after the skill ends."
-msgstr " - Costs 20 Sanity; lasts 30 seconds.\n - Each hit on Kal'tsit or Mon3tr is capped at 15% of maximum Health.\n - Overhealing becomes a shield until the skill ends.\n - Kal'tsit's healing is doubled.\n - Recharges for 60 seconds after the skill ends."
+msgid " -Costs 20 Sanity; lasts 30 seconds\n -Each hit on Kal'tsit or Mon3tr is capped at 15% of maximum Health\n -Overhealing becomes a shield until the skill ends\n -Kal'tsit's healing is doubled\n -Recharges for 60 seconds after the skill ends"
+msgstr " -Costs 20 Sanity; lasts 30 seconds\n -Each hit on Kal'tsit or Mon3tr is capped at 15% of maximum Health\n -Overhealing becomes a shield until the skill ends\n -Kal'tsit's healing is doubled\n -Recharges for 60 seconds after the skill ends"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.4
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.4"
-msgid " - Costs 20 Sanity.\n - Kal'tsit and Mon3tr swap positions and each gain a shield that blocks one attack.\n - Cannot be used while riding or with an unsafe destination.\n - Recharges in 60 seconds."
-msgstr " - Costs 20 Sanity.\n - Kal'tsit and Mon3tr swap positions and each gain a shield that blocks one attack.\n - Cannot be used while riding or with an unsafe destination.\n - Recharges in 60 seconds."
+msgid " -Costs 20 Sanity\n -Kal'tsit and Mon3tr swap positions and each gain a 10-second shield that blocks one attack\n -Cannot be used while riding or with an unsafe destination\n -Recharges in 60 seconds"
+msgstr " -Costs 20 Sanity\n -Kal'tsit and Mon3tr swap positions and each gain a 10-second shield that blocks one attack\n -Cannot be used while riding or with an unsafe destination\n -Recharges in 60 seconds"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.5
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.LEVEL_DESC.5"
-msgid " - Costs 20 Sanity; lasts 20 seconds.\n - Mon3tr enters Attack mode and deals true damage.\n - The extra 200% damage and 50% absorption decay each second to zero.\n - If no enemy is killed, natural expiry costs 50% of maximum Health.\n - Recharges for 200 seconds after the skill ends."
-msgstr " - Costs 20 Sanity; lasts 20 seconds.\n - Mon3tr enters Attack mode and deals true damage.\n - The extra 200% damage and 50% absorption decay each second to zero.\n - If no enemy is killed, natural expiry costs 50% of maximum Health.\n - Recharges for 200 seconds after the skill ends."
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.CASTLING_SHIELD_TITLE
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.CASTLING_SHIELD_TITLE"
-msgid "Castling Shield"
-msgstr "Castling Shield"
-
-#. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.CASTLING_SHIELD_DESCRIPTION
-msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.CASTLING_SHIELD_DESCRIPTION"
-msgid "Blocks the next attack. Repeated casts refresh the shield without stacking."
-msgstr "Blocks the next attack. Repeated casts refresh the shield without stacking."
+msgid " -Costs 20 Sanity; lasts 20 seconds\n -Mon3tr enters Attack mode and deals true damage\n -The extra 200% damage and 50% absorption decay each second to zero\n -If no enemy is killed, natural expiry costs 50% of maximum Health\n -Recharges for 200 seconds after the skill ends"
+msgstr " -Costs 20 Sanity; lasts 20 seconds\n -Mon3tr enters Attack mode and deals true damage\n -The extra 200% damage and 50% absorption decay each second to zero\n -If no enemy is killed, natural expiry costs 50% of maximum Health\n -Recharges for 200 seconds after the skill ends"
 
 #. STRINGS.UI.KALTSIT_MON3TR_SKILL.NOT_IMPLEMENTED
 msgctxt "STRINGS.UI.KALTSIT_MON3TR_SKILL.NOT_IMPLEMENTED"
@@ -546,8 +546,8 @@ msgstr "Neurotransmitter Regulation"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.NEURO_GEL_DESCRIPTION
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.NEURO_GEL_DESCRIPTION"
-msgid " - Restores 0.5% of maximum Sanity each second for 120 seconds.\n - Mon3tr gains 1-second invulnerability after a hit; hits during this window retaliate twice for 20 damage each."
-msgstr " - Restores 0.5% of maximum Sanity each second for 120 seconds.\n - Mon3tr gains 1-second invulnerability after a hit; hits during this window retaliate twice for 20 damage each."
+msgid " -Restores 0.5% of maximum Sanity each second for 120 seconds\n -Mon3tr gains 1-second invulnerability after a hit; hits during this window retaliate twice for 20 damage each"
+msgstr " -Restores 0.5% of maximum Sanity each second for 120 seconds\n -Mon3tr gains 1-second invulnerability after a hit; hits during this window retaliate twice for 20 damage each"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.TISSUE_REPAIR_TITLE
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.TISSUE_REPAIR_TITLE"
@@ -556,8 +556,8 @@ msgstr "Tissue Repair"
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.TISSUE_REPAIR_DESCRIPTION
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.TISSUE_REPAIR_DESCRIPTION"
-msgid " - Immediately heals Kal'tsit for 20% of maximum Health and the active Mon3tr for 150 Health.\n - For 30 seconds, heals Kal'tsit for 1% of maximum Health and Mon3tr for 20 Health each second."
-msgstr " - Immediately heals Kal'tsit for 20% of maximum Health and the active Mon3tr for 150 Health.\n - For 30 seconds, heals Kal'tsit for 1% of maximum Health and Mon3tr for 20 Health each second."
+msgid " -Immediately heals Kal'tsit for 20% of maximum Health and the active Mon3tr for 150 Health\n -For 30 seconds, heals Kal'tsit for 1% of maximum Health and Mon3tr for 20 Health each second"
+msgstr " -Immediately heals Kal'tsit for 20% of maximum Health and the active Mon3tr for 150 Health\n -For 30 seconds, heals Kal'tsit for 1% of maximum Health and Mon3tr for 20 Health each second"
 
 #. STRINGS.NAMES.KALTSIT_ESPERANTA_PUREBRILLIANCE
 msgctxt "STRINGS.NAMES.KALTSIT_ESPERANTA_PUREBRILLIANCE"

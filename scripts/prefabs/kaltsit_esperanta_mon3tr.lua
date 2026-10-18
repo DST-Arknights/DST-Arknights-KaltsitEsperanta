@@ -10,7 +10,8 @@ local prefabs = {
   "groundpoundring_fx",
   "pine_needles_chop",
   "boss_ripple_fx",
-  "kaltsit_mon3tr_castling_shield_buff",
+  "doctors_monuments_invincible_buff",
+  "kaltsit_mon3tr_invulnerability_buff",
   "sand_puff_large_front",
   "sand_puff_large_back",
   "shadow_shield1",
@@ -62,10 +63,27 @@ local function UpdateBrain(inst)
   end
 end
 
+local function UpdatePetImmunities(inst)
+  -- heavybody 复用原版重甲的轻击退分支，保留位移，不完全吞掉击退事件。
+  for _, tag in ipairs({ "immune_stun", "heavybody" }) do
+    local key = "_kaltsit_pet_" .. tag
+    if IsPlayerControlled(inst) then
+      if inst[key] then
+        inst:RemoveTag(tag)
+        inst[key] = nil
+      end
+    elseif not inst:HasTag(tag) then
+      inst:AddTag(tag)
+      inst[key] = true
+    end
+  end
+end
+
 local function OnSetOwner(inst)
   UpdateBrain(inst)
   UpdateClaw(inst)
   UpdateHunger(inst)
+  UpdatePetImmunities(inst)
   -- 接管时中止 AI 动作，由对应状态恢复移动、碰撞和动画速度。
   local state = inst.sg.currentstate.name
   if IsPlayerControlled(inst) and (state == "kaltsit_mon3tr_claw_attack"
@@ -81,7 +99,7 @@ local function SetupPetEnvironment(inst)
     return
   end
   inst.components.hunger:Pause()
-  inst:AddTag("immune_stun")
+  UpdatePetImmunities(inst)
   -- 独立子光源，避免 SGwilson 的电击状态关闭角色自带的 Light。
   local light = SpawnPrefab("yellowamuletlight")
   light.Light:SetRadius(PET_LIGHT_RADIUS)

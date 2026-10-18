@@ -77,7 +77,7 @@ local Mon3trUI = Class(Widget, function(self, owner, controls)
       local strings = STRINGS.UI.KALTSIT_MON3TR_SKILL
       local desc = strings.LEVEL_DESC[index]
       if skill.implemented == true and slot.state == "locked" then
-        desc = desc .. "\n\n" .. strings.LOCKED_DESC[index]
+        desc = desc .. "\n" .. strings.LOCKED_DESC[index]
       end
       return strings.NAME[index], desc
     end)
