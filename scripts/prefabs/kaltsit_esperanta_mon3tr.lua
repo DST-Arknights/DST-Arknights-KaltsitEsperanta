@@ -16,7 +16,8 @@ local prefabs = {
   "shadow_shield1",
 }
 local assets = {
-  -- Asset("ATLAS", "images/map_icons/kaltsit_esperanta_mon3tr.xml"),
+  Asset("ATLAS", "images/map_icons/kaltsit_esperanta_mon3tr.xml"),
+  Asset("IMAGE", "images/map_icons/kaltsit_esperanta_mon3tr.tex"),
   Asset("ANIM", "anim/kaltsit_esperanta_mon3tr.zip"),
 }
 

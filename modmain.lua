@@ -25,6 +25,7 @@ assert(ARK_ITEM_PACKAGE_LOADED, "请安装前置模组: 源枢\n please install 
 ArkLogger:DeclareLogger("INFO", "K2CEsperanta")
 
 AddMinimapAtlas("images/map_icons/kaltsit_esperanta.xml") --人物小地图显示
+AddMinimapAtlas("images/map_icons/kaltsit_esperanta_mon3tr.xml")
 
 local kaltsit_esperanta_starting_items = {
   "special_treatment_gun",
