@@ -1,5 +1,11 @@
 # 版本更新记录
 
+## v2.1.2 (2026-10-24)
+
+- 修复召唤物的固定反击在 Meltdown 期间未沿用角色真实伤害比例的问题，使其继续转为真实伤害。
+---
+- Fixed summons' fixed counterattacks not inheriting the character's true damage ratio during Meltdown, so they continue to convert to true damage.
+
 ## v2.1.1 (2026-10-18)
 
 - 将 Trinket Purification 移至 Intellect 制作，并改为 10:1 配方。

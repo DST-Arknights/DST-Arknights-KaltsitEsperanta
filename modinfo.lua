@@ -8,31 +8,23 @@ name = T({
     en = "Kaltsit Esperanta",
     zh = "凯尔希 思衡托"
 })
-version = "2.1.1"
+version = "2.1.2"
 
 -- 版本更新说明（由发布脚本自动维护，请勿手动编辑）
 local UPDATE_EN = [[
+v2.1.2 (2026-10-24)
+- Fixed summons' fixed counterattacks not inheriting the character's true damage ratio during Meltdown, so they continue to convert to true damage.
+---
 v2.1.1 (2026-10-18)
 - Moved Trinket Purification to Intellect crafting and changed its recipe to 10:1.
----
-v2.1.0 (2026-10-18)
-- Improved Mon3tr's gathering, shields, area attacks, advanced skills, and linked abilities; registered the pet minimap icon and refined skill descriptions.
-- Improved Clinical Potion and curse trinket purification.
-- Updated Kaltsit's skill unlock description with Insight cap information.
-- Fixed the Mon3tr mode hotkey settings freeze; the three basic states now support hotkey cycling and custom keys, with the switch hotkey shown on the description card.
-- Fixed hover card focus and switching behavior, prevented freezes when key text is truncated, and changed the buttons to [Settings]/[Reset] with complete Chinese/English prompts.
 ]]
 
 local UPDATE_ZH = [[
+v2.1.2 (2026-10-24)
+- 修复召唤物的固定反击在 Meltdown 期间未沿用角色真实伤害比例的问题，使其继续转为真实伤害。
+---
 v2.1.1 (2026-10-18)
 - 将 Trinket Purification 移至 Intellect 制作，并改为 10:1 配方。
----
-v2.1.0 (2026-10-18)
-- 完善 Mon3tr 的采集、护盾、范围攻击、进阶技能与联动能力，注册宠物小地图图标并优化技能描述。
-- 完善 Clinical Potion 与诅咒饰品净化。
-- 更新 Kaltsit 技能解锁描述，补充 Insight 上限信息。
-- 修复 Mon3tr 模式快捷键设置卡死；三种基础状态支持快捷键循环切换、自定义按键，并在描述卡显示切换快捷键。
-- 修正悬浮卡片焦点与切换行为，避免按键文本截断时卡死，按钮改为 [设置]/[重置] 并补齐中英文提示。
 ]]
 
 description = T({
