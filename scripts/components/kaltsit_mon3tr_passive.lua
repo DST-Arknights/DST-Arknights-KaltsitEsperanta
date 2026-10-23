@@ -233,7 +233,10 @@ function KaltsitMon3trPassive:ReflectInvulnerableHit(attacker)
     or not self:IsEnemy(attacker) then return end
   self._reflecting = true
   for _ = 1, 2 do
-    if IsAlive(attacker) then attacker.components.combat:GetAttacked(self.inst, 20) end
+    if IsAlive(attacker) then
+      local damage, spdamage = self.inst.components.combat:ConvertToTrueDamage(20)
+      attacker.components.combat:GetAttacked(self.inst, damage, nil, nil, spdamage)
+    end
   end
   self._reflecting = nil
 end
