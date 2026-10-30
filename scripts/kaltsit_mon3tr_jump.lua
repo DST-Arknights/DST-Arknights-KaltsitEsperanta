@@ -1,3 +1,4 @@
+local FLYER_MODE = require "ark_flyer_modes"
 local STATE_NAME = "kaltsit_mon3tr_jump"
 local LAND_TIME = 15.2 * FRAMES
 local FINISH_TIME = 30 * FRAMES
@@ -101,6 +102,8 @@ local function MakeState()
       end
       local mem = inst.sg.statemem
       mem.cast = cast
+      mem.flyer = inst.components.ark_flyer
+      if mem.flyer ~= nil then mem.flyer:SetHeightSuspended(true) end
       mem.startpos = inst:GetPosition()
       mem.collisionmask = inst.Physics:GetCollisionMask()
       mem.invincible = inst.components.health.invincible
@@ -162,6 +165,7 @@ local function MakeState()
         inst.Physics:SetCollisionMask(mem.collisionmask)
         inst.components.health:SetInvincible(mem.invincible)
       end
+      if mem.flyer ~= nil then mem.flyer:SetHeightSuspended(false) end
     end,
   }
 end
@@ -169,6 +173,8 @@ end
 local function Summon(pet, owner, targetpos)
   if not IsJumpable(pet) or not IsValidOwner(owner) or targetpos == nil then return false end
   if pet.sg.currentstate.name == STATE_NAME then return false end
+  -- 先建立悬浮碰撞，再由跳跃保存；避免出生延迟初始化后恢复成地面碰撞。
+  if pet.components.ark_flyer ~= nil then pet.components.ark_flyer:SetMode(FLYER_MODE.HOVERING) end
   local startpos = owner:GetPosition()
   pet.Physics:Teleport(startpos.x, 0, startpos.z)
   pet.sg:GoToState(STATE_NAME, {

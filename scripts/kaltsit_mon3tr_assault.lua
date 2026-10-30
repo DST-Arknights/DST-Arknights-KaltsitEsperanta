@@ -107,6 +107,8 @@ local function MakeState()
         return
       end
       inst.sg.statemem.cast = cast
+      inst.sg.statemem.flyer = inst.components.ark_flyer
+      if inst.sg.statemem.flyer ~= nil then inst.sg.statemem.flyer:SetHeightSuspended(true) end
       inst.sg.statemem.startpos = inst:GetPosition()
       inst:ClearBufferedAction()
       inst.components.locomotor:Clear()
@@ -131,6 +133,7 @@ local function MakeState()
     ontimeout = function(inst) inst.sg:GoToState("idle") end,
     onexit = function(inst)
       RestorePhysics(inst)
+      if inst.sg.statemem.flyer ~= nil then inst.sg.statemem.flyer:SetHeightSuspended(false) end
       if inst.sg.statemem.animspeed then inst.AnimState:SetDeltaTimeMultiplier(1) end
     end,
   }

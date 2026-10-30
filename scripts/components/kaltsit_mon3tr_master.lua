@@ -9,6 +9,13 @@ local NEXT_MODE = {
   work = "standby",
 }
 
+local function UpdateHungerRate(self)
+  local hunger = self.inst.components.hunger
+  if hunger ~= nil and self.inst:HasTag("kaltsit_esperanta") then
+    hunger.burnratemodifiers:SetModifier("kaltsit_esperanta_mon3tr", self.mon3tr ~= nil and 1.2 or 0.7)
+  end
+end
+
 local KaltsitMon3trMaster = Class(function(self, inst)
   self.inst = inst
   self.mon3tr = nil
@@ -45,6 +52,7 @@ local KaltsitMon3trMaster = Class(function(self, inst)
     if line ~= nil then self.inst.components.talker:Say(line) end
   end
   self._onintellectchanged = function() self:SyncSkills() end
+  UpdateHungerRate(self)
 end)
 
 function KaltsitMon3trMaster:GetMon3tr()
@@ -159,6 +167,7 @@ function KaltsitMon3trMaster:SetMon3tr(pet)
     self.inst:ListenForEvent("intellect_changed", self._onintellectchanged)
     self.inst:ListenForEvent("kaltsit_mon3tr_progresschanged", self._onprogresschanged, pet)
   end
+  UpdateHungerRate(self)
   self:SyncMon3tr()
   self:SyncSkills()
   return true
@@ -170,6 +179,7 @@ function KaltsitMon3trMaster:ClearMon3tr(expectedpet)
     return false
   end
   DetachMon3tr(self)
+  UpdateHungerRate(self)
   self.inst.replica.kaltsit_mon3tr_master:SetSnapshot(false, "standby")
   for index = 1, TUNING.KALTSIT_MON3TR_SKILL_COUNT do
     self.inst.replica.kaltsit_mon3tr_master:SetSkillSnapshot(index, nil)

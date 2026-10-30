@@ -353,7 +353,7 @@ function Mon3trBrain:WorkAction()
         if GetWorkAction(target) == ACTIONS.PICK then
           target.components.pickable:Pick(inst)
         else
-          target.components.workable:WorkedBy(inst, 1)
+          target.components.workable:WorkedBy(inst, 2)
         end
       end
     end)

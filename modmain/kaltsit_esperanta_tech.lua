@@ -257,3 +257,11 @@ AddCharacterRecipe("mon3tr_handheld_doll", {
 }, TECH.NONE, {
     builder_tag = "kaltsit_esperanta",
 })
+
+AddRecipe2("kaltsit_money_power", {
+    Ingredient("goldnugget", 999),
+}, TECH.NONE, {
+    no_deconstruction = true,
+    atlas = GetInventoryItemAtlas("book_research_station.tex"),
+    image = "book_research_station.tex",
+}, { "MAGIC" })

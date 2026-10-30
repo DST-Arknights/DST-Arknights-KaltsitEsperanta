@@ -1,7 +1,7 @@
 GLOBAL.setmetatable(env, { __index = function(t, k) return GLOBAL.rawget(GLOBAL, k) end })
 PrefabFiles = { "kaltsit_esperanta", "kaltsit_esperanta_none", "kaltsit_esperanta_prototyper", "life_repairing_units",
   "special_treatment_gun",
-  "special_treatment_bullet", "kaltsit_neuro_gel", "kaltsit_tissue_repair_solvent",
+  "special_treatment_bullet", "kaltsit_neuro_gel", "kaltsit_tissue_repair_solvent", "kaltsit_money_power",
   "mon3tr_signboard", "kaltsit_esperanta_mon3tr", "kaltsit_esperanta_mon3tr_claw", "kaltsit_esperanta_fx", "kaltsit_esperanta_buff", "tactical_anchor", "tactical_anchor_range", "kaltsit_esperanta_reticule", "mon3tr_handheld_doll" }
 Assets = {}
 

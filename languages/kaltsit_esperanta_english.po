@@ -568,3 +568,18 @@ msgstr "Cursed Trinket Purification"
 msgctxt "STRINGS.RECIPE_DESC.KALTSIT_ESPERANTA_PUREBRILLIANCE"
 msgid "Let ill omens fade, leaving only pure radiance"
 msgstr "Let ill omens fade, leaving only pure radiance"
+
+#. STRINGS.NAMES.KALTSIT_MONEY_POWER
+msgctxt "STRINGS.NAMES.KALTSIT_MONEY_POWER"
+msgid "Money Talks"
+msgstr "Money Talks"
+
+#. STRINGS.RECIPE_DESC.KALTSIT_MONEY_POWER
+msgctxt "STRINGS.RECIPE_DESC.KALTSIT_MONEY_POWER"
+msgid "Turn gold into knowledge. Grants 10 Intellect and maximum Intellect when read."
+msgstr "Turn gold into knowledge. Grants 10 Intellect and maximum Intellect when read."
+
+#. STRINGS.CHARACTERS.GENERIC.DESCRIBE.KALTSIT_MONEY_POWER
+msgctxt "STRINGS.CHARACTERS.GENERIC.DESCRIBE.KALTSIT_MONEY_POWER"
+msgid "An expensive education."
+msgstr "An expensive education."

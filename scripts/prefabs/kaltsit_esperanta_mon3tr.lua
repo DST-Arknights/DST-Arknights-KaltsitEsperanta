@@ -1,5 +1,6 @@
 local MakePlayerCharacter = require "prefabs/player_common"
 local brain = require "brains/kaltsit_esperanta_mon3trbrain"
+local FLYER_MODE = require "ark_flyer_modes"
 local PET_LIGHT_RADIUS = 0.5
 
 local prefabs = {
@@ -63,6 +64,18 @@ local function UpdateBrain(inst)
   end
 end
 
+local function UpdateHover(inst)
+  local flyer = inst.components.ark_flyer
+  if flyer == nil then return end
+  if inst:HasAnyTag("playerghost", "corpse") or inst.components.health:IsDead() then
+    flyer:Land()
+  elseif not IsPlayerControlled(inst) then
+    flyer:SetMode(FLYER_MODE.HOVERING)
+  elseif flyer:IsHovering() then
+    flyer:Land()
+  end
+end
+
 local function UpdatePetImmunities(inst)
   -- heavybody 复用原版重甲的轻击退分支，保留位移，不完全吞掉击退事件。
   for _, tag in ipairs({ "immune_stun", "heavybody" }) do
@@ -91,9 +104,11 @@ local function OnSetOwner(inst)
     inst:ClearBufferedAction()
     inst.sg:GoToState("idle")
   end
+  UpdateHover(inst)
 end
 
 local function SetupPetEnvironment(inst)
+  UpdateHover(inst)
   UpdateClaw(inst)
   if IsPlayerControlled(inst) then
     return
@@ -118,6 +133,7 @@ local function SetupPetEnvironment(inst)
 end
 
 local function onbecameghost(inst)
+  UpdateHover(inst)
   UpdateClaw(inst)
   if not IsPlayerControlled(inst) then
     -- 原版在 ms_becameghost 返回后仍需访问 player_classified，下一帧再清理。
@@ -187,6 +203,10 @@ local function MasterPostInit(inst)
 
   -- 灵魂状态变化
   inst:ListenForEvent("ms_becameghost", onbecameghost)
+  inst:ListenForEvent("ms_respawnedfromghost", function()
+    -- 源枢的通用复活回调会先降落；下一帧再恢复 AI M3 的近地悬浮。
+    inst:DoTaskInTime(0, UpdateHover)
+  end)
 end
 
 return MakePlayerCharacter("kaltsit_esperanta_mon3tr", prefabs, assets, CommonPostInit, MasterPostInit, start_inv)

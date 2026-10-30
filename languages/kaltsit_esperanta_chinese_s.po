@@ -568,3 +568,18 @@ msgstr "饰品净化"
 msgctxt "STRINGS.RECIPE_DESC.KALTSIT_ESPERANTA_PUREBRILLIANCE"
 msgid "Let ill omens fade, leaving only pure radiance"
 msgstr "褪去不祥，留下纯粹的辉光"
+
+#. STRINGS.NAMES.KALTSIT_MONEY_POWER
+msgctxt "STRINGS.NAMES.KALTSIT_MONEY_POWER"
+msgid "Money Talks"
+msgstr "钞能力"
+
+#. STRINGS.RECIPE_DESC.KALTSIT_MONEY_POWER
+msgctxt "STRINGS.RECIPE_DESC.KALTSIT_MONEY_POWER"
+msgid "Turn gold into knowledge. Grants 10 Intellect and maximum Intellect when read."
+msgstr "将金子化为知识，阅读后获得10点智识及其上限。"
+
+#. STRINGS.CHARACTERS.GENERIC.DESCRIBE.KALTSIT_MONEY_POWER
+msgctxt "STRINGS.CHARACTERS.GENERIC.DESCRIBE.KALTSIT_MONEY_POWER"
+msgid "An expensive education."
+msgstr "昂贵的知识。"
