@@ -281,8 +281,8 @@ msgstr "-Deploy an anchor at the selected location and cast Doctor's Monument on
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.4.1
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.4.1"
-msgid "-Summons Mon3tr and restores 100 Sanity\n-Recalling Mon3tr or its death costs 100 Sanity\n-Only one Mon3tr can be summoned at a time\n-Recharges for 180 seconds after the summon ends"
-msgstr "-Summons Mon3tr and restores 100 Sanity\n-Recalling Mon3tr or its death costs 100 Sanity\n-Only one Mon3tr can be summoned at a time\n-Recharges for 180 seconds after the summon ends"
+msgid "-Summons Mon3tr and restores 100 Sanity\n-Recalling Mon3tr or its death costs 100 Sanity\n-While Mon3tr is summoned, Kal'tsit's hunger drain rate increases from 0.7 to 1.2 (Wilson: 1.0)"
+msgstr "-Summons Mon3tr and restores 100 Sanity\n-Recalling Mon3tr or its death costs 100 Sanity\n-While Mon3tr is summoned, Kal'tsit's hunger drain rate increases from 0.7 to 1.2 (Wilson: 1.0)"
 
 #. STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_NEED_SAFE_GROUND
 msgctxt "STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_NEED_SAFE_GROUND"

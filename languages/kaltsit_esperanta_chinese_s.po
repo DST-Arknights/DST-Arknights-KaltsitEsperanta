@@ -281,8 +281,8 @@ msgstr "-指定位置部署一个锚点并释放一次无消耗的[医者丰碑]
 
 #. STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.4.1
 msgctxt "STRINGS.UI.KALTSIT_ESPERANTA_SKILL.LEVEL_DESC.4.1"
-msgid "-Summons Mon3tr and restores 100 Sanity\n-Recalling Mon3tr or its death costs 100 Sanity\n-Only one Mon3tr can be summoned at a time\n-Recharges for 180 seconds after the summon ends"
-msgstr "-召唤Mon3tr，恢复100理智\n-解除召唤或Mon3tr死亡时扣除100理智\n-同时只能召唤1只Mon3tr\n-召唤结束后充能180秒"
+msgid "-Summons Mon3tr and restores 100 Sanity\n-Recalling Mon3tr or its death costs 100 Sanity\n-While Mon3tr is summoned, Kal'tsit's hunger drain rate increases from 0.7 to 1.2 (Wilson: 1.0)"
+msgstr "-召唤Mon3tr，恢复100理智\n-解除召唤或Mon3tr死亡时扣除100理智\n-召唤期间，凯尔希的饥饿速率由0.7提升至1.2（威尔逊为1.0）"
 
 #. STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_NEED_SAFE_GROUND
 msgctxt "STRINGS.CHARACTERS.GENERIC.KALTSIT_ESPERANTA_NEED_SAFE_GROUND"
