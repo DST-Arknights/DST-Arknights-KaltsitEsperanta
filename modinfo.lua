@@ -8,23 +8,29 @@ name = T({
     en = "Kaltsit Esperanta",
     zh = "凯尔希 思衡托"
 })
-version = "2.1.2"
+version = "2.1.3"
 
 -- 版本更新说明（由发布脚本自动维护，请勿手动编辑）
 local UPDATE_EN = [[
+v2.1.3 (2026-11-01)
+- Updated the Mon3tr summon skill description: removed the old “only 1 summon at a time” and “180s charge after summon ends” notes, and noted that Kal'tsit's hunger rate rises from 0.7 to 1.2 during summoning.
+- Added unique buff icons for Mon3tr invincibility, Medic Monument shield/healing, and Tactical Anchor field.
+- Added the “Cash Ability” item and recipe, craftable only by Kal'tsit and listed in the character and magic tabs; cost reduced to 99 gold, and reading it grants +5 current and max Insight.
+- Adjusted Mon3tr's near-ground hover, skill-height pause, work efficiency, and hunger drain before/after recall.
+---
 v2.1.2 (2026-10-24)
 - Fixed summons' fixed counterattacks not inheriting the character's true damage ratio during Meltdown, so they continue to convert to true damage.
----
-v2.1.1 (2026-10-18)
-- Moved Trinket Purification to Intellect crafting and changed its recipe to 10:1.
 ]]
 
 local UPDATE_ZH = [[
+v2.1.3 (2026-11-01)
+- 修正 Mon3tr 召唤技能说明：移除“同时只能召唤1只”和“召唤结束后充能180秒”的旧说明，并注明召唤期间 Kal'tsit 饥饿速率由 0.7 升至 1.2。
+- 为 Mon3tr 无敌、医者丰碑护盾与治疗、战术锚点领域添加独立增益图标。
+- 新增“钞能力”道具及配方，仅 Kal'tsit 可制作并加入角色栏/魔法栏；材料降至 99 金子，阅读后智识当前值和上限各 +5。
+- 调整 Mon3tr 的近地悬浮、技能高度暂停、工作效率及召回前后的饥饿消耗。
+---
 v2.1.2 (2026-10-24)
 - 修复召唤物的固定反击在 Meltdown 期间未沿用角色真实伤害比例的问题，使其继续转为真实伤害。
----
-v2.1.1 (2026-10-18)
-- 将 Trinket Purification 移至 Intellect 制作，并改为 10:1 配方。
 ]]
 
 description = T({
