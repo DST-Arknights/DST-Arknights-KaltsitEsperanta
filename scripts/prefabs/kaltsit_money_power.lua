@@ -11,8 +11,8 @@ local prefabs = {
 local function OnRead(inst, reader)
   local intellect = reader.components.kaltsit_intellect
   if intellect ~= nil then
-    intellect:DeltaMax(10)
-    intellect:Delta(10)
+    intellect:DeltaMax(5)
+    intellect:Delta(5)
   end
 
   local mounted = reader.components.rider ~= nil and reader.components.rider:IsRiding()

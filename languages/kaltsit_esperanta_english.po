@@ -576,8 +576,8 @@ msgstr "Money Talks"
 
 #. STRINGS.RECIPE_DESC.KALTSIT_MONEY_POWER
 msgctxt "STRINGS.RECIPE_DESC.KALTSIT_MONEY_POWER"
-msgid "Turn gold into knowledge. Grants 10 Intellect and maximum Intellect when read."
-msgstr "Turn gold into knowledge. Grants 10 Intellect and maximum Intellect when read."
+msgid "Turn gold into knowledge. Grants 5 Intellect and maximum Intellect when read."
+msgstr "Turn gold into knowledge. Grants 5 Intellect and maximum Intellect when read."
 
 #. STRINGS.CHARACTERS.GENERIC.DESCRIBE.KALTSIT_MONEY_POWER
 msgctxt "STRINGS.CHARACTERS.GENERIC.DESCRIBE.KALTSIT_MONEY_POWER"
