@@ -1,5 +1,10 @@
 local common = require("kaltsit_esperanta_common")
 
+local ICON_ATLAS = "images/ui_kaltsit_esperanta_buff.xml"
+local assets = {
+  Asset("ATLAS", ICON_ATLAS),
+}
+
 local function GetTreatmentHealer(inst)
   if inst._treatment_healer ~= nil and inst._treatment_healer:IsValid() then
     return inst._treatment_healer
@@ -39,8 +44,8 @@ local buffers = { {
   prefabs = { "forcefieldfx" },
   title = STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.MON3TR_INVULNERABILITY_TITLE,
   description = STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.MON3TR_INVULNERABILITY_DESCRIPTION,
-  icon_atlas = "images/ui_kaltsit_esperanta_skill.xml",
-  icon_image = "skill1.tex",
+  icon_atlas = ICON_ATLAS,
+  icon_image = "mon3tr_invulnerability.tex",
   OnAttached = ShowForcefield,
   OnDetached = HideForcefield,
 }, {
@@ -50,8 +55,8 @@ local buffers = { {
   prefabs = { "forcefieldfx" },
   title = STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.DOCTORS_MONUMENTS_INVINCIBLE_TITLE,
   description = STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.DOCTORS_MONUMENTS_INVINCIBLE_DESCRIPTION,
-  icon_atlas = "images/ui_kaltsit_esperanta_skill.xml",
-  icon_image = "skill1.tex",
+  icon_atlas = ICON_ATLAS,
+  icon_image = "doctors_monuments_shield.tex",
   OnAttached = function(inst, target)
     if target.components.health then
       target.components.health.externalabsorbmodifiers:SetModifier(inst, 1.0)
@@ -70,8 +75,8 @@ local buffers = { {
   duration = 20,
   title = STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.DOCTORS_MONUMENTS_TREATMENT_TITLE,
   description = STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.DOCTORS_MONUMENTS_TREATMENT_DESCRIPTION,
-  icon_atlas = "images/ui_kaltsit_esperanta_skill.xml",
-  icon_image = "skill1.tex",
+  icon_atlas = ICON_ATLAS,
+  icon_image = "doctors_monuments_treatment.tex",
   OnAttached = function(inst, target, followsymbol, followoffset, data, buffer)
     -- 每秒回复的数值
     local health = data and data.health or 2
@@ -106,8 +111,8 @@ local buffers = { {
   -- 由锚点 playerprox 重新施加。锚点移除时不触发 onfar，靠回血循环检查锚点源自动清理。
   title = STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.ANCHOR_FIELD_TITLE,
   description = STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.ANCHOR_FIELD_DESCRIPTION,
-  icon_atlas = "images/ui_kaltsit_esperanta_skill.xml",
-  icon_image = "skill3.tex",
+  icon_atlas = ICON_ATLAS,
+  icon_image = "anchor_field.tex",
   OnAttached = function(inst, target, followsymbol, followoffset, data, buffer)
     local field = data and data.field or {}
     local healthPercent = field.health_percent or 0.02  -- 每秒回最大生命比例
@@ -150,6 +155,7 @@ local buffers = { {
 
 local results = {}
 for i, v in ipairs(buffers) do
+  v.assets = assets
   table.insert(results, ArkMakeBuff(v))
 end
 return unpack(results)

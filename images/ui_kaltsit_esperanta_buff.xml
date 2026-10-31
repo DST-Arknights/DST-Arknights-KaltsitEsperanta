@@ -1,0 +1,9 @@
+<Atlas>
+  <Texture filename="ui_kaltsit_esperanta_buff.tex" />
+  <Elements>
+    <Element name="mon3tr_invulnerability.tex" u1="0.00390625" u2="0.49609375" v1="0.50390625" v2="0.99609375" />
+    <Element name="doctors_monuments_shield.tex" u1="0.50390625" u2="0.99609375" v1="0.50390625" v2="0.99609375" />
+    <Element name="doctors_monuments_treatment.tex" u1="0.00390625" u2="0.49609375" v1="0.00390625" v2="0.49609375" />
+    <Element name="anchor_field.tex" u1="0.50390625" u2="0.99609375" v1="0.00390625" v2="0.49609375" />
+  </Elements>
+</Atlas>
