@@ -1,5 +1,15 @@
 # 版本更新记录
 
+## v2.1.4 (2026-11-18)
+
+- 修复 Mon3tr 突袭时因战斗组件缺失可能出现的异常。
+- 修复交易商人与 Kal'tsit 随身科技的交互，并恢复她在实体科技站领取礼物。
+- 修复 Kal'tsit 的技能、装备与联机状态显示或同步异常。
+---
+- Fixed possible issues with Mon3tr's assault when combat components are missing.
+- Fixed trader interactions with Kal'tsit's portable tech and restored her ability to receive gifts at the physical tech station.
+- Fixed display or sync issues with Kal'tsit's skills, equipment, and multiplayer status.
+
 ## v2.1.3 (2026-11-01)
 
 - 修正 Mon3tr 召唤技能说明：移除“同时只能召唤1只”和“召唤结束后充能180秒”的旧说明，并注明召唤期间 Kal'tsit 饥饿速率由 0.7 升至 1.2。
