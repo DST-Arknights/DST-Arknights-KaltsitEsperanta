@@ -92,6 +92,27 @@ AddClassPostConstruct("components/builder_replica", function(self)
     end)
 end)
 
+AddComponentPostInit("giftreceiver", function(self)
+    if not self.inst:HasTag("kaltsit_esperanta") then
+        return
+    end
+    ArkHookFunction(self, "SetGiftMachine", function(next, self, giftmachine)
+        local builder = self.inst.components.builder
+        local intellect = self.inst.prototyper_ent
+        if giftmachine == nil and builder ~= nil and builder._kaltsit_auto_override_running
+            and intellect ~= nil and builder.current_prototyper == intellect then
+            -- 科技由智识原型机提供，开礼物和换装仍使用实际的科技站。
+            local external = builder._kaltsit_merged_prototyper
+            local inventory = self.inst.components.inventory
+            if CanUseExternalPrototyper(builder, external) and external:HasTag("giftmachine")
+                and CanEntitySeeTarget(self.inst, external) and inventory ~= nil and inventory.isopen then
+                giftmachine = external
+            end
+        end
+        return next(self, giftmachine)
+    end)
+end)
+
 AddComponentPostInit("builder", function(self)
     if not self.inst:HasTag("kaltsit_esperanta") then
         return
