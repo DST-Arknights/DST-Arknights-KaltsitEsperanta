@@ -93,7 +93,10 @@ local function Land(inst)
       -- 新版 GetAttacked 不再返回命中结果，使用普通攻击相同的结算入口。
       local getattacked = targetcombat.GetAttacked_Internal or targetcombat.GetAttacked
       local hit = getattacked(targetcombat, inst, damage * cast.damage_mult, nil, nil, spdamage)
-      if hit and target:IsValid() and not target.components.health:IsDead() then
+      -- 受击回调可能在目标仍存活时移除组件。
+      if hit and target:IsValid()
+        and target.components.health ~= nil and not target.components.health:IsDead()
+        and target.components.combat ~= nil then
         target.components.combat:SetTarget(inst)
       end
     end
