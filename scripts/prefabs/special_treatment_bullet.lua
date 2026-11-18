@@ -13,6 +13,28 @@ local assets = {
   Asset("ATLAS", "images/inventoryimages/special_treatment_bullet.xml"),
 }
 
+local function ApplyBulletSlow(target, key, multiplier, duration)
+  local locomotor = target.components.locomotor
+  if locomotor == nil then
+    return
+  end
+  local tasks = target._kaltsit_bullet_slow_tasks
+  if tasks == nil then
+    tasks = {}
+    target._kaltsit_bullet_slow_tasks = tasks
+  end
+  if tasks[key] ~= nil then
+    tasks[key]:Cancel()
+  end
+  locomotor:SetExternalSpeedMultiplier(target, key, multiplier)
+  tasks[key] = target:DoTaskInTime(duration, function()
+    tasks[key] = nil
+    if target.components.locomotor ~= nil then
+      target.components.locomotor:RemoveExternalSpeedMultiplier(target, key)
+    end
+  end)
+end
+
 local SpawnHitAllyFx = function(target)
   if target and target:IsValid() then
     local fx = SpawnPrefab("special_treatment_bullet_fx_ally")
@@ -75,16 +97,15 @@ local ammo_defs = {
       local function DoHealTick(remaining)
         if not target:IsValid() then return end
         if target.components.health and not target.components.health:IsDead() then
-          common.HealTarget(attacker, target, 15, "potent_heal_bullet", false)
-        PlayHitAllySound(target)
           if target.components.health.penalty ~= nil
               and target.components.health.penalty > 0 then
             local max_hp = target.components.health.maxhealth
             if max_hp and max_hp > 0 then
-              target.components.health.penalty = math.max(0,
-                  target.components.health.penalty - 15 / max_hp)
+              target.components.health:DeltaPenalty(-15 / max_hp)
             end
           end
+          common.HealTarget(attacker, target, 15, "potent_heal_bullet", false)
+          PlayHitAllySound(target)
         end
         if remaining > 1 then
           target:DoTaskInTime(1, function() DoHealTick(remaining - 1) end)
@@ -120,6 +141,8 @@ local ammo_defs = {
       local function _AddImmunity()
         target._regen_bullet_stacks = (target._regen_bullet_stacks or 0) + 1
         if target._regen_bullet_stacks == 1 then
+          target._regen_bullet_had_sleepimmune = target:HasTag("sleepimmune")
+          target._regen_bullet_had_webimmune = target:HasTag("webimmune")
           target:AddTag("sleepimmune")
           target:AddTag("webimmune")
         end
@@ -128,8 +151,14 @@ local ammo_defs = {
         if not target:IsValid() then return end
         target._regen_bullet_stacks = math.max(0, (target._regen_bullet_stacks or 1) - 1)
         if target._regen_bullet_stacks == 0 then
-          target:RemoveTag("sleepimmune")
-          target:RemoveTag("webimmune")
+          if not target._regen_bullet_had_sleepimmune then
+            target:RemoveTag("sleepimmune")
+          end
+          if not target._regen_bullet_had_webimmune then
+            target:RemoveTag("webimmune")
+          end
+          target._regen_bullet_had_sleepimmune = nil
+          target._regen_bullet_had_webimmune = nil
         end
       end
       _AddImmunity()
@@ -144,21 +173,14 @@ local ammo_defs = {
         if remaining > 1 then
           target:DoTaskInTime(2, function() DoTick(remaining - 1) end)
         else
-          _RemoveImmunity()
+          target:DoTaskInTime(2, _RemoveImmunity)
         end
       end
       DoTick(60)
       PlayHitAllySound(target)
     end,
     OnHarmEnemy = function(attacker, target)
-      if target.components.locomotor then
-        target.components.locomotor:SetExternalSpeedMultiplier(target, "kelshi_regen_slow", 0.6)
-        target:DoTaskInTime(10, function()
-          if target:IsValid() and target.components.locomotor then
-            target.components.locomotor:RemoveExternalSpeedMultiplier(target, "kelshi_regen_slow")
-          end
-        end)
-      end
+      ApplyBulletSlow(target, "kelshi_regen_slow", 0.6, 10)
       if target.components.sleeper then
         target.components.sleeper:AddSleepiness(40, 10)
       end
@@ -181,14 +203,7 @@ local ammo_defs = {
       PlayHitAllySound(target)
     end,
     OnHarmEnemy = function(attacker, target)
-      if target.components.locomotor then
-        target.components.locomotor:SetExternalSpeedMultiplier(target, "kelshi_trait_slow", 0.7)
-        target:DoTaskInTime(3, function()
-          if target:IsValid() and target.components.locomotor then
-            target.components.locomotor:RemoveExternalSpeedMultiplier(target, "kelshi_trait_slow")
-          end
-        end)
-      end
+      ApplyBulletSlow(target, "kelshi_trait_slow", 0.7, 3)
     end,
   },
 }
@@ -259,7 +274,7 @@ local destroy_projectile_def = {
 -- 通过工厂函数生成命中回调，避免把定义挂在预制体实例上。
 local function MakeAmmoOnHit(def)
   return function(inst, attacker, target)
-    if target == nil or not target:IsValid() then
+    if attacker == nil or target == nil or not target:IsValid() then
       inst:Remove()
       return
     end
@@ -279,7 +294,7 @@ end
 
 local function MakeDestroyProjectileOnHit(def)
   return function(inst, attacker, target)
-    if target == nil or not target:IsValid() then
+    if attacker == nil or target == nil or not target:IsValid() then
       inst:Remove()
       return
     end

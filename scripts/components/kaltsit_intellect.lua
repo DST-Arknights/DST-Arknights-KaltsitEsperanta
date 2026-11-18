@@ -97,6 +97,9 @@ function KaltsitIntellect:OnRemoveFromEntity()
     inst:RemoveEventCallback("char_cooked_item", on_builditem)
     inst:RemoveEventCallback("char_stew_done", on_stewdone)
     inst:RemoveEventCallback("consumeingredients", on_consumeingredients)
+    if inst.components.builder ~= nil then
+        inst.components.builder.ingredientmodminmodifiers:RemoveModifier(inst)
+    end
 end
 
 -- ============================================================

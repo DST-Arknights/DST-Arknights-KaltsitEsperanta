@@ -38,6 +38,42 @@ local function HideForcefield(inst)
   end
 end
 
+local function RefreshAnchorField(inst, target)
+  local sources = inst._field_sources
+  for anchor in pairs(sources) do
+    if not anchor:IsValid() or anchor.components.tactical_anchor == nil then
+      sources[anchor] = nil
+    end
+  end
+  local anchor = inst._field_anchor
+  if anchor == nil or sources[anchor] == nil then
+    anchor = next(sources)
+    inst._field_anchor = anchor
+  end
+  if anchor == nil then
+    inst.components.debuff:Stop()
+    return false
+  end
+  local field = sources[anchor]
+  inst._field_health_percent = field.health_percent or 0.02
+  if target.components.combat ~= nil then
+    target.components.combat.externaldamagemultipliers:SetModifier(inst, 1 + (field.damage_multiplier or 0.2))
+  end
+  return true
+end
+
+local function UpdateAnchorFieldSource(inst, target, followsymbol, followoffset, data, anchor)
+  if anchor ~= nil then
+    inst._field_sources[anchor] = data ~= nil and data.field or {}
+  end
+  return RefreshAnchorField(inst, target)
+end
+
+local function RemoveAnchorFieldSource(inst, anchor)
+  inst._field_sources[anchor] = nil
+  RefreshAnchorField(inst, inst.components.debuff.target)
+end
+
 local buffers = { {
   name = "kaltsit_mon3tr_invulnerability_buff",
   -- 仅显示受击无敌，由 passive 的实际起止控制，不单独计时或抵挡一次后消失。
@@ -107,34 +143,29 @@ local buffers = { {
   name = "kaltsit_anchor_field_buff",
   -- 不设 duration：buff 由 playerprox 的 onnear（进入领域）挂载、onfar（离开领域）
   -- 或玩家死亡/锚点消失移除。设时长会在玩家停留领域内时到期被清掉，而 onnear 只触发一次。
-  -- 不设 keepondespawn：buff 由锚点（他人）触发，不进玩家存档；玩家 despawn 后
-  -- 由锚点 playerprox 重新施加。锚点移除时不触发 onfar，靠回血循环检查锚点源自动清理。
+  -- 不设 keepondespawn：玩家 despawn 时移除，由附近锚点 playerprox 重新施加。
+  -- 读档缺少来源或锚点移除未触发 onfar 时，由周期检查清理失效来源。
   title = STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.ANCHOR_FIELD_TITLE,
   description = STRINGS.UI.KALTSIT_ESPERANTA_BUFFS.ANCHOR_FIELD_DESCRIPTION,
   icon_atlas = ICON_ATLAS,
   icon_image = "anchor_field.tex",
   OnAttached = function(inst, target, followsymbol, followoffset, data, buffer)
-    local field = data and data.field or {}
-    local healthPercent = field.health_percent or 0.02  -- 每秒回最大生命比例
-    local damageMult = field.damage_multiplier or 0.2   -- 攻击力提升比例
-    -- 施术者（锚点）经 AddDebuff 的 buffer 传入：锚点消失（技能结束）时移除此 buff。
-    -- 实体引用只存实例字段，不经 data 传递，data 保持纯数据不参与序列化。
-    local anchor = buffer
-
-    -- 攻击力提升：externaldamagemultipliers 乘算（原版 combat CalcDamage 会乘这个值）
-    if target.components.combat then
-      target.components.combat.externaldamagemultipliers:SetModifier(inst, 1 + damageMult)
+    -- 重叠领域共用一个 buff；离开一个来源后继续使用其余来源，数值保持单份。
+    -- 锚点引用仅存实例字段，buffData 保持纯数据。
+    inst._field_sources = {}
+    inst._field_anchor = buffer
+    inst.RemoveAnchor = RemoveAnchorFieldSource
+    -- 存档恢复时没有 buffer，先完成附着，再由周期检查清理或接收附近锚点。
+    if buffer ~= nil and not UpdateAnchorFieldSource(inst, target, followsymbol, followoffset, data, buffer) then
+      return
     end
-
-    -- 每秒回复最大生命百分比
     inst._field_task = inst:DoPeriodicTask(1, function()
-      -- 锚点已消失（技能收回/移除）：自动移除此 buff，结束领域效果
-      if anchor == nil or not anchor:IsValid() then
-        inst.components.debuff:Stop()
+      if not RefreshAnchorField(inst, target) then
         return
       end
       if target.components.health and not target.components.health:IsDead() then
-        local heal = target.components.health:GetMaxWithPenalty() * healthPercent
+        local heal = target.components.health:GetMaxWithPenalty() * inst._field_health_percent
+        local anchor = inst._field_anchor
         local owner = anchor.components.tactical_anchor:GetOwner()
         if owner ~= nil then
           common.HealTarget(owner, target, heal, "kaltsit_anchor_field_buff", false)
@@ -142,6 +173,7 @@ local buffers = { {
       end
     end)
   end,
+  OnExtended = UpdateAnchorFieldSource,
   OnDetached = function(inst, target)
     if target.components.combat then
       target.components.combat.externaldamagemultipliers:RemoveModifier(inst)

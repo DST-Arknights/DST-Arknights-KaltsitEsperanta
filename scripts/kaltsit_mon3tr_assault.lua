@@ -89,7 +89,10 @@ local function Land(inst)
       local damage, spdamage = combat:CalcDamage(target, nil)
       spdamage = SpDamageUtil.ApplyMult(spdamage, cast.damage_mult)
       inst:PushEvent("onareaattackother", { target = target })
-      local hit = target.components.combat:GetAttacked(inst, damage * cast.damage_mult, nil, nil, spdamage)
+      local targetcombat = target.components.combat
+      -- 新版 GetAttacked 不再返回命中结果，使用普通攻击相同的结算入口。
+      local getattacked = targetcombat.GetAttacked_Internal or targetcombat.GetAttacked
+      local hit = getattacked(targetcombat, inst, damage * cast.damage_mult, nil, nil, spdamage)
       if hit and target:IsValid() and not target.components.health:IsDead() then
         target.components.combat:SetTarget(inst)
       end

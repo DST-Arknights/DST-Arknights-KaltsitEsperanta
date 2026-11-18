@@ -88,15 +88,13 @@ local function OnEquipToModel(inst, owner, from_ground)
 end
 
 local function OnProjectileLaunched(inst, attacker, target, proj)
-  local owner = inst.components.inventoryitem and inst.components.inventoryitem:GetGrandOwner()
-  local skill = owner and owner.components.ark_skill and owner.components.ark_skill:GetSkill("kaltsit_esperanta_skill2")
-  local skill_activating = skill and skill:IsActivating()
-  -- 只有特殊弹药（技能2 + 生命修复单元）不消耗枪内弹药；普通弹药一律消耗
-  local destroy_ready = skill_activating and common.HasEquippedLifeRepairingUnits(owner)
-  if destroy_ready then
-    common.PlaySkillSfx(inst, "p_atk_khlrftcrdfr_h")
+  if proj == nil then
+    return
   end
-  if not destroy_ready then
+  -- 按已发射的投射物结算；特殊弹不消耗枪内普通弹药。
+  if proj.prefab == SPECIAL_TREATMENT_DESTROY_PROJECTILE then
+    common.PlaySkillSfx(inst, "p_atk_khlrftcrdfr_h")
+  else
     -- 如果是普通弹药，则消耗弹药
     local ammo_stack = inst.components.container:GetItemInSlot(1)
     local item = inst.components.container:RemoveItem(ammo_stack, false)
@@ -126,7 +124,7 @@ local function gun_fn()
   if not TheWorld.ismastersim then return inst end
 
   inst._OnSkillActivating = function(owner, data)
-    if data.skillId == "kaltsit_esperanta_skill2" then
+    if data ~= nil and data.skillId == "kaltsit_esperanta_skill2" then
       ArkLogger:Debug("Skill activating, refreshing projectile")
       RefreshProjectile(inst)
     end

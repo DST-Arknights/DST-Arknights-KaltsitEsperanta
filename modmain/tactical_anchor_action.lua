@@ -26,6 +26,14 @@
 local common = require("kaltsit_esperanta_common")
 
 local SKILL3_ID = "kaltsit_esperanta_skill3"
+
+local function SpawnTeleportFx(x, y, z)
+  local back = SpawnPrefab("sand_puff_large_back")
+  if back ~= nil then back.Transform:SetPosition(x, y - 0.1, z) end
+  local front = SpawnPrefab("sand_puff_large_front")
+  if front ~= nil then front.Transform:SetPosition(x, y, z) end
+end
+
 -- 定义动作：点击锚点折跃
 AddAction("USE_TACTICAL_ANCHOR", STRINGS.ACTIONS.USE_TACTICAL_ANCHOR.GENERIC, function(act)
   ArkLogger:Debug("USE_TACTICAL_ANCHOR", act.doer, act.target)
@@ -34,10 +42,10 @@ AddAction("USE_TACTICAL_ANCHOR", STRINGS.ACTIONS.USE_TACTICAL_ANCHOR.GENERIC, fu
     return false
   end
   local ta = target.components.tactical_anchor
-  if not ta:CanTargetTeleported(doer) then
+  if ta == nil or not ta:CanTargetTeleported(doer) then
     return false
   end
-	local anchorPos = target:GetPosition()
+  local anchorPos = target:GetPosition()
   local x, y, z = doer.Transform:GetWorldPosition()
   -- 折跃可用性检查（同原版 blinkstaff:Blink）
   if not IsTeleportingPermittedFromPointToPoint(x, y, z, anchorPos.x, anchorPos.y, anchorPos.z)
@@ -67,8 +75,7 @@ AddAction("USE_TACTICAL_ANCHOR", STRINGS.ACTIONS.USE_TACTICAL_ANCHOR.GENERIC, fu
     doer:Show()
   end
   -- 原地消散特效 + 音效
-  SpawnPrefab("sand_puff_large_back").Transform:SetPosition(x, y - 0.1, z)
-  SpawnPrefab("sand_puff_large_front").Transform:SetPosition(x, y, z)
+  SpawnTeleportFx(x, y, z)
   doer.SoundEmitter:PlaySound("dontstarve/common/staff_blink")
   doer.sg.statemem.onstartblinking()
   -- 0.25s 后传送到锚点并重现
@@ -79,11 +86,13 @@ AddAction("USE_TACTICAL_ANCHOR", STRINGS.ACTIONS.USE_TACTICAL_ANCHOR.GENERIC, fu
     if caster.sg and caster.sg.statemem.onstopblinking then
       caster.sg.statemem.onstopblinking()
     end
-    if caster.Physics then
+    local cx, cy, cz = caster.Transform:GetWorldPosition()
+    if caster.Physics and TheWorld.Map:IsPassableAtPoint(anchorPos:Get())
+        and not TheWorld.Map:IsGroundTargetBlocked(anchorPos)
+        and IsTeleportingPermittedFromPointToPoint(cx, cy, cz, anchorPos.x, anchorPos.y, anchorPos.z) then
       caster.Physics:Teleport(anchorPos:Get())
     end
-    SpawnPrefab("sand_puff_large_back").Transform:SetPosition(anchorPos.x, anchorPos.y - 0.1, anchorPos.z)
-    SpawnPrefab("sand_puff_large_front").Transform:SetPosition(anchorPos.x, anchorPos.y, anchorPos.z)
+    SpawnTeleportFx(caster.Transform:GetWorldPosition())
     caster.SoundEmitter:PlaySound("dontstarve/common/staff_blink")
   end)
   return true

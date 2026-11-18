@@ -146,7 +146,10 @@ local function ApplyContainerEnhancements(inst, stage)
     elseif stage["armorslurper"] ~= nil and stage["armorslurper"] >= 1 then
       lv_y = 7
     end
-    inst.components.lru_upgrade:SetChestLv(2, lv_y)
+    local current_x, current_y = inst.components.lru_upgrade:GetLv()
+    if current_x ~= 2 or current_y ~= lv_y then
+      inst.components.lru_upgrade:SetChestLv(2, lv_y)
+    end
   end
   if inst.components.container ~= nil then
     inst.components.container:EnableInfiniteStackSize(HasInfiniteStack(stage))

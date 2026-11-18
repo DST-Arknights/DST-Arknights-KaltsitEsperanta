@@ -43,8 +43,10 @@ local function fn()
     end
   end)
   inst.components.playerprox:SetOnPlayerFar(function(_, player)
-    if player ~= nil and player:IsValid() then
-      player:RemoveDebuff("kaltsit_anchor_field_buff")
+    local buff = player ~= nil and player:IsValid() and player:GetDebuff("kaltsit_anchor_field_buff") or nil
+    if buff ~= nil then
+      -- 只撤销本锚点来源，重叠的其他领域继续生效。
+      buff:RemoveAnchor(inst)
     end
   end)
   inst:DoTaskInTime(0, function()

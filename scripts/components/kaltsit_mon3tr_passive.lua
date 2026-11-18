@@ -95,7 +95,10 @@ local KaltsitMon3trPassive = Class(function(self, inst)
     return amount * 0.5
   end
   ArkHookFunction(inst.components.health, "redirect", self._petredirect)
-  ArkHookFunction(inst.components.combat, "GetAttacked", self._petattacked)
+  -- 新版本普通攻击和范围攻击直接进入 Internal，旧版本沿用 GetAttacked。
+  self._combatattacked = inst.components.combat.GetAttacked_Internal ~= nil
+    and "GetAttacked_Internal" or "GetAttacked"
+  ArkHookFunction(inst.components.combat, self._combatattacked, self._petattacked)
   ArkHookFunction(inst.components.eater, "Eat", self._eat)
   inst:ListenForEvent("oneat", self._oneat)
   inst:ListenForEvent("attacked", self._onattacked)
@@ -353,7 +356,7 @@ function KaltsitMon3trPassive:OnRemoveFromEntity()
   self:SetOwner(nil)
   if self._task ~= nil then self._task:Cancel(); self._task = nil end
   ArkUnhookFunction(self.inst.components.health, "redirect", self._petredirect)
-  ArkUnhookFunction(self.inst.components.combat, "GetAttacked", self._petattacked)
+  ArkUnhookFunction(self.inst.components.combat, self._combatattacked, self._petattacked)
   ArkUnhookFunction(self.inst.components.eater, "Eat", self._eat)
   self.inst:RemoveEventCallback("oneat", self._oneat)
   self.inst:RemoveEventCallback("attacked", self._onattacked)

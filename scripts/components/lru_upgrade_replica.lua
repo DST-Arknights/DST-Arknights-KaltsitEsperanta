@@ -34,7 +34,9 @@ end
 local function ModCompat(container, widget)
   container.widget = widget
   container:SetNumSlots(widget.slotpos ~= nil and #widget.slotpos or 0)
-  if container.classified ~= nil then
+  -- 已注册监听的 classified 会随服务端关闭容器而卸载，重新打开时按新容量初始化。
+  -- InitializeSlots 只能用于新 classified，运行中重设会触发原版断言。
+  if container.classified ~= nil and container.classified._slottasks == nil then
     container.classified:InitializeSlots(container:GetNumSlots())
   end
 end

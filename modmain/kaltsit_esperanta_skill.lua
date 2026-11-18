@@ -27,8 +27,9 @@ local function SaySkillVoice(inst, skill_id)
 end
 
 -- 三技能范围选择器（预声明，targetSelector 引用）
+local SKILL3_CAST_RANGE = 20
 RegisterTargetSelector("kaltsit_esperanta_skill3_aoe", AreaTargetSelector {
-  range          = 20,
+  range          = SKILL3_CAST_RANGE,
   deployradius   = 1,
   reticuleprefab = "kaltsit_esperanta_skill3_reticuleaoe",
   pingprefab     = "kaltsit_esperanta_skill3_reticuleaoeping",
@@ -338,7 +339,7 @@ local function OnSkill3Activate(skill, data)
   end
   SaySkillVoice(inst, "kaltsit_esperanta_skill3")
   local anchor = SpawnPrefab("tactical_anchor")
-  anchor.Transform:SetPosition(pos:Get())
+  anchor.Transform:SetPosition(pos.x, 0, pos.z)
   common.PlaySkillSfx(inst, "p_imp_khlrftcrmk")
   anchor.components.tactical_anchor:SetOwner(inst)
   -- 领域 buff 强度：每秒回最大生命 2% + 攻击力提升 20%（health_percent / damage_multiplier）
@@ -388,8 +389,15 @@ local function OnSkill3Deactivate(skill)
 end
 
 local function OnSkill3ActivateTest(skill, data)
-  -- 三技能需要在指定位置部署锚点；没有有效落点时不要进入激活态（Activate 不检查回调返回值）
-  if data == nil or data.targetPos == nil then
+  -- RPC 也能直接申请激活，服务端需校验最终落点，不能只依赖客户端选择器。
+  local pos = data ~= nil and data.targetPos or nil
+  if type(pos) ~= "table" or type(pos.x) ~= "number" or type(pos.z) ~= "number" then
+    return false, 'KALTSIT_ESPERANTA_NEED_VALID_TARGET'
+  end
+  local origin = skill.inst:GetPosition()
+  local dx, dz = pos.x - origin.x, pos.z - origin.z
+  if not (dx * dx + dz * dz <= SKILL3_CAST_RANGE * SKILL3_CAST_RANGE)
+    or not TheWorld.Map:CanCastAtPoint(Vector3(pos.x, 0, pos.z), false, false, 1) then
     return false, 'KALTSIT_ESPERANTA_NEED_VALID_TARGET'
   end
   return true
@@ -493,7 +501,8 @@ for _, skill in ipairs(skills) do
 end
 
 AddComponentPostInit("combat", function(self)
-  ArkHookFunction(self, "GetAttacked", function(next, self, ...)
+  local method = self.GetAttacked_Internal ~= nil and "GetAttacked_Internal" or "GetAttacked"
+  ArkHookFunction(self, method, function(next, self, ...)
     local buff_name = "doctors_monuments_invincible_buff"
     if self.inst:HasDebuff(buff_name) then
       local fx = SpawnPrefab("shadow_shield1")

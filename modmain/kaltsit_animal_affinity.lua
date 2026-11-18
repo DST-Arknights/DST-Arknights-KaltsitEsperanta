@@ -85,6 +85,8 @@ end)
 
 -- 系列鱼人
 
+local findTargetHooked = false
+
 for _, name in ipairs({ "merm", "mermguard", "merm_shadow", "mermguard_shadow", "merm_lunar", "mermguard_lunar" }) do
   AddPrefabPostInit(name, function(inst)
     if not TheWorld.ismastersim then
@@ -100,9 +102,9 @@ for _, name in ipairs({ "merm", "mermguard", "merm_shadow", "mermguard_shadow", 
         return next(inst, item, giver, count)
       end)
     end
-    local findTargetHooked = false
     if not findTargetHooked and inst.replica.combat and inst.components.combat.targetfn then
-      ArkReplaceUpvalue(inst.components.combat.targetfn, "FindInvaderFn", function(previous)
+      -- 各鱼人共用 RetargetFn 的 upvalue，成功安装一次后即可覆盖后续实体。
+      findTargetHooked = ArkReplaceUpvalue(inst.components.combat.targetfn, "FindInvaderFn", function(previous)
         return function(guy, inst)
           if TargetAffinity(inst, guy) then
             return false
@@ -110,7 +112,6 @@ for _, name in ipairs({ "merm", "mermguard", "merm_shadow", "mermguard_shadow", 
           return previous(guy, inst)
         end
       end, { file = "prefabs/merm.lua" })
-      findTargetHooked = true
     end
   end)
 end
