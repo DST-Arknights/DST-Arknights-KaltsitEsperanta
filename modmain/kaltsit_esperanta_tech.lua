@@ -41,6 +41,11 @@ AddPrototyperDef("kaltsit_esperanta_prototyper", {
 
 local PROTOTYPER_TAGS = { "prototyper" }
 
+local function IsTradePrototyper(inst)
+    local def = PROTOTYPER_DEFS[inst.prefab]
+    return def ~= nil and def.action_str == "TRADE"
+end
+
 local function CanUseExternalPrototyper(builder, inst)
     return inst ~= nil
         and inst:IsValid()
@@ -51,6 +56,7 @@ local function CanUseExternalPrototyper(builder, inst)
         and (inst.components.prototyper.restrictedtag == nil
             or builder.inst:HasTag(inst.components.prototyper.restrictedtag))
         and builder.inst:IsNear(inst, TUNING.RESEARCH_MACHINE_DIST)
+        and (not IsTradePrototyper(inst) or inst.components.prototyper:CanUsePrototyper(builder.inst))
 end
 
 local function FindExternalPrototyper(builder)
@@ -144,21 +150,28 @@ AddComponentPostInit("builder", function(self)
         end
 
         local external = self._kaltsit_requested_prototyper or FindExternalPrototyper(self)
-        SetExternalPrototyper(self, intellect, external)
-        self.override_current_prototyper = intellect
-        self._kaltsit_auto_override_running = true
+        -- 交易栏以当前实体为准，商人的库存和交易回调由原版直接处理。
+        local trading = external ~= nil and IsTradePrototyper(external)
+        local auto_trade = trading and self._kaltsit_requested_prototyper == nil
+        SetExternalPrototyper(self, intellect, not trading and external or nil)
+        self.override_current_prototyper = trading and external or intellect
+        self._kaltsit_auto_override_running = not trading or auto_trade
 
         local ok, err = xpcall(function()
             return next(self)
         end, debug.traceback)
 
         self._kaltsit_auto_override_running = false
+        -- 本次靠近触发的商人选择不应在下一次评估中变成手动选择。
+        if auto_trade and self.override_current_prototyper == external then
+            self.override_current_prototyper = nil
+        end
 
         if not ok then
             error(err)
         end
 
-        if requested_external ~= nil then
+        if requested_external ~= nil and not trading then
             self.inst.replica.builder:OpenCraftingMenu()
         end
     end)
